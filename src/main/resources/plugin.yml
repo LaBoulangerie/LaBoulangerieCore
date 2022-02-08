@@ -3,8 +3,17 @@ version: ${project.version}
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.17
 authors: [Grooble_]
-depend: []
+depend: [Towny]
 softdepend: [PlaceholderAPI]
+commands:
+    authenticate:
+        permission: laboulangerie.authenticate
+        description: Authenticate an item
+        usage: /authenticate [player|nation|city]
 permissions:
     laboulangeriecore.*:
+        default: op
+        children:
+            - laboulangeriecore.authenticate
+    laboulangeriecore.authenticate:
         default: op
