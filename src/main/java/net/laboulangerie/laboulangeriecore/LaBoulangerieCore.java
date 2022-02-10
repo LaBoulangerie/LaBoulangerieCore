@@ -7,8 +7,8 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 public class LaBoulangerieCore extends JavaPlugin {
     @Override
     public void onEnable() {
-        getLogger().info("Enabled Successfully");
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
+        getLogger().info("Enabled Successfully");
     }
 
     @Override

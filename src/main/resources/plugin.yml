@@ -9,7 +9,7 @@ commands:
     authenticate:
         permission: laboulangerie.authenticate
         description: Authenticate an item
-        usage: /authenticate [player|nation|city]
+        usage: /authenticate [player|nation|town]
 permissions:
     laboulangeriecore.*:
         default: op
