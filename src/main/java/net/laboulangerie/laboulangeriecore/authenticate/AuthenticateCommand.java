@@ -11,16 +11,20 @@ import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.kyori.adventure.text.Component;
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class AuthenticateCommand implements @Nullable CommandExecutor, TabCompleter {
 
@@ -39,13 +43,20 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
             player.sendMessage("§4Vous devez avoir un objet en main !");
             return true;
         }
-        
-        String authority = "©p-"+player.getUniqueId().toString(); //Sign as a player, will be overwrote if nation or city parameter is provided
 
-        if (Arrays.asList("town", "nation").contains(args[0])) {
-            Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+        Authenticable authenticable = new Authenticable(item);
+        if (authenticable.isAuthenticated()) {
+            player.sendMessage("§4Votre objet est déjà authentifié !");
+            return true;
+        }
 
-            if (args[0].equals("town")) {
+        Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+
+        String authorityName = player.getName().toString() + AuthorityType.PLAYER.getSuffix(); //Sign as a player, will be overwrote if nation or city parameter is provided
+        String authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString(); //first letter correspond to the authority type, t = player, n = nation, t = town
+
+        switch (args[0]) {
+            case "town":
                 Town town = resident.getTownOrNull();
 
                 if (town == null) {
@@ -56,8 +67,10 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
                     player.sendMessage("§4Pour authentifier un objet en tant que ville, vous devez en être le maire !");
                     return true;
                 }
-                authority = "©t-"+town.getUUID().toString(); //Sign as a town
-            }else {
+                authorityName = town.getName() + AuthorityType.TOWN.getSuffix();
+                authorityId = AuthorityType.TOWN.getPrefix() + town.getUUID().toString();
+                break;
+            case "nation":
                 Nation nation = resident.getNationOrNull();
 
                 if (nation == null) {
@@ -68,11 +81,22 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
                     player.sendMessage("§4Pour authentifier un objet en tant que nation, vous devez en être le roi !");
                     return true;
                 }
-                authority = "©n-"+nation.getUUID().toString(); //Sign as a town
-            }
+                authorityName = nation.getName() + AuthorityType.NATION.getSuffix();
+                authorityId = AuthorityType.NATION.getPrefix() + nation.getUUID().toString();
+            case "player":
+            default:
+                break;
         }
+        
         List<Component> lore = Optional.ofNullable(item.lore()).orElse(new ArrayList<Component>());
-        lore.add(Component.text("§e"+authority));
+        lore.add(Component.text("§6Authentifié par "+authorityName));
+
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(
+            new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"),
+            PersistentDataType.STRING, authorityId
+        );
+        item.setItemMeta(meta);
 
         item.lore(lore);
         return true;
