@@ -1,11 +1,15 @@
 package net.laboulangerie.laboulangeriecore.authenticate;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class Authenticable {
@@ -38,5 +42,19 @@ public class Authenticable {
 
     public UUID getAuthorityUUID() {
         return UUID.fromString(getValue().substring(1));
+    }
+
+    public String getAuthorityName() {
+        if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't retrieve authority name");
+        String lore = PlainTextComponentSerializer.plainText().serialize(item.lore().get(item.lore().size()-1));
+        return lore.split(" ")[2];
+    }
+
+    public void updateAuthorityName(String newName) {
+        if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't update authority name");
+        List<Component> lore = item.lore();
+        Component newComp = lore.get(item.lore().size()-1).replaceText(TextReplacementConfig.builder().match(getAuthorityName()).replacement(newName).build());
+        lore.set(item.lore().size()-1, newComp);
+        item.lore(lore);
     }
 }
