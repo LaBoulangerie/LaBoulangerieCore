@@ -2,7 +2,7 @@ name: LaBoulangerieCore
 version: ${project.version}
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.17
-authors: [Grooble_]
+authors: [Grooble_, PainOchoco]
 depend: [Towny]
 softdepend: [PlaceholderAPI]
 commands:
