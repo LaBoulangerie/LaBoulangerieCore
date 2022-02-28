@@ -1,17 +1,24 @@
 package net.laboulangerie.laboulangeriecore;
 
+import java.util.Arrays;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
+import net.laboulangerie.laboulangeriecore.tab.TabListener;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
+
     @Override
     public void onEnable() {
-        getCommand("authenticate").setExecutor(new AuthenticateCommand());
         LaBoulangerieCore.PLUGIN = this;
-        getServer().getPluginManager().registerEvents(new LoreUpdater(), this);
+
+        this.saveDefaultConfig();
+        this.registerListeners();
+
+        this.getCommand("authenticate").setExecutor(new AuthenticateCommand());
 
         getLogger().info("Enabled Successfully");
     }
@@ -19,5 +26,11 @@ public class LaBoulangerieCore extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Unloaded");
+    }
+
+    private void registerListeners() {
+        Arrays.asList(
+                new LoreUpdater(), new TabListener())
+                .forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
     }
 }
