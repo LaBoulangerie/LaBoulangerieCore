@@ -35,7 +35,8 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
             sender.sendMessage("§4This command is restricted to players!");
             return true;
         }
-        if (args.length < 1 || !Arrays.asList("player", "town", "nation").contains(args[0])) return false;
+        if (args.length < 1 || !Arrays.asList("player", "town", "nation").contains(args[0]))
+            return false;
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -52,8 +53,15 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
 
         Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
 
-        String authorityName = player.getName().toString() + AuthorityType.PLAYER.getSuffix(); //Sign as a player, will be overwrote if nation or city parameter is provided
-        String authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString(); //first letter correspond to the authority type, t = player, n = nation, t = town
+        String authorityName = player.getName().toString() + AuthorityType.PLAYER.getSuffix(); // Sign as a player, will
+                                                                                               // be overwrote if nation
+                                                                                               // or city parameter is
+                                                                                               // provided
+        String authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString(); // first letter
+                                                                                                 // correspond to the
+                                                                                                 // authority type, t =
+                                                                                                 // player, n = nation,
+                                                                                                 // t = town
 
         switch (args[0]) {
             case "town":
@@ -74,7 +82,7 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
                 Nation nation = resident.getNationOrNull();
 
                 if (nation == null) {
-                    player.sendMessage("§4Vous n'êtes pas dans une ville !");
+                    player.sendMessage("§4Vous n'êtes pas dans une nation !");
                     return true;
                 }
                 if (nation.getKing() != resident) {
@@ -87,15 +95,14 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
             default:
                 break;
         }
-        
+
         List<Component> lore = Optional.ofNullable(item.lore()).orElse(new ArrayList<Component>());
-        lore.add(Component.text("§6Authentifié par "+authorityName));
+        lore.add(Component.text("§6Authentifié par " + authorityName));
 
         ItemMeta meta = item.getItemMeta();
         meta.getPersistentDataContainer().set(
-            new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"),
-            PersistentDataType.STRING, authorityId
-        );
+                new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"),
+                PersistentDataType.STRING, authorityId);
         item.setItemMeta(meta);
 
         item.lore(lore);
@@ -103,8 +110,10 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
-        if (args.length == 1) return Arrays.asList("player", "town", "nation");
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
+            @NotNull String alias, @NotNull String[] args) {
+        if (args.length == 1)
+            return Arrays.asList("player", "town", "nation");
         return Arrays.asList("");
     }
 }
