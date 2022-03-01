@@ -10,6 +10,18 @@ commands:
         permission: laboulangerie.authenticate
         description: Authenticate an item
         usage: /authenticate [player|nation|town]
+    wiki:
+        description: Sends the wiki link
+    discord:
+        description: Sends the discord link
+    youtube:
+        description: Sends the youtube link
+    twitter:
+        description: Sends the twitter link
+    github:
+        description: Sends the github link
+    map:
+        description: Sends the map link
 permissions:
     laboulangeriecore.*:
         default: op
