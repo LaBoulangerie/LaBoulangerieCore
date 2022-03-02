@@ -6,13 +6,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
+import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.commands.Discord;
 import net.laboulangerie.laboulangeriecore.commands.Github;
 import net.laboulangerie.laboulangeriecore.commands.Map;
 import net.laboulangerie.laboulangeriecore.commands.Twitter;
 import net.laboulangerie.laboulangeriecore.commands.Wiki;
 import net.laboulangerie.laboulangeriecore.commands.Youtube;
-import net.laboulangerie.laboulangeriecore.tab.TabListener;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
@@ -42,7 +43,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new LoreUpdater(), new TabListener())
+                new LoreUpdater(), new TabListener(), new ElytraGenRemover())
                 .forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
     }
 }
