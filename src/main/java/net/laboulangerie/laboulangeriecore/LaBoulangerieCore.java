@@ -8,6 +8,7 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
+import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.laboulangerie.laboulangeriecore.commands.Discord;
 import net.laboulangerie.laboulangeriecore.commands.Github;
 import net.laboulangerie.laboulangeriecore.commands.Map;
@@ -43,7 +44,8 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new LoreUpdater(), new TabListener(), new ElytraGenRemover())
-                .forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
+            new LoreUpdater(), new TabListener(), new ElytraGenRemover(),
+            new TradesHook()
+        ).forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
     }
 }
