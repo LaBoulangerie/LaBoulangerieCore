@@ -3,7 +3,6 @@ package net.laboulangerie.laboulangeriecore.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
@@ -11,11 +10,9 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 public class Wiki implements CommandExecutor{
 	
 	private LaBoulangerieCore plugin;
-	private FileConfiguration config;
-	
 	public Wiki (LaBoulangerieCore plugin) {
 		this.plugin = plugin;
-		this.config = plugin.getConfig();
+		plugin.getConfig();
 
 	}
 	@Override
