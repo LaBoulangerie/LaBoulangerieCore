@@ -6,3 +6,11 @@ tab:
     header: "<rainbow>La Boulangerie"
     name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
     footer: "<papi:townyadvanced_towny_colour><townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
+
+links:
+    discord: "https://laboulangerie.net/discord"
+    youtube: "https://www.youtube.com/channel/UCrIHI9-q9b8MGUgU6UGuclg"
+    wiki: "https://laboulangerie.fandom.com/fr/wiki/Wiki_La_Boulangerie"
+    twitter: "https://twitter.com/BoulangerieMc"
+    github: "https://github.com/LaBoulangerie"
+    map: "https://laboulangerie.net/map"
