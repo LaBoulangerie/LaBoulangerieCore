@@ -3,9 +3,8 @@ package net.laboulangerie.laboulangeriecore.tab;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.laboulangerie.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class TabRenderer {
@@ -17,10 +16,10 @@ public class TabRenderer {
     }
 
     public Component renderSection(Player player, TabSection tabSection) {
-        String sectionFormat = configTabSection.getString(tabSection.name().toLowerCase());
+        String tabSectionFormat = configTabSection.getString(tabSection.name().toLowerCase());
+        ComponentRenderer renderer = LaBoulangerieCore.PLUGIN.getComponentRenderer();
 
-        String papiParsedString = PlaceholderAPI.setPlaceholders(player, sectionFormat);
-        Component parsedComponent = MiniMessage.get().parse(papiParsedString);
+        Component parsedComponent = renderer.getPapiMiniMessage(player).deserialize(tabSectionFormat);
 
         return parsedComponent;
     }

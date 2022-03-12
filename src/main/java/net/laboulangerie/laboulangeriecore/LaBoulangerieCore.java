@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.laboulangerie.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
@@ -12,9 +13,13 @@ import net.laboulangerie.laboulangeriecore.tab.TabListener;
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
 
+    private ComponentRenderer componentRenderer;
+
     @Override
     public void onEnable() {
         LaBoulangerieCore.PLUGIN = this;
+
+        this.componentRenderer = new ComponentRenderer();
 
         this.saveDefaultConfig();
         this.registerListeners();
@@ -22,6 +27,10 @@ public class LaBoulangerieCore extends JavaPlugin {
         this.getCommand("authenticate").setExecutor(new AuthenticateCommand());
 
         getLogger().info("Enabled Successfully");
+    }
+
+    public ComponentRenderer getComponentRenderer() {
+        return componentRenderer;
     }
 
     @Override

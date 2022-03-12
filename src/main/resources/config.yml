@@ -4,5 +4,5 @@ authenticate:
 tab:
     # MiniMessage format and PAPI placeholders allowed
     header: "<rainbow>La Boulangerie"
-    name: "%luckperms_prefix% %player_name% %player_colored_ping%"
-    footer: "%townyadvanced_towny_colour%%townyadvanced_player_status%\n%townyadvanced_town_tag% %townyadvanced_nation_tag%"
+    name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
+    footer: "<papi:townyadvanced_towny_colour><townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
