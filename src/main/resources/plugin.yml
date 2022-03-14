@@ -3,7 +3,7 @@ version: ${project.version}
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.17
 authors: [Grooble_, PainOchoco]
-depend: [Towny]
+depend: [Towny, LuckPerms]
 softdepend: [PlaceholderAPI]
 commands:
     authenticate:

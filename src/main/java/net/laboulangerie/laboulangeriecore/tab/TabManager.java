@@ -10,7 +10,7 @@ public class TabManager {
     public TabManager() {
         this.tabRenderer = new TabRenderer();
 
-        Bukkit.getOnlinePlayers().stream().forEach(p -> loadTab(p));
+        Bukkit.getOnlinePlayers().forEach(this::loadTab);
     }
 
     public void loadTab(Player player) {
