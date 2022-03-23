@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.laboulangerie.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
@@ -16,6 +15,7 @@ import net.laboulangerie.laboulangeriecore.commands.Map;
 import net.laboulangerie.laboulangeriecore.commands.Twitter;
 import net.laboulangerie.laboulangeriecore.commands.Wiki;
 import net.laboulangerie.laboulangeriecore.commands.Youtube;
+import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
@@ -53,8 +53,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-            new LoreUpdater(), new TabListener(), new ElytraGenRemover(),
-            new TradesHook()
-        ).forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
+                new LoreUpdater(), new TabListener(), new ElytraGenRemover(),
+                new TradesHook()).forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
     }
 }

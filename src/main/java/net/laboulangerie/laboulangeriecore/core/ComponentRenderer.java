@@ -1,4 +1,4 @@
-package net.laboulangerie.core;
+package net.laboulangerie.laboulangeriecore.core;
 
 import org.bukkit.entity.Player;
 

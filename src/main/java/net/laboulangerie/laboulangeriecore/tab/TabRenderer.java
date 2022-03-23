@@ -4,8 +4,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import net.kyori.adventure.text.Component;
-import net.laboulangerie.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 
 public class TabRenderer {
     private ConfigurationSection configTabSection;
