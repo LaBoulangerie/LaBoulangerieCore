@@ -22,10 +22,14 @@ commands:
         description: Sends the github link
     map:
         description: Sends the map link
+    pointsdivins:
+        description: Voir ses points divins
 permissions:
     laboulangeriecore.*:
         default: op
         children:
             - laboulangeriecore.authenticate
     laboulangeriecore.authenticate:
+        default: op
+    laboulangeriecore.divinepoints.admin:
         default: op

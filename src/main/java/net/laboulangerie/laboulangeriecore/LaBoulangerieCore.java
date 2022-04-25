@@ -10,6 +10,7 @@ import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
@@ -35,6 +36,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
+        getCommand("pointsdivins").setExecutor(new DivinePointsCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());

@@ -1,0 +1,62 @@
+package net.laboulangerie.laboulangeriecore.points;
+
+import java.util.Arrays;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+public class DivinePointsCmd implements CommandExecutor {
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
+            @NotNull String[] args) {
+        if (args.length == 0) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("§4Only players can see their divine points!");
+                return true;
+            }
+            sender.sendMessage(
+                "§bVous possédez §e"
+                + DivinePointsHolder.getDivinePointsAmount((OfflinePlayer) sender)
+                + "§b points divins"
+            );
+            return true;
+        }else if (!sender.hasPermission("laboulangeriecore.divinepoints.admin")) {
+            sender.sendMessage("§4You don't have the permission to use this command");
+            return false;
+
+        }else if (args.length == 3 && Arrays.asList("give", "withdraw").contains(args[0])) {
+            OfflinePlayer target = Bukkit.getOfflinePlayer(Bukkit.getPlayerUniqueId(args[1]));
+            if (target == null) {
+                sender.sendMessage("§4Invalid player: "+ args[1]);
+                return true;
+            }
+            double amount = 0;
+            try {
+                amount = Double.parseDouble(args[2]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage("§4Unable to convert "+ args[2] + " to a decimal number!");
+                return true;
+            }
+            if (args[0].equalsIgnoreCase("give")) {
+                DivinePointsHolder.giveDivinePoints(target, amount);
+                sender.sendMessage("§bYou granted §e"+ args[2] +"§b divine points to §e"+ args[1]);
+            }else {
+                if (!DivinePointsHolder.withdrawDivinePoints(target, amount))
+                    sender.sendMessage("§4Target "+ args[1] + " is too poor to withdraw " + args[2]);
+                else
+                    sender.sendMessage("§bYou subtracted §e"+ args[2] +"§b divine points from §e"+ args[1]);
+            }
+            return true;
+        }else {
+            sender.sendMessage("§4Bad arguments!");
+            sender.sendMessage("usage: /pointsdivins [give|withdraw] <player> <amount>");
+            return true;
+        }
+    }
+}
