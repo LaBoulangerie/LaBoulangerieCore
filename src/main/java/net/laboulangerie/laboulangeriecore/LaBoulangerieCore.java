@@ -29,19 +29,19 @@ public class LaBoulangerieCore extends JavaPlugin {
         }
         LaBoulangerieCore.PLUGIN = this;
 
-        this.componentRenderer = new ComponentRenderer();
+        componentRenderer = new ComponentRenderer();
 
-        this.saveDefaultConfig();
-        this.registerListeners();
+        saveDefaultConfig();
+        registerListeners();
 
-        this.getCommand("authenticate").setExecutor(new AuthenticateCommand());
+        getCommand("authenticate").setExecutor(new AuthenticateCommand());
         // Link or simple message commands
-        this.getCommand("wiki").setExecutor(new LinkCommands());
-        this.getCommand("discord").setExecutor(new LinkCommands());
-        this.getCommand("youtube").setExecutor(new LinkCommands());
-        this.getCommand("twitter").setExecutor(new LinkCommands());
-        this.getCommand("map").setExecutor(new LinkCommands());
-        this.getCommand("github").setExecutor(new LinkCommands());
+        getCommand("wiki").setExecutor(new LinkCommands());
+        getCommand("discord").setExecutor(new LinkCommands());
+        getCommand("youtube").setExecutor(new LinkCommands());
+        getCommand("twitter").setExecutor(new LinkCommands());
+        getCommand("map").setExecutor(new LinkCommands());
+        getCommand("github").setExecutor(new LinkCommands());
 
         getLogger().info("Enabled Successfully");
     }
@@ -58,7 +58,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         Arrays.asList(
                 new LoreUpdater(), new TabListener(), new ElytraGenRemover(),
-                new TradesHook()).forEach(l -> this.getServer().getPluginManager().registerEvents(l, this));
+                new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
