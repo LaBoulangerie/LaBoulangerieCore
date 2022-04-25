@@ -3,7 +3,6 @@ package net.laboulangerie.laboulangeriecore.points;
 import org.bukkit.OfflinePlayer;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.milkbowl.vault.economy.EconomyResponse.ResponseType;
 
 public class DivinePointsHolder {
     /**
@@ -13,8 +12,8 @@ public class DivinePointsHolder {
     public static String getOrCreate(OfflinePlayer player) {
         String bankId = "divinepoints-" + player.getUniqueId();
 
-        if (!LaBoulangerieCore.econ.getBanks().contains(bankId)) {
-            LaBoulangerieCore.econ.createBank(bankId, player);
+        if (!LaBoulangerieCore.econ.hasAccount(bankId)) {
+            LaBoulangerieCore.econ.createPlayerAccount(bankId);
         }
         return bankId;
     }
@@ -25,7 +24,7 @@ public class DivinePointsHolder {
      * @return
      */
     public static double getDivinePointsAmount(OfflinePlayer player) {
-        return LaBoulangerieCore.econ.bankBalance(getOrCreate(player)).amount;
+        return LaBoulangerieCore.econ.getBalance(getOrCreate(player));
     }
     /**
      * Give {@code amount} of divine points to the player
@@ -33,7 +32,7 @@ public class DivinePointsHolder {
      * @param amount
      */
     public static void giveDivinePoints(OfflinePlayer player, double amount) {
-        LaBoulangerieCore.econ.bankDeposit(getOrCreate(player), amount);
+        LaBoulangerieCore.econ.depositPlayer(getOrCreate(player), amount);
     }
 
     /**
@@ -43,8 +42,8 @@ public class DivinePointsHolder {
      * @return false if the player doesn't have enough points, true otherwise
      */
     public static boolean withdrawDivinePoints(OfflinePlayer player, double amount) {
-        if (LaBoulangerieCore.econ.bankHas(getOrCreate(player), amount).type == ResponseType.SUCCESS) {
-            LaBoulangerieCore.econ.bankWithdraw(getOrCreate(player), amount);
+        if (LaBoulangerieCore.econ.has(getOrCreate(player), amount)) {
+            LaBoulangerieCore.econ.withdrawPlayer(getOrCreate(player), amount);
             return true;
         }
         return false;
