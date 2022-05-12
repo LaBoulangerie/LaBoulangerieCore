@@ -12,6 +12,7 @@ public class House implements Serializable {
     private UUID uuid;
     private String name;
     private List<HouseFlags> flags = new ArrayList<HouseFlags>();
+    private List<UUID> members = new ArrayList<UUID>();
 
     public House(String name) {
         this.name = name;
@@ -32,6 +33,14 @@ public class House implements Serializable {
 
     public List<HouseFlags> getFlags() {
         return flags;
+    }
+
+    /**
+     * Get UUIDs of players in this house
+     * @return
+     */
+    public List<UUID> getMembers() {
+        return members;
     }
 
     public void setName(String name) {
@@ -60,5 +69,17 @@ public class House implements Serializable {
 
     public void removeFlag(HouseFlags flag) {
         flags.remove(flag);
+    }
+
+    public void addMember(UUID memberId) {
+        members.add(memberId);
+    }
+
+    public void removeMember(UUID memberId) {
+        members.remove(memberId);
+    }
+
+    public boolean hasMember(UUID memberId) {
+        return members.contains(memberId);
     }
 }
