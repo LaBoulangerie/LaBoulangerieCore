@@ -1,5 +1,7 @@
 package net.laboulangerie.laboulangeriecore;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -9,6 +11,7 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
+import net.laboulangerie.laboulangeriecore.houses.HousesManager;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
@@ -20,6 +23,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     public static Economy econ = null;
 
     private ComponentRenderer componentRenderer;
+    public HousesManager housesManager;
 
     @Override
     public void onEnable() {
@@ -29,6 +33,16 @@ public class LaBoulangerieCore extends JavaPlugin {
             return;
         }
         LaBoulangerieCore.PLUGIN = this;
+        housesManager = new HousesManager(new File(getDataFolder(), "houses"));
+
+        try {
+            housesManager.loadHouses();
+        } catch (ClassNotFoundException | IOException e) {
+            getLogger().severe("Failed to load houses, disabling plugin");
+            e.printStackTrace();
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         componentRenderer = new ComponentRenderer();
 
@@ -54,7 +68,13 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("Unloaded");
+        try {
+            housesManager.saveHouses();
+        } catch (IOException e) {
+            getLogger().severe("Failed to save houses while disabling");
+            e.printStackTrace();
+        }
+        getLogger().info("Disaded");
     }
 
     private void registerListeners() {
