@@ -24,6 +24,8 @@ commands:
         description: Sends the map link
     pointsdivins:
         description: Voir ses points divins
+    housewand:
+        description: Donne l'outils de creation de maison de nation
 permissions:
     laboulangeriecore.*:
         default: op
@@ -32,4 +34,6 @@ permissions:
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinepoints.admin:
+        default: op
+    laboulangeriecore.house.admin:
         default: op

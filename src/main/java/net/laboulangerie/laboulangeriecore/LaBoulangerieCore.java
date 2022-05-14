@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import net.laboulangerie.laboulangeriecore.houses.HouseWandCmd;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,6 +52,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
         getCommand("pointsdivins").setExecutor(new DivinePointsCmd());
+        getCommand("housewand").setExecutor(new HouseWandCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
