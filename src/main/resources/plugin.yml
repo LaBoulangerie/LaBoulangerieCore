@@ -28,6 +28,8 @@ commands:
         description: Donne l'outils de creation de maison de nation
     createhouse:
         description: Créer une maison de nation
+    listhouse:
+        description: Liste les maisons de nation
 permissions:
     laboulangeriecore.*:
         default: op

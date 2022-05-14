@@ -25,7 +25,9 @@ import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandList
 public class CreateHouseCmd implements CommandExecutor {
 
     private void saveHouseTofile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull Set<Location> locations) {
-        final File file = new File("plugins/LaBoulangerieCore/houses/" + houseName);
+        new File("plugins/LaBoulangerieCore/housesSchema/").mkdirs();
+
+        final File file = new File("plugins/LaBoulangerieCore/housesSchema/" + houseName);
         final StringBuilder builder = new StringBuilder();
 
         for (Location loc : locations) {
@@ -37,7 +39,7 @@ public class CreateHouseCmd implements CommandExecutor {
 
         try {
             Files.write(file.toPath(), builder.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            sender.sendMessage("§aHouse successfully saved under §bplugins/LaBoulangerieCore/houses/"+houseName+" §6("+locations.size()+")");
+            sender.sendMessage("§aHouse successfully saved under §bplugins/LaBoulangerieCore/housesSchema/"+houseName+" §6("+locations.size()+")");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +93,7 @@ public class CreateHouseCmd implements CommandExecutor {
             return false;
         }
 
-        if (new File("plugins/LaBoulangerieCore/houses/" + args[0]).exists()) {
+        if (new File("plugins/LaBoulangerieCore/housesSchema/" + args[0]).exists()) {
             sender.sendMessage("§4This house already exist! Please delete it first");
             return false;
         }
