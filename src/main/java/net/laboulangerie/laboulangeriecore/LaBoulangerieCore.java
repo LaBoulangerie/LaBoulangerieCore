@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import net.laboulangerie.laboulangeriecore.houses.HouseWandCmd;
+import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
+import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -81,7 +82,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new LoreUpdater(), new TabListener(), new ElytraGenRemover(),
+                new LoreUpdater(), new TabListener(), new ElytraGenRemover(), new HouseWandListener(),
                 new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {

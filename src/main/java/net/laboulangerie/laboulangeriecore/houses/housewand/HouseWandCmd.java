@@ -1,14 +1,12 @@
-package net.laboulangerie.laboulangeriecore.houses;
+package net.laboulangerie.laboulangeriecore.houses.housewand;
 
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 import org.jetbrains.annotations.NotNull;
 
 public class HouseWandCmd implements CommandExecutor {
