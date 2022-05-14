@@ -3,10 +3,10 @@ package net.laboulangerie.laboulangeriecore.houses.housewand;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -26,9 +26,9 @@ public class HouseWandListener implements Listener {
         final int zMax = Integer.max(firstPos.getBlockZ(), secondPos.getBlockZ());
 
         int count = 0;
-        for (int i = xMin; i <= xMax ; count++,i++);
-        for (int i = yMin; i <= yMax ; count++,i++);
-        for (int i = zMin; i <= zMax ; count++,i++);
+        for (int i = xMin; i <= xMax; count++,i++);
+        for (int i = yMin; i <= yMax; count++,i++);
+        for (int i = zMin; i <= zMax; count++,i++);
 
         return (count);
     }
@@ -47,7 +47,7 @@ public class HouseWandListener implements Listener {
                 .append(location.getBlockZ()).append(")");
 
         if (firstPos != null && secondPos != null) {
-            builder.append("(").append(getBlocksCount()).append(")");
+            builder.append(" (").append(getBlocksCount()).append(")");
         }
 
         return (builder.toString());
@@ -58,10 +58,6 @@ public class HouseWandListener implements Listener {
         final Player player = event.getPlayer();
         final ItemStack item = player.getInventory().getItemInMainHand();
         if (!isHoldingWand(item)) return;
-
-        firstPos = event.getBlock().getLocation();
-
-        player.sendMessage(generateMessage("First", firstPos));
         event.setCancelled(true);
     }
 
@@ -74,9 +70,13 @@ public class HouseWandListener implements Listener {
         final Block block = event.getClickedBlock();
         if (block == null) return;
 
-        secondPos = block.getLocation();
-
-        player.sendMessage(generateMessage("Second", secondPos));
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+            firstPos = block.getLocation();
+            player.sendMessage(generateMessage("First", firstPos));
+        } else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+            secondPos = block.getLocation();
+            player.sendMessage(generateMessage("Second", secondPos));
+        }
         event.setCancelled(true);
     }
 }
