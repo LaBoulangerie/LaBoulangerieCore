@@ -8,11 +8,11 @@ import java.util.UUID;
 import org.bukkit.Location;
 
 public class House implements Serializable {
-    private List<Location> blocks = new ArrayList<Location>();
+    private List<Location> blocks = new ArrayList<>();
     private UUID uuid;
     private String name;
-    private List<HouseFlags> flags = new ArrayList<HouseFlags>();
-    private List<UUID> members = new ArrayList<UUID>();
+    private List<HouseFlags> flags = new ArrayList<>();
+    private List<UUID> members = new ArrayList<>();
 
     public House(String name) {
         this.name = name;

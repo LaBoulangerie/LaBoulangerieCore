@@ -1,7 +1,6 @@
 package net.laboulangerie.laboulangeriecore.houses;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -14,35 +13,28 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.firstPos;
 import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.secondPos;
 
 public class CreateHouseCmd implements CommandExecutor {
 
-    private void saveHouseTofile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull Set<Location> locations) {
-        new File("plugins/LaBoulangerieCore/housesSchema/").mkdirs();
+    private void saveHouseTofile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull List<Location> blocks) {
+        final House house = new House(houseName);
+        house.addBlocks(blocks.stream().toList());
 
-        final File file = new File("plugins/LaBoulangerieCore/housesSchema/" + houseName);
-        final StringBuilder builder = new StringBuilder();
-
-        for (Location loc : locations) {
-            builder.append(loc.getWorld().getName()).append(", ")
-                    .append(loc.getBlockX()).append(", ")
-                    .append(loc.getBlockY()).append(", ")
-                    .append(loc.getBlockZ()).append(System.lineSeparator());
-        }
+        LaBoulangerieCore.PLUGIN.housesManager.addHouse(UUID.randomUUID(), house);
 
         try {
-            Files.write(file.toPath(), builder.toString().getBytes(), StandardOpenOption.WRITE, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
-            sender.sendMessage("§aHouse successfully saved under §bplugins/LaBoulangerieCore/housesSchema/"+houseName+" §6("+locations.size()+")");
+            LaBoulangerieCore.PLUGIN.housesManager.saveHouses();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        sender.sendMessage("§aHouse successfully saved!");
     }
 
     private void scanSponges(@NotNull CommandSender sender, @NotNull String houseName) {
@@ -54,7 +46,7 @@ public class CreateHouseCmd implements CommandExecutor {
         final int zMin = Integer.min(firstPos.getBlockZ(), secondPos.getBlockZ());
         final int zMax = Integer.max(firstPos.getBlockZ(), secondPos.getBlockZ());
 
-        Set<Location> locations = new HashSet<>();
+        List<Location> blocks = new ArrayList<>();
 
         for (int x = xMin; x <= xMax; x++) {
             for (int y = yMin; y <= yMax; y++) {
@@ -64,12 +56,12 @@ public class CreateHouseCmd implements CommandExecutor {
                     if (block.getType().equals(Material.AIR)) continue;
 
                     if (block.getType().equals(Material.SPONGE)) {
-                        locations.add(location);
+                        blocks.add(location);
                     }
                 }
             }
         }
-        saveHouseTofile(sender, houseName, locations);
+        saveHouseTofile(sender, houseName, blocks);
     }
 
     @Override

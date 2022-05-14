@@ -54,6 +54,10 @@ public class HousesManager {
         }
     }
 
+    public File getDataFolder() {
+        return dataFolder;
+    }
+
     public Map<UUID, House> getHouses() {
         return houses;
     }
