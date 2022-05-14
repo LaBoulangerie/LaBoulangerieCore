@@ -80,8 +80,8 @@ public class HousesManager {
         return houses.containsKey(houseId);
     }
 
-    public void addHouse(UUID houseId, House house) {
-        houses.put(houseId, house);
+    public void addHouse(House house) {
+        houses.put(house.getUUID(), house);
     }
 
     public void removeHouse(UUID houseId) {

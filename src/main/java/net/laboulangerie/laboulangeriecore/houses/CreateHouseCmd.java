@@ -24,7 +24,7 @@ public class CreateHouseCmd implements CommandExecutor {
         final House house = new House(houseName);
         house.addBlocks(blocks.stream().toList());
 
-        LaBoulangerieCore.PLUGIN.housesManager.addHouse(house.getUUID(), house);
+        LaBoulangerieCore.PLUGIN.housesManager.addHouse(house);
 
         try {
             LaBoulangerieCore.PLUGIN.housesManager.saveHouses();
