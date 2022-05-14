@@ -1,19 +1,21 @@
 package net.laboulangerie.laboulangeriecore.houses;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class HousesManager {
-    private File dataFolder;
-    private Map<UUID, House> houses = new HashMap<UUID, House>();
+    private final File dataFolder;
+    private final Map<UUID, House> houses = new HashMap<>();
 
     public HousesManager(File dataFolder) {
         this.dataFolder = dataFolder;
@@ -22,9 +24,7 @@ public class HousesManager {
     public void loadHouses() throws IOException, ClassNotFoundException {
         if (!dataFolder.exists()) dataFolder.mkdirs();
         else {
-            File[] saves = dataFolder.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String file) {return file.endsWith(".ho");}
-            });
+            File[] saves = dataFolder.listFiles((dir, file) -> file.endsWith(".ho"));
             for (File save : saves) {
                 try (FileInputStream file = new FileInputStream(save);
                      ObjectInputStream in = new ObjectInputStream(file)) {
@@ -52,6 +52,16 @@ public class HousesManager {
                 throw e;//We pass the error, the catch is only here to close the streams
             }
         }
+    }
+
+    public void deleteHouse(UUID houseId) {
+        File file = new File(dataFolder, houseId + ".ho");
+        if (file.exists())
+            file.delete();
+    }
+
+    public Optional<House> getHouseByName(@NotNull String name) {
+        return (houses.values().stream().filter(house -> house.getName().equals(name)).findFirst());
     }
 
     public File getDataFolder() {

@@ -39,17 +39,15 @@ public class ListHouseCmd implements CommandExecutor {
             return false;
         }
 
-        final File file = LaBoulangerieCore.PLUGIN.housesManager.getDataFolder();
-        final String[] entries = file.list();
-        if (entries == null) {
+        if (LaBoulangerieCore.PLUGIN.housesManager.getHouses().size() == 0) {
             sender.sendMessage("§4There is no house!");
             return false;
         }
 
         sender.sendMessage("§6====================");
-        sender.sendMessage("§aHouses: "+entries.length);
-        for (String house : entries) {
-            sender.sendMessage("§e"+house);
+        sender.sendMessage("§aHouses: "+LaBoulangerieCore.PLUGIN.housesManager.getHouses().size());
+        for (House house : LaBoulangerieCore.PLUGIN.housesManager.getHouses().values()) {
+            sender.sendMessage("§e"+house.getName()+", "+house.getUUID());
         }
         sender.sendMessage("§6====================");
 

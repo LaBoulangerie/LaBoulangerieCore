@@ -12,10 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.firstPos;
 import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.secondPos;
@@ -26,11 +24,11 @@ public class CreateHouseCmd implements CommandExecutor {
         final House house = new House(houseName);
         house.addBlocks(blocks.stream().toList());
 
-        LaBoulangerieCore.PLUGIN.housesManager.addHouse(UUID.randomUUID(), house);
+        LaBoulangerieCore.PLUGIN.housesManager.addHouse(house.getUUID(), house);
 
         try {
             LaBoulangerieCore.PLUGIN.housesManager.saveHouses();
-        } catch (Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
 
@@ -85,7 +83,7 @@ public class CreateHouseCmd implements CommandExecutor {
             return false;
         }
 
-        if (new File("plugins/LaBoulangerieCore/housesSchema/" + args[0]).exists()) {
+        if (LaBoulangerieCore.PLUGIN.housesManager.getHouseByName(args[0]).isPresent()) {
             sender.sendMessage("§4This house already exist! Please delete it first");
             return false;
         }
