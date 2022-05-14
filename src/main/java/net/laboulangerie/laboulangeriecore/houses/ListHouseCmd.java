@@ -34,12 +34,12 @@ public class ListHouseCmd implements CommandExecutor {
             return false;
         }
 
-        if (!new File("plugins/LaBoulangerieCore/housesSchema/").exists()) {
+        if (!LaBoulangerieCore.PLUGIN.housesManager.getDataFolder().exists()) {
             sender.sendMessage("§4There is no house!");
             return false;
         }
 
-        final File file = new File("plugins/LaBoulangerieCore/housesSchema/");
+        final File file = LaBoulangerieCore.PLUGIN.housesManager.getDataFolder();
         final String[] entries = file.list();
         if (entries == null) {
             sender.sendMessage("§4There is no house!");

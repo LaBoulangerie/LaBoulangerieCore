@@ -22,7 +22,7 @@ import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandList
 
 public class CreateHouseCmd implements CommandExecutor {
 
-    private void saveHouseTofile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull List<Location> blocks) {
+    private void saveHouseToFile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull List<Location> blocks) {
         final House house = new House(houseName);
         house.addBlocks(blocks.stream().toList());
 
@@ -61,7 +61,7 @@ public class CreateHouseCmd implements CommandExecutor {
                 }
             }
         }
-        saveHouseTofile(sender, houseName, blocks);
+        saveHouseToFile(sender, houseName, blocks);
     }
 
     @Override
