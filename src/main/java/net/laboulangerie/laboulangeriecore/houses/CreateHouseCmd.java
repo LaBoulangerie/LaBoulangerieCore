@@ -31,7 +31,7 @@ public class CreateHouseCmd implements CommandExecutor {
         final StringBuilder builder = new StringBuilder();
 
         for (Location loc : locations) {
-            builder.append(loc.getWorld()).append(", ")
+            builder.append(loc.getWorld().getName()).append(", ")
                     .append(loc.getBlockX()).append(", ")
                     .append(loc.getBlockY()).append(", ")
                     .append(loc.getBlockZ()).append(System.lineSeparator());

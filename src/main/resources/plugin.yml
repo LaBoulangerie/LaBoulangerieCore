@@ -30,6 +30,8 @@ commands:
         description: Créer une maison de nation
     listhouse:
         description: Liste les maisons de nation
+    deletehouse:
+        description: Supprime une maisons de nation
 permissions:
     laboulangeriecore.*:
         default: op
