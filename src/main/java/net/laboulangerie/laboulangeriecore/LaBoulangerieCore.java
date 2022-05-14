@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -54,6 +55,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
         getCommand("pointsdivins").setExecutor(new DivinePointsCmd());
         getCommand("housewand").setExecutor(new HouseWandCmd());
+        getCommand("createhouse").setExecutor(new CreateHouseCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -77,7 +79,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             getLogger().severe("Failed to save houses while disabling");
             e.printStackTrace();
         }
-        getLogger().info("Disaded");
+        getLogger().info("Disabled");
     }
 
     private void registerListeners() {

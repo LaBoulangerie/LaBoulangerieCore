@@ -26,6 +26,8 @@ commands:
         description: Voir ses points divins
     housewand:
         description: Donne l'outils de creation de maison de nation
+    createhouse:
+        description: Créer une maison de nation
 permissions:
     laboulangeriecore.*:
         default: op
