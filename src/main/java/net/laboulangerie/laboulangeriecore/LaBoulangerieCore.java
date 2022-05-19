@@ -9,6 +9,8 @@ import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
+import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
+
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,6 +31,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private ComponentRenderer componentRenderer;
     public HousesManager housesManager;
+    public NationHouseHolder nationHouseHolder;
 
     @Override
     public void onEnable() {
@@ -44,6 +47,16 @@ public class LaBoulangerieCore extends JavaPlugin {
             housesManager.loadHouses();
         } catch (ClassNotFoundException | IOException e) {
             getLogger().severe("Failed to load houses, disabling plugin");
+            e.printStackTrace();
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        nationHouseHolder = new NationHouseHolder();
+
+        try {
+            nationHouseHolder.loadData();
+        } catch (IOException e) {
+            getLogger().severe("Failed to load nation houses, disabling plugin");
             e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
             return;
@@ -81,6 +94,12 @@ public class LaBoulangerieCore extends JavaPlugin {
             housesManager.saveHouses();
         } catch (IOException e) {
             getLogger().severe("Failed to save houses while disabling");
+            e.printStackTrace();
+        }
+        try {
+            nationHouseHolder.saveData();
+        } catch (IOException e) {
+            getLogger().severe("Failed to save nation houses while disabling");
             e.printStackTrace();
         }
         getLogger().info("Disabled");
