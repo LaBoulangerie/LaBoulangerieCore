@@ -1,5 +1,6 @@
 package net.laboulangerie.laboulangeriecore.tab;
 
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,7 +19,7 @@ public class TabListener implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-        final Team team = tabManager.getTeam(player);
+        final Team team = LaBoulangerieCore.PLUGIN.getNameTagManager().getTeam(player);
         if (team == null) return;
 
         team.removeEntry(player.getName());
@@ -29,7 +30,7 @@ public class TabListener implements Listener {
         final Player player = event.getPlayer();
         tabManager.loadTab(player);
 
-        final Team team = tabManager.getTeam(player);
+        final Team team = LaBoulangerieCore.PLUGIN.getNameTagManager().getTeam(player);
         if (team == null) return;
 
         team.addEntry(player.getName());

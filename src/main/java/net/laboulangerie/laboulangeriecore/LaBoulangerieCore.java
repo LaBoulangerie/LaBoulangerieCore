@@ -2,6 +2,7 @@ package net.laboulangerie.laboulangeriecore;
 
 import java.util.Arrays;
 
+import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,12 +15,15 @@ import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
+import org.checkerframework.checker.units.qual.N;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
     public static Economy econ = null;
 
     private ComponentRenderer componentRenderer;
+
+    private NameTagManager nameTagManager;
 
     @Override
     public void onEnable() {
@@ -31,6 +35,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         LaBoulangerieCore.PLUGIN = this;
 
         componentRenderer = new ComponentRenderer();
+        nameTagManager = new NameTagManager();
 
         saveDefaultConfig();
         registerListeners();
@@ -50,6 +55,10 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     public ComponentRenderer getComponentRenderer() {
         return componentRenderer;
+    }
+
+    public NameTagManager getNameTagManager() {
+        return nameTagManager;
     }
 
     @Override
