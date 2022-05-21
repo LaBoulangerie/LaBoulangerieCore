@@ -14,8 +14,6 @@ public class LinkCommands implements CommandExecutor {
             @NotNull String[] args) {
         String link = LaBoulangerieCore.PLUGIN.getConfig().getString("links." + alias);
         sender.sendMessage(link);
-
-        LaBoulangerieCore.PLUGIN.getNameTagManager().reload();
         return true;
     }
 }
