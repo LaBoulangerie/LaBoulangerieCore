@@ -24,6 +24,8 @@ commands:
         description: Sends the map link
     pointsdivins:
         description: Voir ses points divins
+    reloadnametag:
+        description: Recharge les nametag des joueurs
 permissions:
     laboulangeriecore.*:
         default: op
@@ -32,4 +34,6 @@ permissions:
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinepoints.admin:
+        default: op
+    laboulangeriecore.nametag.admin:
         default: op

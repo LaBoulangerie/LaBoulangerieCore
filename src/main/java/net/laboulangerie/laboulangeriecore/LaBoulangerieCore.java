@@ -2,7 +2,9 @@ package net.laboulangerie.laboulangeriecore;
 
 import java.util.Arrays;
 
+import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
+import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,6 +44,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
         getCommand("pointsdivins").setExecutor(new DivinePointsCmd());
+        getCommand("reloadnametag").setExecutor(new ReloadNameTagCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -68,7 +71,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new LoreUpdater(), new TabListener(), new ElytraGenRemover(),
+                new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {

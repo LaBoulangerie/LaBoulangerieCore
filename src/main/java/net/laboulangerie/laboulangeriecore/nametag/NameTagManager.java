@@ -69,7 +69,5 @@ public class NameTagManager {
         setPrefix(player, team);
         setColor(player, team);
         setSuffix(player, team);
-
-
     }
 }
