@@ -8,20 +8,17 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 
 public class TabRenderer {
-    private ConfigurationSection configTabSection;
+    private final ConfigurationSection configTabSection;
 
     public TabRenderer() {
         this.configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("tab");
-
     }
 
     public Component renderSection(Player player, TabSection tabSection) {
         String tabSectionFormat = configTabSection.getString(tabSection.name().toLowerCase());
         ComponentRenderer renderer = LaBoulangerieCore.PLUGIN.getComponentRenderer();
 
-        Component parsedComponent = renderer.getPapiMiniMessage(player).deserialize(tabSectionFormat);
-
-        return parsedComponent;
+        return renderer.getPapiMiniMessage(player).deserialize(tabSectionFormat);
     }
 
 }

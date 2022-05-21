@@ -20,42 +20,6 @@ import java.util.List;
 
 public class ComponentRenderer {
 
-    private final FileConfiguration config;
-
-    public ComponentRenderer() {
-        this.config = LaBoulangerieCore.PLUGIN.getConfig();
-    }
-
-    public Component parse(OfflinePlayer player, String text) {
-
-        Component miniMessageParsed = getPapiMiniMessage(player).deserialize(text, parseTags(player));
-
-        return miniMessageParsed;
-    }
-
-    public Component parse(OfflinePlayer player, String text, TagResolver additionnalResolver) {
-        TagResolver tagResolver = TagResolver.resolver(parseTags(player), additionnalResolver);
-
-        Component miniMessageParsed = getPapiMiniMessage(player).deserialize(text, tagResolver);
-
-        return miniMessageParsed;
-    }
-
-    private TagResolver parseTags(OfflinePlayer player) {
-        List<TagResolver.Single> resolvers = new ArrayList<>();
-        ConfigurationSection tagSection = config.getConfigurationSection("tags");
-
-        for (String key : tagSection.getKeys(false)) {
-            String tag = tagSection.getString(key);
-
-            resolvers.add(
-                    Placeholder.component(key,
-                            getPapiMiniMessage(player).deserialize(tag)));
-        }
-
-        return TagResolver.resolver(resolvers);
-    }
-
     public MiniMessage getPapiMiniMessage(OfflinePlayer player) {
 
         return MiniMessage.builder().tags(
