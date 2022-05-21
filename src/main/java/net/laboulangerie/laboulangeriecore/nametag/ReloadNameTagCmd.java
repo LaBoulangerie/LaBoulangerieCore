@@ -16,6 +16,8 @@ public class ReloadNameTagCmd implements CommandExecutor {
         }
 
         LaBoulangerieCore.PLUGIN.getNameTagManager().reload();
+
+        sender.sendMessage("§aNameTag reloaded!");
         return true;
     }
 }

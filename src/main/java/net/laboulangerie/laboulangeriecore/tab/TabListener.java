@@ -19,7 +19,7 @@ public class TabListener implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         final Player player = event.getPlayer();
-        final Team team = LaBoulangerieCore.PLUGIN.getNameTagManager().getTeam(player);
+        final Team team = tabManager.getTeam(player);
         if (team == null) return;
 
         team.removeEntry(player.getName());
@@ -30,7 +30,7 @@ public class TabListener implements Listener {
         final Player player = event.getPlayer();
         tabManager.loadTab(player);
 
-        final Team team = LaBoulangerieCore.PLUGIN.getNameTagManager().getTeam(player);
+        final Team team = tabManager.getTeam(player);
         if (team == null) return;
 
         team.addEntry(player.getName());

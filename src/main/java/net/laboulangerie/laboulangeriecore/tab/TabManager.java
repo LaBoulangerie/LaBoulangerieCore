@@ -4,18 +4,24 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
+import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 
 public class TabManager {
 
+    private final LuckPerms lpApi;
+
     private final TabRenderer tabRenderer;
 
     public TabManager() {
+        this.lpApi = LuckPermsProvider.get();
         this.tabRenderer = new TabRenderer();
 
         final LuckPerms lpApi = LuckPermsProvider.get();
@@ -33,6 +39,17 @@ public class TabManager {
         }
     }
 
+    public Team getTeam(@Nonnull Player player) {
+        final User user = lpApi.getUserManager().getUser(player.getUniqueId());
+        if (user == null) return null;
+
+        final Group group = lpApi.getGroupManager().getGroup(user.getPrimaryGroup());
+        if (group == null) return null;
+
+        final String teamName = group.getWeight()+group.getName();
+        final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+        return (board.getTeam(teamName));
+    }
 
     private void updateTab() {
         new BukkitRunnable() {
