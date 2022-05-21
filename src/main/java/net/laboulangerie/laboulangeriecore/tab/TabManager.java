@@ -35,7 +35,8 @@ public class TabManager {
         for (final Group g : groups) {
             final String teamName = g.getWeight()+g.getName();
             if (board.getTeam(teamName) != null) continue;
-            board.registerNewTeam(teamName);
+            Team team = board.registerNewTeam(teamName);
+            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         }
     }
 

@@ -1,8 +1,6 @@
 package net.laboulangerie.laboulangeriecore.nametag;
 
-import com.sun.tools.javac.Main;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.laboulangerie.laboulangeriecore.nms.NMS;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntities;
@@ -11,10 +9,8 @@ import net.laboulangerie.laboulangeriecore.nms.NMSSpawnEntityLiving;
 import org.bukkit.entity.Player;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class PlayerNameTag {
@@ -28,9 +24,9 @@ public class PlayerNameTag {
 
     public PlayerNameTag(@Nonnull Player player) {
         this.player = player;
-        this.above = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2, player.getLocation().getZ());
-        this.nameTag = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 1, player.getLocation().getZ());
-        this.below = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ());
+        this.above = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.4, player.getLocation().getZ());
+        this.nameTag = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.1, player.getLocation().getZ());
+        this.below = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 1.8, player.getLocation().getZ());
     }
 
     public @Nonnull Player getPlayer() {
@@ -50,6 +46,8 @@ public class PlayerNameTag {
     }
 
     public void spawnNameTag(@Nonnull Player player, @Nonnull NMSEntities entity, @Nonnull Component component) {
+        if (player.getUniqueId().equals(this.player.getUniqueId())) return;
+
         try {
             final Class<?> chatBaseComponentClass = NMS.getClass("net.minecraft.network.chat.IChatBaseComponent");
             final Class<?> chatBaseComponentSerializerClass = chatBaseComponentClass.getDeclaredClasses()[0];
@@ -60,6 +58,7 @@ public class PlayerNameTag {
             final Method setSmall = entity.getEntity().getClass().getMethod("a", boolean.class);
             final Method setNoBasePlate = entity.getEntity().getClass().getMethod("s", boolean.class);
             final Method setMarker = entity.getEntity().getClass().getMethod("t", boolean.class);
+            final Method setInvisible = entity.getEntity().getClass().getMethod("j", boolean.class);
 
             final String json = GsonComponentSerializer.gson().serialize(component);
 
@@ -70,6 +69,7 @@ public class PlayerNameTag {
             setSmall.invoke(entity.getEntity(), true);
             setNoBasePlate.invoke(entity.getEntity(), true);
             setMarker.invoke(entity.getEntity(), true);
+            setInvisible.invoke(entity.getEntity(), true);
 
             NMSSpawnEntityLiving.send(player, entity);
             NMSEntityMetadata.send(player, entity);
