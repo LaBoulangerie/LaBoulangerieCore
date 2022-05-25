@@ -1,25 +1,12 @@
 package net.laboulangerie.laboulangeriecore.houses;
 
-import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.util.HashSet;
-import java.util.Set;
-
-import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.firstPos;
-import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.secondPos;
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class ListHouseCmd implements CommandExecutor {
 
