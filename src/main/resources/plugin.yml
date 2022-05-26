@@ -36,6 +36,10 @@ commands:
     deletehouse:
         description: Supprime une maisons de nation
         permission: laboulangeriecore.house.admin
+    nationhouses:
+        description: Manage nation houses
+        permission: laboulangeriecore.house.admin
+        usage: /nationhouses [list|create|delete] ([free|occupied] | <id>)
 permissions:
     laboulangeriecore.*:
         default: op

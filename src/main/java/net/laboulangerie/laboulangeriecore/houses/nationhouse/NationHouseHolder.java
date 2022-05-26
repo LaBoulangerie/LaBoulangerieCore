@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class NationHouseHolder {
+    private File dataFile = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "nationshouses.yml");
     /**
      * UUID is house's one
      */
@@ -21,8 +22,8 @@ public class NationHouseHolder {
     /**
      * First UUID is house, second is nation one
      */
-    private File dataFile = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "nationshouses.yml");
     private Map<UUID, UUID> occupiedHouses = new HashMap<>();
+    private Map<UUID, Double> prices = new HashMap<>();
 
     public NationHouseHolder() {}
 
@@ -50,5 +51,37 @@ public class NationHouseHolder {
         YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
         data.set("free-houses", freeHouses);
         data.set("occupied-houses", occupiedHouses);
+    }
+
+    public List<UUID> getFreeHouses() { return freeHouses; }
+    public Map<UUID, UUID> getOccupiedHouses() { return occupiedHouses; }
+
+    public void newNationHouse(UUID id, Double price) {
+        prices.put(id, price);
+        freeHouses.add(id);
+    }
+    /**
+     * Assign a house to a nation
+     * @param houseId
+     * @param nationId
+     * @throws IllegalStateException if the house is already assigned
+     */
+    public void assignNationHouse(UUID houseId, UUID nationId) {
+        if (occupiedHouses.containsKey(houseId)) throw new IllegalStateException("House is already assigned to a nation!");
+        occupiedHouses.put(houseId, nationId);
+        freeHouses.remove(houseId);
+    }
+    public void freeHouse(UUID houseId) {
+        if (freeHouses.contains(houseId)) throw new IllegalStateException("House is already free!");
+        occupiedHouses.remove(houseId);
+        freeHouses.add(houseId);
+    }
+    public void deleteNationHouse(UUID houseId) {
+        occupiedHouses.remove(houseId);
+        freeHouses.remove(houseId);
+        prices.remove(houseId);
+    }
+    public Double getHousePrice(UUID id) {
+        return prices.get(id);
     }
 }

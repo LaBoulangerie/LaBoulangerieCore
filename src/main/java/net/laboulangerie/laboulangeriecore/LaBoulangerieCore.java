@@ -10,6 +10,7 @@ import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
+import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
 
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -73,6 +74,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("createhouse").setExecutor(new CreateHouseCmd());
         getCommand("listhouse").setExecutor(new ListHouseCmd());
         getCommand("deletehouse").setExecutor(new DeleteHouseCmd());
+        getCommand("nationhouses").setExecutor(new NationHousesCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
