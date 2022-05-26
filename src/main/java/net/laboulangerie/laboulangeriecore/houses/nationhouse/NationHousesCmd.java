@@ -19,7 +19,8 @@ public class NationHousesCmd implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 0) return false;
-        if (args.length >= 2 && args[0].equalsIgnoreCase("list") && Arrays.asList("free", "occupied").contains(args[1])) {
+        if (args.length < 2) return false;
+        if (args[0].equalsIgnoreCase("list") && Arrays.asList("free", "occupied").contains(args[1])) {
             short pageToDisplay = 0;
             if (args.length >= 3) {
                 try {
@@ -47,6 +48,23 @@ public class NationHousesCmd implements CommandExecutor {
                     sender.sendMessage("§5" + house.getName() + " §r--- §3" + TownyUniverse.getInstance().getNation(id));
                 }
             }
+            return true;
+        }
+        if (args[0].equalsIgnoreCase("create") && args.length > 2) {
+            double price = 0;
+            try {
+                price = Double.parseDouble(args[2]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage("§4Unable to parse §e" + args[2] + " §4to type Double (numeric)!");
+                return true;
+            }
+            House house = LaBoulangerieCore.housesManager.getHouseByName(args[1]).orElse(null);
+            if (house == null) {
+                sender.sendMessage("§4No house named §e" + args[1] + "§4!");
+                return true;
+            }
+            LaBoulangerieCore.nationHouseHolder.newNationHouse(house.getUUID(), price);
+            sender.sendMessage("§2House of nation successfuly created!");
             return true;
         }
         return false;
