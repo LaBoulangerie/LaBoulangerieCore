@@ -38,19 +38,32 @@ public class NationHouseHolder {
             freeHouses = (List<UUID>) data.getStringList("free-houses").stream().map(UUID::fromString).collect(Collectors.toList());
         }else data.createSection("free-houses");
 
-        if (data.getList("occupied-houses") != null) {
+        if (data.contains("occupied-houses")) {
             for (String houseId : data.getConfigurationSection("occupied-houses").getKeys(false)) {
                 occupiedHouses.put(UUID.fromString(houseId), UUID.fromString(data.getString("occupied-houses." + houseId)));
             }
         }else data.createSection("occupied-houses");
+
+        if (data.contains("prices")) {
+            for (String houseId : data.getConfigurationSection("prices").getKeys(false)) {
+                prices.put(UUID.fromString(houseId), data.getDouble("prices." + houseId));
+            }
+        }else data.createSection("prices");
     }
 
     public void saveData() throws IOException {
         if (!dataFile.exists()) dataFile.createNewFile();
 
         YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
-        data.set("free-houses", freeHouses);
-        data.set("occupied-houses", occupiedHouses);
+
+        data.set("free-houses", freeHouses.stream().map(id -> id.toString()).collect(Collectors.toList()));
+        data.set("occupied-houses", occupiedHouses.entrySet().stream().collect(Collectors.toMap(
+            e -> e.getKey().toString(), e -> e.getValue().toString()
+        )));
+        data.set("prices", prices.entrySet().stream().collect(Collectors.toMap(
+            e -> e.getKey().toString(), Map.Entry::getValue
+        )));
+        data.save(dataFile);
     }
 
     public List<UUID> getFreeHouses() { return freeHouses; }
