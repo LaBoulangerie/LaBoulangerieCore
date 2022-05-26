@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import net.kyori.adventure.text.Component;
+
 public class HouseWandCmd implements CommandExecutor {
 
     private void giveWand(Player player) {
@@ -17,7 +19,7 @@ public class HouseWandCmd implements CommandExecutor {
         ItemStack stack = new ItemStack(Material.IRON_AXE);
         ItemMeta meta = stack.getItemMeta();
         meta.setCustomModelData(69420);
-        meta.setDisplayName("§6House wand");
+        meta.displayName(Component.text("§6House wand"));
         stack.setItemMeta(meta);
         player.getInventory().addItem(stack);
     }

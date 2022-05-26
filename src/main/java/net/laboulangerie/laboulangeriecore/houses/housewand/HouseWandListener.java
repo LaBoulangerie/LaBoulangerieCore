@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+
 public class HouseWandListener implements Listener {
 
     public static Location firstPos;
@@ -35,7 +37,9 @@ public class HouseWandListener implements Listener {
 
     private boolean isHoldingWand(@NotNull ItemStack item) {
         return (item.getType().equals(Material.IRON_AXE) &&
-                item.getItemMeta().getDisplayName().equals("§6House wand") &&
+                PlainTextComponentSerializer.plainText().serialize(
+                    item.getItemMeta().displayName()
+                ).equals("§6House wand") &&
                 item.getItemMeta().getCustomModelData() == 69420);
     }
 
