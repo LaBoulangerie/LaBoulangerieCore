@@ -67,6 +67,16 @@ public class NationHousesCmd implements CommandExecutor {
             sender.sendMessage("§2House of nation successfuly created!");
             return true;
         }
+        if (args[0].equalsIgnoreCase("delete")) {
+            House house = LaBoulangerieCore.housesManager.getHouseByName(args[1]).orElse(null);
+            if (house == null) {
+                sender.sendMessage("§4No house named §e" + args[1] + "§4!");
+                return true;
+            }
+            LaBoulangerieCore.nationHouseHolder.deleteNationHouse(house.getUUID());
+            sender.sendMessage("§2House of nation successfuly deleted!");
+            return true;
+        }
         return false;
     }
 }
