@@ -16,10 +16,6 @@ public class ListHouseCmd implements CommandExecutor {
             sender.sendMessage("§4Only players can use this command!");
             return true;
         }
-        if (!sender.hasPermission("laboulangeriecore.house.admin")) {
-            sender.sendMessage("§4You don't have the permission to use this command");
-            return false;
-        }
 
         if (!LaBoulangerieCore.PLUGIN.housesManager.getDataFolder().exists()) {
             sender.sendMessage("§4There is no house!");

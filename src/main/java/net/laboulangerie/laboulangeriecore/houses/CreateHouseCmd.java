@@ -68,10 +68,6 @@ public class CreateHouseCmd implements CommandExecutor {
             sender.sendMessage("§4Only players can use this command!");
             return true;
         }
-        if (!sender.hasPermission("laboulangeriecore.house.admin")) {
-            sender.sendMessage("§4You don't have the permission to use this command");
-            return false;
-        }
 
         if (args.length == 0) {
             sender.sendMessage("§4Invalid usage try createhouse <name>");

@@ -26,17 +26,23 @@ commands:
         description: Voir ses points divins
     housewand:
         description: Donne l'outils de creation de maison de nation
+        permission: laboulangeriecore.house.admin
     createhouse:
         description: Créer une maison de nation
+        permission: laboulangeriecore.house.admin
     listhouse:
         description: Liste les maisons de nation
+        permission: laboulangeriecore.house.admin
     deletehouse:
         description: Supprime une maisons de nation
+        permission: laboulangeriecore.house.admin
 permissions:
     laboulangeriecore.*:
         default: op
         children:
             - laboulangeriecore.authenticate
+            - laboulangeriecore.divinepoints.admin
+            - laboulangeriecore.house.admin
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinepoints.admin:
