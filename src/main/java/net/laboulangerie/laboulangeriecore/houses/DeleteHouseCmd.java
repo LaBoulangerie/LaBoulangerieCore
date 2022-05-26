@@ -26,7 +26,6 @@ public class DeleteHouseCmd implements CommandExecutor {
             return false;
         }
         House house = LaBoulangerieCore.housesManager.getHouseByName(args[0]).get();
-        LaBoulangerieCore.housesManager.removeHouse(house.getUUID());
         LaBoulangerieCore.housesManager.deleteHouse(house.getUUID());
 
         sender.sendMessage("§aHouse §e"+ args[0] +"§a deleted successfully");

@@ -55,6 +55,7 @@ public class HousesManager {
     }
 
     public void deleteHouse(UUID houseId) {
+        houses.remove(houseId);
         File file = new File(dataFolder, houseId + ".ho");
         if (file.exists())
             file.delete();
@@ -82,9 +83,5 @@ public class HousesManager {
 
     public void addHouse(House house) {
         houses.put(house.getUUID(), house);
-    }
-
-    public void removeHouse(UUID houseId) {
-        houses.remove(houseId);
     }
 }
