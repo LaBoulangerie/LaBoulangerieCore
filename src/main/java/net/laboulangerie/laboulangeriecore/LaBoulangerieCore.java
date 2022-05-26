@@ -29,10 +29,10 @@ import net.milkbowl.vault.economy.Economy;
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
     public static Economy econ = null;
+    public static HousesManager housesManager;
+    public static NationHouseHolder nationHouseHolder;
 
     private ComponentRenderer componentRenderer;
-    public HousesManager housesManager;
-    public NationHouseHolder nationHouseHolder;
 
     @Override
     public void onEnable() {

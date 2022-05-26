@@ -24,10 +24,10 @@ public class CreateHouseCmd implements CommandExecutor {
         final House house = new House(houseName);
         house.addBlocks(blocks.stream().toList());
 
-        LaBoulangerieCore.PLUGIN.housesManager.addHouse(house);
+        LaBoulangerieCore.housesManager.addHouse(house);
 
         try {
-            LaBoulangerieCore.PLUGIN.housesManager.saveHouses();
+            LaBoulangerieCore.housesManager.saveHouses();
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class CreateHouseCmd implements CommandExecutor {
             return false;
         }
 
-        if (LaBoulangerieCore.PLUGIN.housesManager.getHouseByName(args[0]).isPresent()) {
+        if (LaBoulangerieCore.housesManager.getHouseByName(args[0]).isPresent()) {
             sender.sendMessage("§4This house already exist! Please delete it first");
             return false;
         }

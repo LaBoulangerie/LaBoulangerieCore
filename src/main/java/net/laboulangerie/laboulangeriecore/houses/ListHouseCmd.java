@@ -17,19 +17,19 @@ public class ListHouseCmd implements CommandExecutor {
             return true;
         }
 
-        if (!LaBoulangerieCore.PLUGIN.housesManager.getDataFolder().exists()) {
+        if (!LaBoulangerieCore.housesManager.getDataFolder().exists()) {
             sender.sendMessage("§4There is no house!");
             return false;
         }
 
-        if (LaBoulangerieCore.PLUGIN.housesManager.getHouses().size() == 0) {
+        if (LaBoulangerieCore.housesManager.getHouses().size() == 0) {
             sender.sendMessage("§4There is no house!");
             return false;
         }
 
         sender.sendMessage("§6====================");
-        sender.sendMessage("§aHouses: "+LaBoulangerieCore.PLUGIN.housesManager.getHouses().size());
-        for (House house : LaBoulangerieCore.PLUGIN.housesManager.getHouses().values()) {
+        sender.sendMessage("§aHouses: "+LaBoulangerieCore.housesManager.getHouses().size());
+        for (House house : LaBoulangerieCore.housesManager.getHouses().values()) {
             sender.sendMessage("§e"+house.getName()+", "+house.getUUID());
         }
         sender.sendMessage("§6====================");

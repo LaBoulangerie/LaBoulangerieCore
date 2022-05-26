@@ -29,21 +29,21 @@ public class NationHousesCmd implements CommandExecutor {
                     return true;
                 }
             }
-            if (pageToDisplay * 8 > (args[1].equals("free") ? LaBoulangerieCore.PLUGIN.nationHouseHolder.getFreeHouses().size() : LaBoulangerieCore.PLUGIN.nationHouseHolder.getOccupiedHouses().size())) {
+            if (pageToDisplay * 8 > (args[1].equals("free") ? LaBoulangerieCore.nationHouseHolder.getFreeHouses().size() : LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().size())) {
                 sender.sendMessage("§4There is no page " + pageToDisplay + " to display!");
                 return true;
             }
             sender.sendMessage("§2-----§a[§epage " + (pageToDisplay+1) + "§a]§2-----");
             if (args[1].equals("free")) {
-                for (int i = pageToDisplay*8; i < LaBoulangerieCore.PLUGIN.nationHouseHolder.getFreeHouses().size() && i < (pageToDisplay+1)*8; i++) {
-                    UUID id = LaBoulangerieCore.PLUGIN.nationHouseHolder.getFreeHouses().get(i);
-                    House house = LaBoulangerieCore.PLUGIN.housesManager.getHouse(id);
-                    sender.sendMessage("§2" + house.getName() + " §r--- §3" + LaBoulangerieCore.PLUGIN.nationHouseHolder.getHousePrice(id) + "$");
+                for (int i = pageToDisplay*8; i < LaBoulangerieCore.nationHouseHolder.getFreeHouses().size() && i < (pageToDisplay+1)*8; i++) {
+                    UUID id = LaBoulangerieCore.nationHouseHolder.getFreeHouses().get(i);
+                    House house = LaBoulangerieCore.housesManager.getHouse(id);
+                    sender.sendMessage("§2" + house.getName() + " §r--- §3" + LaBoulangerieCore.nationHouseHolder.getHousePrice(id) + "$");
                 }
             }else {
-                for (int i = pageToDisplay*8; i < LaBoulangerieCore.PLUGIN.nationHouseHolder.getOccupiedHouses().size() && i < (pageToDisplay+1)*8; i++) {
-                    UUID id = (UUID) LaBoulangerieCore.PLUGIN.nationHouseHolder.getOccupiedHouses().keySet().toArray()[i];
-                    House house = LaBoulangerieCore.PLUGIN.housesManager.getHouse(id);
+                for (int i = pageToDisplay*8; i < LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().size() && i < (pageToDisplay+1)*8; i++) {
+                    UUID id = (UUID) LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().toArray()[i];
+                    House house = LaBoulangerieCore.housesManager.getHouse(id);
                     sender.sendMessage("§5" + house.getName() + " §r--- §3" + TownyUniverse.getInstance().getNation(id));
                 }
             }
