@@ -40,6 +40,8 @@ commands:
         description: Manage nation houses
         permission: laboulangeriecore.house.admin
         usage: /nationhouses [list|create|delete] ([free|occupied] | <id>)
+    reloadnametag:
+        description: Recharge les nametag des joueurs
 permissions:
     laboulangeriecore.*:
         default: op
@@ -47,9 +49,12 @@ permissions:
             - laboulangeriecore.authenticate
             - laboulangeriecore.divinepoints.admin
             - laboulangeriecore.house.admin
+            - laboulangeriecore.nametag.admin
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinepoints.admin:
         default: op
     laboulangeriecore.house.admin:
+        default: op
+    laboulangeriecore.nametag.admin:
         default: op

@@ -1,5 +1,6 @@
 package net.laboulangerie.laboulangeriecore.tab;
 
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

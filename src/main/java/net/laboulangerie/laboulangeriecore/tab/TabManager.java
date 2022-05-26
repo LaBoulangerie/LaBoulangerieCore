@@ -11,17 +11,20 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import javax.annotation.Nonnull;
 import java.util.Set;
 
 public class TabManager {
 
-    private final TabRenderer tabRenderer;
-
     private final LuckPerms lpApi;
 
+    private final TabRenderer tabRenderer;
+
     public TabManager() {
-        this.tabRenderer = new TabRenderer();
         this.lpApi = LuckPermsProvider.get();
+        this.tabRenderer = new TabRenderer();
+
+        final LuckPerms lpApi = LuckPermsProvider.get();
 
         Bukkit.getOnlinePlayers().forEach(this::loadTab);
         updateTab();
@@ -32,11 +35,12 @@ public class TabManager {
         for (final Group g : groups) {
             final String teamName = g.getWeight()+g.getName();
             if (board.getTeam(teamName) != null) continue;
-            board.registerNewTeam(teamName);
+            Team team = board.registerNewTeam(teamName);
+            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
         }
     }
 
-    protected Team getTeam(Player player) {
+    public Team getTeam(@Nonnull Player player) {
         final User user = lpApi.getUserManager().getUser(player.getUniqueId());
         if (user == null) return null;
 

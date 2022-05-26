@@ -7,6 +7,11 @@ tab:
     name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
     footer: "<papi:townyadvanced_towny_colour><townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
 
+nametag:
+    above: "<rainbow><papi:luckperms_prefix> "
+    nametag: "<rainbow><papi:player_name>"
+    below: "<rainbow><papi:player_colored_ping>"
+
 links:
     discord: "https://laboulangerie.net/discord"
     youtube: "https://www.youtube.com/channel/UCrIHI9-q9b8MGUgU6UGuclg"

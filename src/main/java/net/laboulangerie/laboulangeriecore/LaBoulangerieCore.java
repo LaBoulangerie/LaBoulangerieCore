@@ -4,14 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
-import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
-import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
-import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
-import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
-import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
-import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
-
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,8 +11,18 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
+import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
+import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.HousesManager;
+import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
+import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
+import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
+import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
+import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
+import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
+import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
 import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
@@ -33,6 +35,8 @@ public class LaBoulangerieCore extends JavaPlugin {
     public static NationHouseHolder nationHouseHolder;
 
     private ComponentRenderer componentRenderer;
+
+    private NameTagManager nameTagManager;
 
     @Override
     public void onEnable() {
@@ -64,6 +68,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         }
 
         componentRenderer = new ComponentRenderer();
+        nameTagManager = new NameTagManager();
 
         saveDefaultConfig();
         registerListeners();
@@ -75,6 +80,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("listhouse").setExecutor(new ListHouseCmd());
         getCommand("deletehouse").setExecutor(new DeleteHouseCmd());
         getCommand("nationhouses").setExecutor(new NationHousesCmd());
+        getCommand("reloadnametag").setExecutor(new ReloadNameTagCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -88,6 +94,10 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     public ComponentRenderer getComponentRenderer() {
         return componentRenderer;
+    }
+
+    public NameTagManager getNameTagManager() {
+        return nameTagManager;
     }
 
     @Override
@@ -109,7 +119,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new LoreUpdater(), new TabListener(), new ElytraGenRemover(), new HouseWandListener(),
+                new LoreUpdater(), new TabListener(), new ElytraGenRemover(), new HouseWandListener(), new NameTagListener(),
                 new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {
