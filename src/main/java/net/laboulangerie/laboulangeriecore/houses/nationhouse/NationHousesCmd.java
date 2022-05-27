@@ -1,19 +1,23 @@
 package net.laboulangerie.laboulangeriecore.houses.nationhouse;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.palmergames.bukkit.towny.TownyUniverse;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.houses.House;
 
-public class NationHousesCmd implements CommandExecutor {
+public class NationHousesCmd implements CommandExecutor, TabCompleter {
     public NationHousesCmd() {}
 
     @Override
@@ -78,5 +82,26 @@ public class NationHousesCmd implements CommandExecutor {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
+        if (args.length == 1) return Arrays.asList("list", "create", "delete");
+        if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("list")) return Arrays.asList("free", "occupied");
+            if (args[0].equalsIgnoreCase("delete")) {
+                List<String> completions = LaBoulangerieCore.nationHouseHolder.getFreeHouses().stream()
+                    .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName())
+                    .collect(Collectors.toList());
+                completions.addAll(
+                    LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().stream()
+                        .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName())
+                        .collect(Collectors.toList())
+                );
+                return completions;
+            }
+        }
+        if (args.length == 3 && args[0].equalsIgnoreCase("create")) return Arrays.asList("100", "500", "1000", "5000");
+        return Arrays.asList("");
     }
 }
