@@ -22,8 +22,8 @@ commands:
         description: Sends the github link
     map:
         description: Sends the map link
-    pointsdivins:
-        description: Voir ses points divins
+    faveursdivines:
+        description: Voir ses faveurs divines
     housewand:
         description: Donne l'outils de creation de maison de nation
         permission: laboulangeriecore.house.admin
@@ -47,12 +47,12 @@ permissions:
         default: op
         children:
             - laboulangeriecore.authenticate
-            - laboulangeriecore.divinepoints.admin
+            - laboulangeriecore.divinefavors.admin
             - laboulangeriecore.house.admin
             - laboulangeriecore.nametag.admin
     laboulangeriecore.authenticate:
         default: op
-    laboulangeriecore.divinepoints.admin:
+    laboulangeriecore.divinefavors.admin:
         default: op
     laboulangeriecore.house.admin:
         default: op

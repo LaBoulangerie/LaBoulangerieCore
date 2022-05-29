@@ -23,7 +23,7 @@ import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
 import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
-import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
+import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
@@ -74,7 +74,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
-        getCommand("pointsdivins").setExecutor(new DivinePointsCmd());
+        getCommand("faveursdivines").setExecutor(new DivineFavorsCmd());
         getCommand("housewand").setExecutor(new HouseWandCmd());
         getCommand("createhouse").setExecutor(new CreateHouseCmd());
         getCommand("listhouse").setExecutor(new ListHouseCmd());
