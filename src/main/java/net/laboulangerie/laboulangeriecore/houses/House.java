@@ -13,6 +13,7 @@ public class House implements Serializable {
     private String name;
     private List<HouseFlags> flags = new ArrayList<>();
     private List<UUID> members = new ArrayList<>();
+    private int[] anchor = {0, 0, 0};
 
     public House(String name) {
         this.name = name;
@@ -81,5 +82,18 @@ public class House implements Serializable {
 
     public boolean hasMember(UUID memberId) {
         return members.contains(memberId);
+    }
+    /**
+     * The "anchor" is the coordinates of the average of all blocks in
+     * the house
+     * @return a 3 wide uni-dimensional array containing respectively, the x, y & z values
+     */
+    public int[] getAnchor() {
+        return anchor;
+    }
+
+    public void setAnchor(int[] anchor) {
+        if (anchor.length != 3) throw new IllegalArgumentException("Array must have a length of 3!");
+        this.anchor = anchor;
     }
 }
