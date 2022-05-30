@@ -17,6 +17,8 @@ import net.laboulangerie.laboulangeriecore.houses.HousesManager;
 import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener;
+import net.laboulangerie.laboulangeriecore.houses.nationhouse.HouseShop;
+import net.laboulangerie.laboulangeriecore.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
@@ -81,6 +83,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("deletehouse").setExecutor(new DeleteHouseCmd());
         getCommand("nationhouses").setExecutor(new NationHousesCmd());
         getCommand("reloadnametag").setExecutor(new ReloadNameTagCmd());
+        getCommand("houseshop").setExecutor(new HouseShopCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -120,7 +123,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         Arrays.asList(
                 new LoreUpdater(), new TabListener(), new ElytraGenRemover(), new HouseWandListener(), new NameTagListener(),
-                new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
+                new TradesHook(), new HouseShop()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

@@ -42,6 +42,9 @@ commands:
         usage: /nationhouses [list|create|delete] ([free|occupied] | <id>)
     reloadnametag:
         description: Recharge les nametag des joueurs
+    houseshop:
+        description: Houses of nations shop
+        permission: laboulangeriecore.houseshop
 permissions:
     laboulangeriecore.*:
         default: op
@@ -50,6 +53,7 @@ permissions:
             - laboulangeriecore.divinefavors.admin
             - laboulangeriecore.house.admin
             - laboulangeriecore.nametag.admin
+            - laboulangeriecore.houseshop
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
@@ -57,4 +61,6 @@ permissions:
     laboulangeriecore.house.admin:
         default: op
     laboulangeriecore.nametag.admin:
+        default: op
+    laboulangeriecore.houseshop:
         default: op
