@@ -46,6 +46,10 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>laboulangeriemmo</id>
+            <url>https://maven.pkg.github.com/LaBoulangerie/LaBoulangerieMmo</url>
+        </repository>
     </repositories>
 
     <dependencies>

@@ -16,6 +16,14 @@ jobs:
         with:
           path: ~/.m2
           key: ${{ github.repository }}-build-${{ env.cache-name }}-${{ hashFiles('pom.xml') }}
+      - uses: s4u/maven-settings-action@v2.3.0
+        with:
+          servers: |
+            [{
+                "id": "laboulangeriemmo",
+                "username": "${{ secrets.GH_USER }}",
+                "password": "${{ secrets.GH_TOKEN }}"
+            }]
       - name: JDk 1.17 setup
         uses: actions/setup-java@v1
         with:
