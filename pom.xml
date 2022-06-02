@@ -48,7 +48,7 @@
         </repository>
         <repository>
             <id>laboulangeriemmo</id>
-            <url>https://maven.pkg.github.com/LaBoulangerie/LaBoulangerieMmo</url>
+            <url>https://maven.pkg.github.com/laboulangerie/laboulangeriemmo</url>
         </repository>
     </repositories>
 

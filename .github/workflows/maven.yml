@@ -16,6 +16,10 @@ jobs:
         with:
           path: ~/.m2
           key: ${{ github.repository }}-build-${{ env.cache-name }}-${{ hashFiles('pom.xml') }}
+      - name: JDk 1.17 setup
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.17
       - uses: s4u/maven-settings-action@v2.3.0
         with:
           servers: |
@@ -24,10 +28,6 @@ jobs:
                 "username": "${{ secrets.GH_EMAIL }}",
                 "password": "${{ secrets.GH_READ_PACKAGES }}"
             }]
-      - name: JDk 1.17 setup
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.17
       - name: Maven build
         run: mvn clean package
       - uses: actions/upload-artifact@v1
