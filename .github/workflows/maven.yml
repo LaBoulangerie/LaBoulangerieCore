@@ -21,8 +21,8 @@ jobs:
           servers: |
             [{
                 "id": "laboulangeriemmo",
-                "username": "${{ secrets.GH_USER }}",
-                "password": "${{ secrets.GH_TOKEN }}"
+                "username": "${{ secrets.GH_EMAIL }}",
+                "password": "${{ secrets.GH_READ_PACKAGES }}"
             }]
       - name: JDk 1.17 setup
         uses: actions/setup-java@v1
