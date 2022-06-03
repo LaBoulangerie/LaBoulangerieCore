@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -24,7 +25,7 @@ public class HouseShop implements Listener {
         Inventory inv = Bukkit.createInventory(null, 54, Component.text("§6Maisons de nation - page " + (page+1)));
         List<UUID> freeHouses = LaBoulangerieCore.nationHouseHolder.getFreeHouses();
 
-        for (int i = 0; i < Math.min(freeHouses.size(), 52); i++) {
+        for (int i = page*52; i < Math.min(freeHouses.size(), page*52 + 52); i++) {
             UUID id = freeHouses.get(i);
             ItemStack item = new ItemStack(Material.BRICKS);
             ItemMeta meta = item.getItemMeta();
@@ -57,8 +58,24 @@ public class HouseShop implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
         InventoryView view = event.getView();
-        if (PlainTextComponentSerializer.plainText().serialize(view.title()).contains("Maisons de nation")) {
-            event.setCancelled(true);
+        String title = PlainTextComponentSerializer.plainText().serialize(view.title());
+        if (!title.contains("Maisons de nation")) return;
+
+        event.setCancelled(true);
+
+        if (event.getClick() != ClickType.LEFT || event.getCurrentItem() == null) return;
+
+        ItemStack item = event.getCurrentItem();
+        short page = Short.parseShort(title.split("page ")[1]);
+
+        if (item.getType() == Material.ARROW) {
+            if (item.getItemMeta().getCustomModelData() == 2) { //Right arrow is clicked
+                page++;
+                displayShop((Player) event.getWhoClicked(), page);
+            }else { //Left arrow is clicked (CustomModelData = 2)
+                page--;
+                displayShop((Player) event.getWhoClicked(), page);
+            }
         }
     }
 }
