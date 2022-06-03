@@ -50,6 +50,10 @@
             <id>laboulangeriemmo</id>
             <url>https://maven.pkg.github.com/laboulangerie/laboulangeriemmo</url>
         </repository>
+        <repository>
+            <id>betonquest</id>
+            <url>https://betonquest.org/nexus/repository/betonquest/</url>
+        </repository> 
     </repositories>
 
     <dependencies>
@@ -87,6 +91,12 @@
             <groupId>net.laboulangerie</groupId>
             <artifactId>laboulangeriemmo</artifactId>
             <version>1.3.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>pl.betoncraft</groupId>
+            <artifactId>betonquest</artifactId>
+            <version>1.12.8</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

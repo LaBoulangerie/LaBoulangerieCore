@@ -11,6 +11,7 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
+import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.HousesManager;
@@ -22,13 +23,14 @@ import net.laboulangerie.laboulangeriecore.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.misc.KingCondition;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
 import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
-import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
+import pl.betoncraft.betonquest.BetonQuest;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
@@ -91,6 +93,11 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("twitter").setExecutor(new LinkCommands());
         getCommand("map").setExecutor(new LinkCommands());
         getCommand("github").setExecutor(new LinkCommands());
+
+        if (getServer().getPluginManager().getPlugin("BetonQuest") != null) {
+            BetonQuest.getInstance().registerConditions("towny_is_king", KingCondition.class);
+            getLogger().info("Hooked in BetonQuest!"); 
+        }
 
         getLogger().info("Enabled Successfully");
     }
