@@ -38,7 +38,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
                 sender.sendMessage("§4There is no page " + pageToDisplay + " to display!");
                 return true;
             }
-            sender.sendMessage("§2-----§a[§epage " + (pageToDisplay+1) + "§a]§2-----");
+            sender.sendMessage("§2-----§a[§epage " + (pageToDisplay) + "§a]§2-----");
             if (args[1].equals("free")) {
                 for (int i = pageToDisplay*8; i < LaBoulangerieCore.nationHouseHolder.getFreeHouses().size() && i < (pageToDisplay+1)*8; i++) {
                     UUID id = LaBoulangerieCore.nationHouseHolder.getFreeHouses().get(i);
@@ -65,6 +65,10 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
             House house = LaBoulangerieCore.housesManager.getHouseByName(args[1]).orElse(null);
             if (house == null) {
                 sender.sendMessage("§4No house named §e" + args[1] + "§4!");
+                return true;
+            }
+            if (LaBoulangerieCore.nationHouseHolder.getHousePrice(house.getUUID()) != null) {
+                sender.sendMessage("§4This house is already a house of nation!");
                 return true;
             }
             LaBoulangerieCore.nationHouseHolder.newNationHouse(house.getUUID(), price);
