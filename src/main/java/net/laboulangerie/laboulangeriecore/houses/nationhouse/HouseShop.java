@@ -120,7 +120,7 @@ public class HouseShop implements Listener {
             return;
         }
 
-        String name = PlainTextComponentSerializer.plainText().serialize(item.displayName()).split("§6")[0];
+        String name = PlainTextComponentSerializer.plainText().serialize(item.getItemMeta().displayName()).split("§6")[1];
         House house = LaBoulangerieCore.housesManager.getHouseByName(name).get();
 
         LaBoulangerieCore.nationHouseHolder.assignNationHouse(house.getUUID(), nation.getUUID());
