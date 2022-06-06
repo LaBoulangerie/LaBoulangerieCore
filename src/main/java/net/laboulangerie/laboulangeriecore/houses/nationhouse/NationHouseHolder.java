@@ -98,6 +98,13 @@ public class NationHouseHolder {
         return prices.get(id);
     }
     public boolean hasHouse(UUID nationId) {
-        return occupiedHouses.values().contains(nationId);
+        return occupiedHouses.containsValue(nationId);
+    }
+    public UUID getHouseOfNation(UUID nationId) {
+        if (!hasHouse(nationId)) return null;
+        return occupiedHouses.entrySet()
+            .stream()
+            .filter(entry -> nationId.equals(entry.getValue()))
+            .map(Map.Entry::getKey).findFirst().get();
     }
 }
