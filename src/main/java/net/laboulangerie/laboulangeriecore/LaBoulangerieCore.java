@@ -23,6 +23,8 @@ import net.laboulangerie.laboulangeriecore.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
+import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
@@ -96,7 +98,9 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         if (getServer().getPluginManager().getPlugin("BetonQuest") != null) {
             BetonQuest.getInstance().registerConditions("towny_is_king", KingCondition.class);
-            getLogger().info("Hooked in BetonQuest!"); 
+            BetonQuest.getInstance().registerConditions("nation_houses_has_stocks", HousesStockCondition.class);
+            BetonQuest.getInstance().registerConditions("towny_has_house", HasHouseCondition.class);
+            getLogger().info("Hooked in BetonQuest!");
         }
 
         getLogger().info("Enabled Successfully");
