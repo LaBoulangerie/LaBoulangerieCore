@@ -111,7 +111,7 @@ public class HouseShop implements Listener {
                 return;
             }
         }
-        if (LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().containsKey(nation.getUUID())) {
+        if (LaBoulangerieCore.nationHouseHolder.hasHouse(nation.getUUID())) {
             player.sendMessage("§cVotre nation a déjà une maison de nation !");
             return;
         }

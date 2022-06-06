@@ -97,4 +97,7 @@ public class NationHouseHolder {
     public Double getHousePrice(UUID id) {
         return prices.get(id);
     }
+    public boolean hasHouse(UUID nationId) {
+        return occupiedHouses.values().contains(nationId);
+    }
 }
