@@ -19,3 +19,72 @@ links:
     twitter: "https://twitter.com/BoulangerieMc"
     github: "https://github.com/LaBoulangerie"
     map: "https://laboulangerie.net/map"
+    
+avancements:
+    miner:
+        brossage_minutieux:
+            enabled: true
+        pioche_aiguisee:
+             enabled: true
+        champ_magnetique:
+             enabled: true
+        cuisson_instantanee:
+             enabled: true
+        gain_25_exp_with_ore:
+             enabled: true
+        pioche_aiguisee_on_obsidian:
+             enabled: true
+        ores_300_with_champ_magnetique:
+             enabled: true
+             
+    hunter:
+        camouflage:
+             enabled: true
+        esquive:
+             enabled: true
+        fleche_enflammee:
+             enabled: true
+        mise_en_bouteille:
+             enabled: true
+        fire_arrow_in_claim:
+             enabled: true
+        terrorism:
+             enabled: true
+        kill_with_camouflage:
+             enabled: true
+        kill_yourself_with_explosive_arrow:
+             enabled: true
+        dodge_life:
+             enabled: true
+        
+    lumberjack:
+        timber:
+             enabled: true
+        chance_du_bucheron:
+             enabled: true
+        haricot_magique:
+             enabled: true
+        strip_tease:
+             enabled: true
+        strip_a_player:
+             enabled: true
+        tree_in_player:
+             enabled: true
+        
+    farmer:
+        jeune_pousse:
+             enabled: true
+        engrais_naturel:
+             enabled: true
+        jumeaux:
+             enabled: true
+        pain_odorant:
+             enabled: true
+        engrais_a_player:
+             enabled: true
+        jumeaux_a_player:
+             enabled: true
+        kill_player_with_bread:
+             enabled: true
+        grow_100_potatoes:
+             enabled: true

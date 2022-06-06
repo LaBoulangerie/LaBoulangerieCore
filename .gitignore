@@ -3,3 +3,4 @@ target/
 build.bat
 .project
 .classpath
+update eclipse.bat

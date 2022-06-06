@@ -8,6 +8,7 @@ import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
@@ -71,7 +72,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
+                new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(), new AdvancementListeners(),
                 new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {
