@@ -79,7 +79,7 @@ public class CreateHouseCmd implements CommandExecutor {
             sender.sendMessage("§4You must select a valid area using the house wand first!");
             return false;
         }
-
+        args[0] = args[0].replaceAll("_", " ");
         if (LaBoulangerieCore.housesManager.getHouseByName(args[0]).isPresent()) {
             sender.sendMessage("§4This house already exist! Please delete it first");
             return false;

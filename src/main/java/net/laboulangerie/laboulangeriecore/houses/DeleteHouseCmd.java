@@ -20,7 +20,7 @@ public class DeleteHouseCmd implements CommandExecutor {
             sender.sendMessage("§4Invalid usage try deletehouse <name>");
             return false;
         }
-
+        args[0] = args[0].replaceAll("_", " ");
         if (LaBoulangerieCore.housesManager.getHouseByName(args[0]).isEmpty()) {
             sender.sendMessage("§4This house doesn't exist!");
             return false;

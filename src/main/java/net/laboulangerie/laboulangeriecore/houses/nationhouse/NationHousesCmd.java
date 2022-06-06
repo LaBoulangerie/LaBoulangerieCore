@@ -54,6 +54,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
             }
             return true;
         }
+        args[1] = args[1].replaceAll("_", " ");
         if (args[0].equalsIgnoreCase("create") && args.length > 2) {
             double price = 0;
             try {
@@ -99,7 +100,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
                     .collect(Collectors.toList());
                 completions.addAll(
                     LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().stream()
-                        .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName())
+                        .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName().replaceAll(" ", "_"))
                         .collect(Collectors.toList())
                 );
                 return completions;
