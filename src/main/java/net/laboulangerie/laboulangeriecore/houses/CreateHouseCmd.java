@@ -55,6 +55,7 @@ public class CreateHouseCmd implements CommandExecutor {
 
                     if (block.getType().equals(Material.SPONGE)) {
                         blocks.add(location);
+                        block.setType(Material.AIR);
                     }
                 }
             }
@@ -89,7 +90,7 @@ public class CreateHouseCmd implements CommandExecutor {
             public void run() {
                 scanSponges(sender, args[0]);
             }
-        }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN);
+        }.runTask(LaBoulangerieCore.PLUGIN);
         return false;
     }
 }

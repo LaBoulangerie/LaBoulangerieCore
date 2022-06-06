@@ -35,9 +35,16 @@ public class HouseShop implements Listener {
             UUID id = freeHouses.get(i);
             ItemStack item = new ItemStack(Material.BRICKS);
             ItemMeta meta = item.getItemMeta();
+            House house = LaBoulangerieCore.housesManager.getHouse(id);
 
-            meta.displayName(Component.text("§6" + LaBoulangerieCore.housesManager.getHouse(id).getName()));
-            meta.lore(Arrays.asList(Component.text("§bPrix : " + LaBoulangerieCore.nationHouseHolder.getHousePrice(id))));
+            meta.displayName(Component.text("§6" + house.getName()));
+            meta.lore(Arrays.asList(
+                Component.text("§bPrix : " + LaBoulangerieCore.nationHouseHolder.getHousePrice(id)),
+                Component.text(
+                    "§5Location : " + house.getAnchor()[0] + ", "
+                    + house.getAnchor()[1] + ", " + house.getAnchor()[2]
+                )
+            ));
 
             item.setItemMeta(meta);
             inv.setItem(i - page*(invSize-2), item);
