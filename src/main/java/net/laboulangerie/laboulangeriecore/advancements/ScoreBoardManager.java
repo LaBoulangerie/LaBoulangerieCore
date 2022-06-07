@@ -29,5 +29,4 @@ public class ScoreBoardManager {
             AdvancementManager.tryToCompleteAdvancement(player.getPlayer(), "mmo/farmer/grow_100_potatoes");
         }
     }
-
 }
