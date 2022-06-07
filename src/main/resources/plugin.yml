@@ -2,7 +2,7 @@ name: LaBoulangerieCore
 version: ${project.version}
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.17
-authors: [Grooble_, PainOchoco, Blackoutburst]
+authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3]
 depend: [Towny, LuckPerms]
 softdepend: [PlaceholderAPI, LaBoulangerieMmo]
 commands:

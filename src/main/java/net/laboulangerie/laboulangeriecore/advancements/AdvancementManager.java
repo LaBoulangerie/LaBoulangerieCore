@@ -29,28 +29,15 @@ public class AdvancementManager {
     public static boolean playerHasAdvancement(Player player, String name) {
         // name should be something like husbandry/break_diamond_hoe
         Advancement a = Bukkit.getAdvancement(new NamespacedKey("laboulangerie-datapack", name));
-        if(a == null){
-            // advancement does not exists.
-            return false;
-        }
+        if(a == null) return false;
         AdvancementProgress progress = player.getAdvancementProgress(a);
-        if (progress.isDone()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return progress.isDone();
     }
 
     public static boolean isAdvancementEnabled(String name) {
         // name should be something like husbandry/break_diamond_hoe
         name = name.replace("/", ".");
         name = name.substring(4);
-        if(LaBoulangerieCore.PLUGIN.getConfig().getString("avancements." + name + ".enabled") == "true") {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return LaBoulangerieCore.PLUGIN.getConfig().getBoolean("avancements." + name + ".enabled");
     }
 }

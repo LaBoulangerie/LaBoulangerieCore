@@ -31,7 +31,7 @@ import net.laboulangerie.laboulangeriemmo.player.MmoPlayer;
 import net.laboulangerie.laboulangeriemmo.player.ability.Abilities;
 import net.laboulangerie.laboulangeriemmo.player.ability.AbilitiesManager;
 
-public class AdvancementListeners implements Listener{
+public class AdvancementListeners implements Listener {
 
     AbilitiesManager abilitiesManager = new AbilitiesManager();
     public HashMap<String, Long> cooldowns_firebow = new HashMap<String, Long>();
@@ -106,8 +106,6 @@ public class AdvancementListeners implements Listener{
         }
     }
 
-
-
     @EventHandler
     public void onPlayerKillPlayer(EntityDamageByEntityEvent event) {
         if(event.getEntity() instanceof Player) {
@@ -163,7 +161,6 @@ public class AdvancementListeners implements Listener{
             }
         }
     }
-
 
     @EventHandler
     public void onPlayerInteractWithEntity(PlayerInteractEntityEvent event) {
