@@ -45,6 +45,7 @@ commands:
     houseshop:
         description: Houses of nations shop
         permission: laboulangeriecore.houseshop
+        usage: /houseshop (sell)
 permissions:
     laboulangeriecore.*:
         default: op

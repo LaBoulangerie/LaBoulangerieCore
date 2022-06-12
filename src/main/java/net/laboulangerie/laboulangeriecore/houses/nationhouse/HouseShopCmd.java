@@ -6,6 +6,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Resident;
+
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+
 public class HouseShopCmd implements CommandExecutor {
 
     @Override
@@ -15,8 +22,37 @@ public class HouseShopCmd implements CommandExecutor {
             return true;
         }
         Player player = (Player) sender;
-
-        HouseShop.displayShop(player, (short) 0);
+        if (args.length == 0) {
+            HouseShop.displayShop(player, (short) 0);
+            return true;
+        }
+        if (args[0].equalsIgnoreCase("sell")) {
+            Nation nation = null;
+            Resident resident = null;
+            try {
+                resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
+                nation = resident.getNation();
+            } catch (TownyException e) {
+            } finally {
+                if (nation == null) {
+                    player.sendMessage("§cVous n'avez pas de nation !");
+                    return true;
+                }
+            }
+            if (!LaBoulangerieCore.nationHouseHolder.hasHouse(nation.getUUID())) {
+                player.sendMessage("§cVotre nation n'a pas de maison de nation !");
+                return true;
+            }
+            if (!resident.isMayor()) {
+                player.sendMessage("§cVous devez être roi de la nation pour faire ça !");
+                return true;
+            }
+            LaBoulangerieCore.nationHouseHolder.freeHouse(
+                LaBoulangerieCore.nationHouseHolder.getHouseOfNation(nation.getUUID())
+            );
+            player.sendMessage("§aVotre maison de nation a été vendue.");
+            return true;
+        }
         return true;
     }  
 }

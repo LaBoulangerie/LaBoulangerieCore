@@ -55,6 +55,7 @@ public class CreateHouseCmd implements CommandExecutor {
 
                     if (block.getType().equals(Material.SPONGE)) {
                         blocks.add(location);
+                        block.setType(Material.AIR);
                     }
                 }
             }
@@ -78,7 +79,7 @@ public class CreateHouseCmd implements CommandExecutor {
             sender.sendMessage("§4You must select a valid area using the house wand first!");
             return false;
         }
-
+        args[0] = args[0].replaceAll("_", " ");
         if (LaBoulangerieCore.housesManager.getHouseByName(args[0]).isPresent()) {
             sender.sendMessage("§4This house already exist! Please delete it first");
             return false;
@@ -89,7 +90,7 @@ public class CreateHouseCmd implements CommandExecutor {
             public void run() {
                 scanSponges(sender, args[0]);
             }
-        }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN);
+        }.runTask(LaBoulangerieCore.PLUGIN);
         return false;
     }
 }
