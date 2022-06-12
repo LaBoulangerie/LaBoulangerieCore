@@ -36,7 +36,7 @@ public class HouseWandListener implements Listener {
     }
 
     private boolean isHoldingWand(@NotNull ItemStack item) {
-        return (item.getType().equals(Material.IRON_AXE) &&
+        return (item.getType().equals(Material.IRON_AXE) && item.getItemMeta().hasDisplayName() &&
                 PlainTextComponentSerializer.plainText().serialize(
                     item.getItemMeta().displayName()
                 ).equals("§6House wand") &&
