@@ -25,70 +25,69 @@ import org.bukkit.potion.PotionEffectType;
 import com.palmergames.bukkit.towny.TownyAPI;
 
 import net.laboulangerie.laboulangeriemmo.LaBoulangerieMmo;
+import net.laboulangerie.laboulangeriemmo.api.ability.AbilityArchetype;
+import net.laboulangerie.laboulangeriemmo.api.player.MmoPlayer;
 import net.laboulangerie.laboulangeriemmo.events.ComboCompletedEvent;
 import net.laboulangerie.laboulangeriemmo.events.MmoPlayerUseAbilityEvent;
-import net.laboulangerie.laboulangeriemmo.player.MmoPlayer;
-import net.laboulangerie.laboulangeriemmo.player.ability.Abilities;
-import net.laboulangerie.laboulangeriemmo.player.ability.AbilitiesManager;
 
 public class AdvancementListeners implements Listener {
 
-    AbilitiesManager abilitiesManager = new AbilitiesManager();
     public HashMap<String, Long> cooldowns_firebow = new HashMap<String, Long>();
     public HashMap<String, Long> cooldowns_dodge = new HashMap<String, Long>();
 
     @EventHandler
     public void onPlayerUseAbility(MmoPlayerUseAbilityEvent event) {
         Player player = Bukkit.getPlayer(event.getMmoPlayer().getUniqueId());
-        switch (event.getAbility()) {
-            case ANIMAL_TWINS:
+        AbilityArchetype abilityArchetype = event.getAbility();
+        switch (abilityArchetype.identifier) {
+            case "animal-twins":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/jumeaux");
                 break;
-            case BETTER_APPLE_DROP:
+            case "better-apple-drop":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/chance_du_bucheron");
                 break;
-            case BETTER_BONEMEAL:
+            case "better-bonemeal":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/engrais_naturel");
                 break;
-            case DODGING:
+            case "dodging":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/esquive");
                 cooldowns_dodge.put(player.getUniqueId().toString(), System.currentTimeMillis() + (8*1000));
                 break;
-            case DOUBLE_DROP_LOG:
+            case "double-drop-log":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/chance_du_bucheron");
                 break;
-            case EXP_IN_BOTTLE:
+            case "exp-in-bottle":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/mise_en_bouteille");
                 break;
-            case FAST_MINE:
+            case "fast-mine":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/pioche_aiguisee");
                 break;
-            case FAST_SMELT:
+            case "fast-smelt":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/cuisson_instantanee");
                 break;
-            case FIRE_BOW:
+            case "fire-bow":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/fleche_enflammee");
                 cooldowns_firebow.put(player.getUniqueId().toString(), System.currentTimeMillis() + (8*1000));
                 break;
-            case HIDING:
+            case "hiding":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/camouflage");
                 break;
-            case MAGNETIC_FIELD:
+            case "magnetic-field":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/champ_magnetique");
                 break;
-            case MINECRAFT_EXP_MULTIPLIER:
+            case "minecraft-exp-multiplier":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/brossage_minutieux");
                 break;
-            case NATURE_TOUCH:
+            case "nature-touch":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/jeune_pousse");
                 break;
-            case STRIP:
+            case "strip":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/strip");
                 break;
-            case TASTY_BREAD:
+            case "tasty-bread":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/pain_odorant");
                 break;
-            case THICK_TREE:
+            case "thick-tree":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/haricot_magique");
                 ComboCompletedEvent event2 = (ComboCompletedEvent )event.getTriggerEvent();
                 Block block = event2.getPlayer().getTargetBlock(5);
@@ -98,7 +97,7 @@ public class AdvancementListeners implements Listener {
                     }
                 }
                 break;
-            case TIMBER:
+            case "timber":
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/timber");
                 break;
             default:
@@ -115,10 +114,10 @@ public class AdvancementListeners implements Listener {
                 if (event.getDamager() instanceof Player) {
                     Player killer = (Player) event.getDamager();
                     MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(killer);
-                    if (killer.getInventory().getItemInMainHand().getType() == Material.BREAD && mmoPlayer.canUseAbility(Abilities.TASTY_BREAD)){
+                    if (killer.getInventory().getItemInMainHand().getType() == Material.BREAD && mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("tasty-bread"), "farmer")){
                         AdvancementManager.tryToCompleteAdvancement(killer, "mmo/farmer/kill_player_with_bread");
                     }
-                    if (mmoPlayer.getTalent("thehunter").getLevel(LaBoulangerieMmo.XP_MULTIPLIER) >= Abilities.HIDING.getRequiredLevel()) {
+                    if (mmoPlayer.getTalent("thehunter").getLevel(LaBoulangerieMmo.XP_MULTIPLIER) >= LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("hiding").requiredLevel) {
                         if (killer.getActivePotionEffects().contains(killer.getPotionEffect(PotionEffectType.INVISIBILITY))) {
                             AdvancementManager.tryToCompleteAdvancement(killer, "mmo/hunter/kill_with_camouflage");
                         }
@@ -130,12 +129,12 @@ public class AdvancementListeners implements Listener {
                     if (arrow.getShooter() instanceof Player) {
                         Player shooter = (Player) arrow.getShooter();
                         if(cooldowns_firebow.containsKey(victim.getUniqueId().toString())) {
-                            if (mmoPlayer.canUseAbility(Abilities.FIRE_BOW) && shooter.getName() == victim.getName() && cooldowns_firebow.get(victim.getUniqueId().toString()) > System.currentTimeMillis()) {
+                            if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("fire-bow"), "hunter") && shooter.getName() == victim.getName() && cooldowns_firebow.get(victim.getUniqueId().toString()) > System.currentTimeMillis()) {
                                 AdvancementManager.tryToCompleteAdvancement(victim, "mmo/hunter/kill_yourself_with_explosive_arrow");
                             }
                         }
                         if(cooldowns_firebow.containsKey(shooter.getUniqueId().toString())) {
-                            if (mmoPlayer.canUseAbility(Abilities.FIRE_BOW) && shooter.getName() != victim.getName() && cooldowns_firebow.get(shooter.getUniqueId().toString()) > System.currentTimeMillis()) {
+                            if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("fire-bow"), "hunter") && shooter.getName() != victim.getName() && cooldowns_firebow.get(shooter.getUniqueId().toString()) > System.currentTimeMillis()) {
                                 AdvancementManager.tryToCompleteAdvancement(shooter, "mmo/hunter/terrorism");
                             }
                         }
@@ -147,12 +146,12 @@ public class AdvancementListeners implements Listener {
                     if (tnt.getSource() instanceof Player) {
                         Player summoner = (Player) tnt.getSource();
                         if(cooldowns_firebow.containsKey(victim.getUniqueId().toString())) {
-                            if (mmoPlayer.canUseAbility(Abilities.FIRE_BOW) && summoner.getName() == victim.getName() && cooldowns_firebow.get(victim.getUniqueId().toString()) > System.currentTimeMillis()) {
+                            if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("fire-bow"), "hunter") && summoner.getName() == victim.getName() && cooldowns_firebow.get(victim.getUniqueId().toString()) > System.currentTimeMillis()) {
                                 AdvancementManager.tryToCompleteAdvancement(victim, "mmo/hunter/kill_yourself_with_explosive_arrow");
                             }
                         }
                         if(cooldowns_firebow.containsKey(summoner.getUniqueId().toString())) {
-                            if (mmoPlayer.canUseAbility(Abilities.FIRE_BOW) && summoner.getName() != victim.getName() && cooldowns_firebow.get(summoner.getUniqueId().toString()) > System.currentTimeMillis()) {
+                            if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("fire-bow"), "hunter") && summoner.getName() != victim.getName() && cooldowns_firebow.get(summoner.getUniqueId().toString()) > System.currentTimeMillis()) {
                                 AdvancementManager.tryToCompleteAdvancement(summoner, "mmo/hunter/terrorism");
                             }
                         }
@@ -166,28 +165,28 @@ public class AdvancementListeners implements Listener {
     public void onPlayerInteractWithEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
-        if (event.getRightClicked() instanceof Player  && player.getInventory().getItemInMainHand().getType() == Material.NETHERITE_AXE && mmoPlayer.canUseAbility(Abilities.STRIP) && AdvancementManager.playerHasAdvancement(player, "mmo/farmer/strip_a_player")) {
+        if (event.getRightClicked() instanceof Player  && player.getInventory().getItemInMainHand().getType() == Material.NETHERITE_AXE && mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("lumberjack").abilitiesArchetypes.get("strip"), "lumberjack") && AdvancementManager.playerHasAdvancement(player, "mmo/farmer/strip_a_player")) {
             AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/strip_a_player");
             AdvancementManager.tryToCompleteAdvancement((Player) event.getRightClicked(), "mmo/lumberjack/strip_a_player");
-            mmoPlayer.useAbility(Abilities.STRIP);
+            mmoPlayer.useAbility(LaBoulangerieMmo.talentsRegistry.getTalent("lumberjack").abilitiesArchetypes.get("strip"), LaBoulangerieMmo.talentsRegistry.getTalent("lumberjack"));
             player.sendMessage("Vous venez de Strip " + event.getRightClicked().getName());
             event.getRightClicked().sendMessage("Vous venez d'être strip par " + player.getName());
         }
-        if (event.getRightClicked() instanceof Player  && player.getInventory().getItemInMainHand().getType() == Material.BONE_MEAL && mmoPlayer.canUseAbility(Abilities.BETTER_BONEMEAL)  && AdvancementManager.playerHasAdvancement(player, "mmo/farmer/engrais_a_player")) {
+        if (event.getRightClicked() instanceof Player  && player.getInventory().getItemInMainHand().getType() == Material.BONE_MEAL && mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("better-bonemeal"), "farmer")  && AdvancementManager.playerHasAdvancement(player, "mmo/farmer/engrais_a_player")) {
             AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/engrais_a_player");
             AdvancementManager.tryToCompleteAdvancement((Player) event.getRightClicked(), "mmo/farmer/engrais_a_player");
-            mmoPlayer.useAbility(Abilities.BETTER_BONEMEAL);
+            mmoPlayer.useAbility(LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("better-bonemeal"), LaBoulangerieMmo.talentsRegistry.getTalent("farmer"));
             event.getRightClicked().getLocation().getBlock().applyBoneMeal(BlockFace.DOWN);
             player.sendMessage("Il n'a pas l'air d'avoir poussé...");
             event.getRightClicked().sendMessage("Tu n'a pas l'air d'avoir poussé...");
         }
-        if (event.getRightClicked() instanceof Player  && player.getInventory().getItemInMainHand().getType() == Material.WHEAT && mmoPlayer.canUseAbility(Abilities.ANIMAL_TWINS) && AdvancementManager.playerHasAdvancement(player, "mmo/farmer/jumeaux_a_player")) {
+        if (event.getRightClicked() instanceof Player  && player.getInventory().getItemInMainHand().getType() == Material.WHEAT && mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("animal-twins"), "farmer") && AdvancementManager.playerHasAdvancement(player, "mmo/farmer/jumeaux_a_player")) {
             event.getRightClicked().getWorld().spawnEntity(event.getRightClicked().getLocation(), EntityType.COW);
             player.sendMessage("Bizarre, son jumeaux ne lui ressemble pas");
             event.getRightClicked().sendMessage("Bizarre, ton jumeaux ne te ressemble pas");
             AdvancementManager.tryToCompleteAdvancement((Player) event.getRightClicked(), "mmo/farmer/jumeaux_a_player");
             AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/jumeaux_a_player");
-            mmoPlayer.useAbility(Abilities.ANIMAL_TWINS);
+            mmoPlayer.useAbility(LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("better-bonemeal"), LaBoulangerieMmo.talentsRegistry.getTalent("farmer"));
         }
     }
 
@@ -202,7 +201,7 @@ public class AdvancementListeners implements Listener {
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/pioche_aiguisee_on_obsidian");
             }
         }
-        if (mmoPlayer.canUseAbility(Abilities.BETTER_BONEMEAL) && block.getType() == Material.POTATOES && !(AdvancementManager.playerHasAdvancement(player, "mmo/farmer/grow_100_potatoes"))) {
+        if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("better-bonemeal"), "farmer") && block.getType() == Material.POTATOES && !(AdvancementManager.playerHasAdvancement(player, "mmo/farmer/grow_100_potatoes"))) {
             ScoreBoardManager.setPlayerScore(player.getPlayer());
         }
         if (block.getType() == Material.DIAMOND_ORE || block.getType() == Material.EMERALD_ORE || block.getType() == Material.REDSTONE_ORE || block.getType() == Material.NETHER_QUARTZ_ORE){
@@ -221,7 +220,7 @@ public class AdvancementListeners implements Listener {
                 Arrow arrow = (Arrow) event.getProjectile();
                 if(cooldowns_firebow.containsKey(player.getUniqueId().toString())) {
                     if(TownyAPI.getInstance().getResident(player).getTownOrNull() != null) {
-                        if (mmoPlayer.canUseAbility(Abilities.FIRE_BOW) && cooldowns_firebow.get(player.getUniqueId().toString()) > System.currentTimeMillis() && TownyAPI.getInstance().getTown(arrow.getLocation()) == TownyAPI.getInstance().getResident(player).getTownOrNull()) {
+                        if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("fire-bow"), "hunter") && cooldowns_firebow.get(player.getUniqueId().toString()) > System.currentTimeMillis() && TownyAPI.getInstance().getTown(arrow.getLocation()) == TownyAPI.getInstance().getResident(player).getTownOrNull()) {
                             AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/fire_arrow_in_claim");
                         }
                     }
@@ -236,7 +235,7 @@ public class AdvancementListeners implements Listener {
         MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
         if(event.getPlayer().getLastDamageCause().getCause() == DamageCause.FALL) {
             if(cooldowns_dodge.containsKey(player.getUniqueId().toString())) {
-                if (mmoPlayer.canUseAbility(Abilities.DODGING) && cooldowns_dodge.get(player.getUniqueId().toString()) > System.currentTimeMillis()) {
+                if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("dodging"), "hunter") && cooldowns_dodge.get(player.getUniqueId().toString()) > System.currentTimeMillis()) {
                     AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/dodge_life");
                 }
             }
