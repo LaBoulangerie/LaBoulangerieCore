@@ -1,6 +1,10 @@
 package net.laboulangerie.laboulangeriecore.houses;
 
-import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.firstPos;
+import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.secondPos;
+
+import java.util.ArrayList;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,17 +16,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.firstPos;
-import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.secondPos;
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class CreateHouseCmd implements CommandExecutor {
 
-    private void saveHouseToFile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull List<Location> blocks) {
+    private void saveHouseToFile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull ArrayList<Location> blocks) {
         final House house = new House(houseName);
-        house.addBlocks(blocks.stream().toList());
+        house.addBlocks(blocks);
+        Location blocksSum = house.getBlocks().stream().reduce(new Location(blocks.get(0).getWorld(), 0, 0, 0), (e1, e2) -> e1.add(e2));
+        int[] anchor = {
+            blocksSum.getBlockX()/house.getBlocks().size(),
+            blocksSum.getBlockY()/house.getBlocks().size(),
+            blocksSum.getBlockZ()/house.getBlocks().size()
+        };
+        house.setAnchor(anchor);
 
         LaBoulangerieCore.housesManager.addHouse(house);
 
@@ -30,6 +37,8 @@ public class CreateHouseCmd implements CommandExecutor {
             LaBoulangerieCore.housesManager.saveHouses();
         } catch(Exception e) {
             e.printStackTrace();
+            sender.sendMessage("§4An error occurred when trying to save the house");
+            return;
         }
 
         sender.sendMessage("§aHouse successfully saved!");
@@ -44,7 +53,7 @@ public class CreateHouseCmd implements CommandExecutor {
         final int zMin = Integer.min(firstPos.getBlockZ(), secondPos.getBlockZ());
         final int zMax = Integer.max(firstPos.getBlockZ(), secondPos.getBlockZ());
 
-        List<Location> blocks = new ArrayList<>();
+        ArrayList<Location> blocks = new ArrayList<>();
 
         for (int x = xMin; x <= xMax; x++) {
             for (int y = yMin; y <= yMax; y++) {

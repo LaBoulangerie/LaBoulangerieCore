@@ -52,7 +52,7 @@ public class House implements Serializable {
         blocks.add(block);
     }
 
-    public void addBlocks(List<Location> bLocations) {
+    public void addBlocks(List<Location> blocks) {
         this.blocks.addAll(blocks);
     }
 
