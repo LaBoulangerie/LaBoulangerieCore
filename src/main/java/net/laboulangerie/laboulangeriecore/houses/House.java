@@ -1,25 +1,37 @@
 package net.laboulangerie.laboulangeriecore.houses;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Location;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.jetbrains.annotations.NotNull;
 
-public class House implements Serializable {
+public class House implements ConfigurationSerializable {
     private List<Location> blocks = new ArrayList<>();
     private UUID uuid;
     private String name;
     private List<HouseFlags> flags = new ArrayList<>();
     private List<UUID> members = new ArrayList<>();
-    private int[] anchor = {0, 0, 0};
+    private Location anchor;
 
     public House(String name) {
         this.name = name;
         uuid = UUID.randomUUID();
     }
 
+    @SuppressWarnings("unchecked")
+    public House(Map<String, Object> data) {
+        blocks = (List<Location>) data.get("blocks");
+        uuid = UUID.fromString((String) data.get("uuid"));
+        name = (String) data.get("name");
+        flags = (List<HouseFlags>) data.get("flags");
+        members = (List<UUID>) data.get("members");
+        anchor = (Location) data.get("anchor");
+    }
     public UUID getUUID() {
         return uuid;
     }
@@ -86,14 +98,24 @@ public class House implements Serializable {
     /**
      * The "anchor" is the coordinates of the average of all blocks in
      * the house
-     * @return a 3 wide uni-dimensional array containing respectively, the x, y & z values
      */
-    public int[] getAnchor() {
+    public Location getAnchor() {
         return anchor;
     }
 
-    public void setAnchor(int[] anchor) {
-        if (anchor.length != 3) throw new IllegalArgumentException("Array must have a length of 3!");
+    public void setAnchor(Location anchor) {
         this.anchor = anchor;
+    }
+
+    @Override
+    public @NotNull Map<String, Object> serialize() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("blocks", blocks);
+        map.put("uuid", uuid.toString());
+        map.put("anchor", anchor);
+        map.put("name", name);
+        map.put("flags", flags);
+        map.put("members", members);
+        return map;
     }
 }

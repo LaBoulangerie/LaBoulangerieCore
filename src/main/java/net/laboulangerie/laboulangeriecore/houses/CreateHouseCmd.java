@@ -23,12 +23,7 @@ public class CreateHouseCmd implements CommandExecutor {
     private void saveHouseToFile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull ArrayList<Location> blocks) {
         final House house = new House(houseName);
         house.addBlocks(blocks);
-        Location blocksSum = house.getBlocks().stream().reduce(new Location(blocks.get(0).getWorld(), 0, 0, 0), (e1, e2) -> e1.add(e2));
-        int[] anchor = {
-            blocksSum.getBlockX()/house.getBlocks().size(),
-            blocksSum.getBlockY()/house.getBlocks().size(),
-            blocksSum.getBlockZ()/house.getBlocks().size()
-        };
+        Location anchor = house.getBlocks().stream().reduce(new Location(blocks.get(0).getWorld(), 0, 0, 0), (e1, e2) -> e1.add(e2)).multiply((double) 1 / blocks.size());
         house.setAnchor(anchor);
 
         LaBoulangerieCore.housesManager.addHouse(house);

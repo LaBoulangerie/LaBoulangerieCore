@@ -41,8 +41,8 @@ public class HouseShop implements Listener {
             meta.lore(Arrays.asList(
                 Component.text("§bPrix : " + LaBoulangerieCore.nationHouseHolder.getHousePrice(id)),
                 Component.text(
-                    "§5Location : " + house.getAnchor()[0] + ", "
-                    + house.getAnchor()[1] + ", " + house.getAnchor()[2]
+                    "§5Location : " + house.getAnchor().getX() + ", "
+                    + house.getAnchor().getY() + ", " + house.getAnchor().getZ()
                 )
             ));
 
@@ -104,7 +104,7 @@ public class HouseShop implements Listener {
             price = Double.parseDouble(priceStr);
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            player.sendMessage("§4An error occured when trying to buy the house: " + e.getMessage());
+            player.sendMessage("§4An error occurred when trying to buy the house: " + e.getMessage());
             return;
         }
 
@@ -134,9 +134,9 @@ public class HouseShop implements Listener {
         LaBoulangerieCore.econ.withdrawPlayer(player, price);
         player.sendMessage(
             "§aVous avez acheté la maison : §b" + house.getName() + "§a (§5"
-            + house.getAnchor()[0] + ", "
-            + house.getAnchor()[1] + ", "
-            + house.getAnchor()[2] + "§a)"
+            + house.getAnchor().getX() + ", "
+            + house.getAnchor().getY() + ", "
+            + house.getAnchor().getZ() + "§a)"
         );
         player.closeInventory();
     }

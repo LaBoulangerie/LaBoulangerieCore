@@ -1,17 +1,14 @@
 package net.laboulangerie.laboulangeriecore.houses;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 public class HousesManager {
     private final File dataFolder;
@@ -24,16 +21,11 @@ public class HousesManager {
     public void loadHouses() throws IOException, ClassNotFoundException {
         if (!dataFolder.exists()) dataFolder.mkdirs();
         else {
-            File[] saves = dataFolder.listFiles((dir, file) -> file.endsWith(".ho"));
+            File[] saves = dataFolder.listFiles((dir, file) -> file.endsWith(".yml"));
             for (File save : saves) {
-                try (FileInputStream file = new FileInputStream(save);
-                     ObjectInputStream in = new ObjectInputStream(file)) {
-
-                    House house = (House) in.readObject();
-                    houses.put(house.getUUID(), house);
-                } catch (IOException | ClassNotFoundException e) {
-                    throw e;//We pass the error, the catch is only here to close the streams
-                }
+                YamlConfiguration yml = YamlConfiguration.loadConfiguration(save);
+                House house = (House) yml.get("house");
+                houses.put(house.getUUID(), house);
             }
         }
     }
@@ -41,22 +33,17 @@ public class HousesManager {
     public void saveHouses() throws IOException {
         if (!dataFolder.exists()) dataFolder.mkdirs();
         for (House house : houses.values()) {
-            File file = new File(dataFolder, house.getUUID() + ".ho");
-            file.createNewFile();
-            
-            try (FileOutputStream fileOut = new FileOutputStream(file);
-                 ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            File file = new File(dataFolder, house.getUUID() + ".yml");
+            YamlConfiguration yml = YamlConfiguration.loadConfiguration(file);
 
-                out.writeObject(house);
-            } catch (IOException e) {
-                throw e;//We pass the error, the catch is only here to close the streams
-            }
+            yml.set("house", house);
+            yml.save(file);
         }
     }
 
     public void deleteHouse(UUID houseId) {
         houses.remove(houseId);
-        File file = new File(dataFolder, houseId + ".ho");
+        File file = new File(dataFolder, houseId + ".yml");
         if (file.exists())
             file.delete();
     }

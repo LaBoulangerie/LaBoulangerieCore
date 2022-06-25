@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,7 @@ import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
+import net.laboulangerie.laboulangeriecore.houses.House;
 import net.laboulangerie.laboulangeriecore.houses.HousesManager;
 import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
@@ -52,6 +54,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             return;
         }
         LaBoulangerieCore.PLUGIN = this;
+        ConfigurationSerialization.registerClass(House.class);
         housesManager = new HousesManager(new File(getDataFolder(), "houses"));
 
         try {
