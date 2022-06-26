@@ -8,10 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.player.*;
 
 import java.lang.reflect.Method;
 
@@ -64,6 +61,24 @@ public class NameTagListener implements Listener {
             NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4 - sneakHeight, location.getZ());
             NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1 - sneakHeight, location.getZ());
             NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8 - sneakHeight, location.getZ());
+        });
+    }
+
+    @EventHandler
+    public void playerTeleport(PlayerTeleportEvent event) {
+        final PlayerNameTag playerNameTag = PlayerNameTag.get(event.getPlayer());
+        if (playerNameTag == null) return;
+
+        final Location location = event.getTo();
+
+        final NMSEntities above = playerNameTag.getAbove();
+        final NMSEntities nameTagAbove = playerNameTag.getNameTag();
+        final NMSEntities below = playerNameTag.getBelow();
+
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4, location.getZ());
+            NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1, location.getZ());
+            NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8, location.getZ());
         });
     }
 
