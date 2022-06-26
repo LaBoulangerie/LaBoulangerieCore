@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -69,7 +70,7 @@ public class HouseWandListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         final Player player = event.getPlayer();
         final ItemStack item = player.getInventory().getItemInMainHand();
-        if (!isHoldingWand(item)) return;
+        if (!isHoldingWand(item) || event.getHand() == EquipmentSlot.OFF_HAND) return;
 
         final Block block = event.getClickedBlock();
         if (block == null) return;
