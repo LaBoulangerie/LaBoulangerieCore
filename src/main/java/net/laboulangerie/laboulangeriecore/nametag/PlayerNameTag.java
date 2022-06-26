@@ -11,18 +11,22 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerNameTag {
 
     public static List<PlayerNameTag> nameTags = new ArrayList<>();
 
+    private final Map<Integer, Boolean> tagsVisible;
     private final NMSEntities above;
     private final NMSEntities nameTag;
     private final NMSEntities below;
     private final Player player;
 
     public PlayerNameTag(@Nonnull Player player) {
+        this.tagsVisible = new HashMap<>();
         this.player = player;
         this.above = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.4, player.getLocation().getZ());
         this.nameTag = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.1, player.getLocation().getZ());
@@ -43,6 +47,10 @@ public class PlayerNameTag {
 
     public @Nonnull NMSEntities getBelow() {
         return below;
+    }
+
+    public @Nonnull Map<Integer, Boolean> getTagsVisible() {
+        return tagsVisible;
     }
 
     public void spawnNameTag(@Nonnull Player player, @Nonnull NMSEntities entity, @Nonnull Component component) {
