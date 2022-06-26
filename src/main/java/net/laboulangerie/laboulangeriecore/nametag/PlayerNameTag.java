@@ -73,7 +73,7 @@ public class PlayerNameTag {
             final Object name = fromJson.invoke(null, json);
 
             setCustomName.invoke(entity.getEntity(), name);
-            setCustomNameVisible.invoke(entity.getEntity(), true);
+            setCustomNameVisible.invoke(entity.getEntity(), !player.isInvisible());
             setSmall.invoke(entity.getEntity(), true);
             setNoBasePlate.invoke(entity.getEntity(), true);
             setMarker.invoke(entity.getEntity(), true);

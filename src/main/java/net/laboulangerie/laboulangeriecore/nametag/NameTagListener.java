@@ -8,7 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Method;
 
@@ -54,16 +56,52 @@ public class NameTagListener implements Listener {
         toggleTextSneak(sneak, nameTagAbove);
         toggleTextSneak(sneak, below);
 
+        toggleTextVisibility(!player.isInvisible(), above);
+        toggleTextVisibility(!player.isInvisible(), nameTagAbove);
+        toggleTextVisibility(!player.isInvisible(), below);
+
         Bukkit.getOnlinePlayers().forEach(p -> {
-            if (p != player) {
-                NMSEntityMetadata.send(p, above);
-                NMSEntityMetadata.send(p, nameTagAbove);
-                NMSEntityMetadata.send(p, below);
-                NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4 - sneakHeight, location.getZ());
-                NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1 - sneakHeight, location.getZ());
-                NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8 - sneakHeight, location.getZ());
-            }
+            NMSEntityMetadata.send(p, above);
+            NMSEntityMetadata.send(p, nameTagAbove);
+            NMSEntityMetadata.send(p, below);
+            NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4 - sneakHeight, location.getZ());
+            NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1 - sneakHeight, location.getZ());
+            NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8 - sneakHeight, location.getZ());
         });
+    }
+
+    private void toggleTextVisibility(boolean isVisible, NMSEntities entity) {
+        try {
+            final Method setCustomNameVisible = entity.getEntity().getClass().getMethod("n", boolean.class);
+            setCustomNameVisible.invoke(entity.getEntity(), isVisible);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @EventHandler
+    public void onEffectChange(EntityPotionEffectEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        final PlayerNameTag playerNameTag = PlayerNameTag.get(player);
+        if (playerNameTag == null) return;
+
+        if (event.getAction().equals(EntityPotionEffectEvent.Action.ADDED) && event.getNewEffect() != null &&
+                event.getNewEffect().getType().equals(PotionEffectType.INVISIBILITY)) {
+            toggleTextVisibility(false, playerNameTag.getAbove());
+            toggleTextVisibility(false, playerNameTag.getNameTag());
+            toggleTextVisibility(false, playerNameTag.getBelow());
+        } else if (event.getAction().equals(EntityPotionEffectEvent.Action.REMOVED) && event.getOldEffect() != null &&
+                event.getOldEffect().getType().equals(PotionEffectType.INVISIBILITY)) {
+            toggleTextVisibility(true, playerNameTag.getAbove());
+            toggleTextVisibility(true, playerNameTag.getNameTag());
+            toggleTextVisibility(true, playerNameTag.getBelow());
+        }
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            NMSEntityMetadata.send(p, playerNameTag.getAbove());
+            NMSEntityMetadata.send(p, playerNameTag.getNameTag());
+            NMSEntityMetadata.send(p, playerNameTag.getBelow());
+        }
     }
 
     @EventHandler
@@ -78,17 +116,16 @@ public class NameTagListener implements Listener {
         final NMSEntities below = playerNameTag.getBelow();
 
         Bukkit.getOnlinePlayers().forEach(p -> {
-            if (p != event.getPlayer()) {
-                NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4, location.getZ());
-                NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1, location.getZ());
-                NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8, location.getZ());
-            }
+            NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4, location.getZ());
+            NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1, location.getZ());
+            NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8, location.getZ());
         });
     }
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         final PlayerNameTag playerNameTag = PlayerNameTag.get(event.getPlayer());
+        if (playerNameTag == null) return;
 
         for (PlayerNameTag tags : PlayerNameTag.nameTags) {
             if (tags == playerNameTag) continue;
@@ -98,7 +135,7 @@ public class NameTagListener implements Listener {
                             Math.pow(event.getPlayer().getLocation().getY() - tags.getPlayer().getLocation().getY(), 2) +
                             Math.pow(event.getPlayer().getLocation().getZ() - tags.getPlayer().getLocation().getZ(), 2);
 
-            if (distance > 2500 && playerNameTag.getTagsVisible().get(tags.getNameTag().getID())) {
+            if (distance > 2000 && playerNameTag.getTagsVisible().get(tags.getNameTag().getID())) {
                 NMSEntityDestroy.send(playerNameTag.getPlayer(), tags.getAbove().getID());
                 NMSEntityDestroy.send(playerNameTag.getPlayer(), tags.getNameTag().getID());
                 NMSEntityDestroy.send(playerNameTag.getPlayer(), tags.getBelow().getID());
@@ -110,7 +147,7 @@ public class NameTagListener implements Listener {
                 tags.getTagsVisible().put(playerNameTag.getNameTag().getID(), false);
             }
 
-            if (distance < 2500 && !playerNameTag.getTagsVisible().get(tags.getNameTag().getID())) {
+            if (distance < 2000 && !playerNameTag.getTagsVisible().get(tags.getNameTag().getID())) {
                 NMSSpawnEntityLiving.send(playerNameTag.getPlayer(), tags.getAbove());
                 NMSSpawnEntityLiving.send(playerNameTag.getPlayer(), tags.getNameTag());
                 NMSSpawnEntityLiving.send(playerNameTag.getPlayer(), tags.getBelow());
