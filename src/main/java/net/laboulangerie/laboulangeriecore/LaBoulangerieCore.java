@@ -25,6 +25,7 @@ import net.laboulangerie.laboulangeriecore.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
@@ -136,8 +137,10 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new LoreUpdater(), new TabListener(), new ElytraGenRemover(), new HouseWandListener(), new NameTagListener(),
-                new TradesHook(), new HouseShop()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
+                new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
+                new TradesHook(), new HouseShop(),
+                new FirstJoinActions(), new HouseWandListener()
+        ).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {

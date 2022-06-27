@@ -11,18 +11,22 @@ import org.bukkit.entity.Player;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerNameTag {
 
     public static List<PlayerNameTag> nameTags = new ArrayList<>();
 
+    private final Map<Integer, Boolean> tagsVisible;
     private final NMSEntities above;
     private final NMSEntities nameTag;
     private final NMSEntities below;
     private final Player player;
 
     public PlayerNameTag(@Nonnull Player player) {
+        this.tagsVisible = new HashMap<>();
         this.player = player;
         this.above = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.4, player.getLocation().getZ());
         this.nameTag = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.1, player.getLocation().getZ());
@@ -45,6 +49,10 @@ public class PlayerNameTag {
         return below;
     }
 
+    public @Nonnull Map<Integer, Boolean> getTagsVisible() {
+        return tagsVisible;
+    }
+
     public void spawnNameTag(@Nonnull Player player, @Nonnull NMSEntities entity, @Nonnull Component component) {
         if (player.getUniqueId().equals(this.player.getUniqueId())) return;
 
@@ -65,7 +73,7 @@ public class PlayerNameTag {
             final Object name = fromJson.invoke(null, json);
 
             setCustomName.invoke(entity.getEntity(), name);
-            setCustomNameVisible.invoke(entity.getEntity(), true);
+            setCustomNameVisible.invoke(entity.getEntity(), !player.isInvisible());
             setSmall.invoke(entity.getEntity(), true);
             setNoBasePlate.invoke(entity.getEntity(), true);
             setMarker.invoke(entity.getEntity(), true);
