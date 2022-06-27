@@ -13,6 +13,7 @@ import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
@@ -72,7 +73,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
+                new TradesHook(), new FirstJoinActions()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
