@@ -31,7 +31,7 @@ public class NMS {
         try {
             final Object handle = player.getClass().getMethod("getHandle").invoke(player);
             final Object playerConnection = handle.getClass().getField("b").get(handle);
-            final Object networkManager = playerConnection.getClass().getField("a").get(playerConnection);
+            final Object networkManager = playerConnection.getClass().getField("b").get(playerConnection);
             networkManager.getClass().getMethod("a", getClass("net.minecraft.network.protocol.Packet")).invoke(networkManager, packet);
         } catch (Exception e) {
             e.printStackTrace();
