@@ -61,7 +61,7 @@ public class PlayerNameTag {
             final Class<?> chatBaseComponentSerializerClass = chatBaseComponentClass.getDeclaredClasses()[0];
 
             final Method fromJson = chatBaseComponentSerializerClass.getMethod("a", String.class);
-            final Method setCustomName = entity.getEntity().getClass().getMethod("a", chatBaseComponentClass);
+            final Method setCustomName = entity.getEntity().getClass().getMethod("b", chatBaseComponentClass);
             final Method setCustomNameVisible = entity.getEntity().getClass().getMethod("n", boolean.class);
             final Method setSmall = entity.getEntity().getClass().getMethod("a", boolean.class);
             final Method setNoBasePlate = entity.getEntity().getClass().getMethod("s", boolean.class);
