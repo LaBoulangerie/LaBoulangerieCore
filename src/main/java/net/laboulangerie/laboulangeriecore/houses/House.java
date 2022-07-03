@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -28,7 +29,7 @@ public class House implements ConfigurationSerializable {
         blocks = (List<Location>) data.get("blocks");
         uuid = UUID.fromString((String) data.get("uuid"));
         name = (String) data.get("name");
-        flags = (List<HouseFlags>) data.get("flags");
+        flags = ((List<String>) data.get("flags")).stream().map(HouseFlags::valueOf).collect(Collectors.toList());
         members = (List<UUID>) data.get("members");
         anchor = (Location) data.get("anchor");
     }
@@ -114,7 +115,7 @@ public class House implements ConfigurationSerializable {
         map.put("uuid", uuid.toString());
         map.put("anchor", anchor);
         map.put("name", name);
-        map.put("flags", flags);
+        map.put("flags", flags.stream().map(HouseFlags::toString).collect(Collectors.toList()));
         map.put("members", members);
         return map;
     }

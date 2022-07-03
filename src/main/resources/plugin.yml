@@ -46,6 +46,10 @@ commands:
         description: Houses of nations shop
         permission: laboulangeriecore.houseshop
         usage: /houseshop (sell)
+    houseflag:
+        description: Modify house flags
+        permission: laboulangeriecore.house.admin
+        usage: /houseflag <name> [list|add|remove] (<flag>)
 permissions:
     laboulangeriecore.*:
         default: op

@@ -16,6 +16,7 @@ import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.House;
+import net.laboulangerie.laboulangeriecore.houses.HouseFlagCmd;
 import net.laboulangerie.laboulangeriecore.houses.HousesManager;
 import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandCmd;
@@ -89,6 +90,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("createhouse").setExecutor(new CreateHouseCmd());
         getCommand("listhouse").setExecutor(new ListHouseCmd());
         getCommand("deletehouse").setExecutor(new DeleteHouseCmd());
+        getCommand("houseflag").setExecutor(new HouseFlagCmd());
         getCommand("nationhouses").setExecutor(new NationHousesCmd());
         getCommand("reloadnametag").setExecutor(new ReloadNameTagCmd());
         getCommand("houseshop").setExecutor(new HouseShopCmd());
