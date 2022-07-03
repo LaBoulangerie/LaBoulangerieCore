@@ -20,4 +20,60 @@ links:
     github: "https://github.com/LaBoulangerie"
     map: "https://laboulangerie.net/map"
 
+bundle:
+    item-name: "&a>> &e&lBourse &a<<"
+    item-lore:
+        - "&fArgent stocké:"
+        - "  • &e%money%&f฿"
+
+eastereggs:
+    #You can edit all the message of the plugin here.
+    messages:
+        prefix: "&3H-EasterEggs &7>>"
+        console: "[H-EasterEggs] The command only can be used by a player."
+        added: "%prefix% &aEasterEgg successfully added."
+        deleted: "%prefix% &cEasterEgg successfully deleted."
+        permission: "%prefix% &cYou don't have permission to execute this command."
+        utilisation: "%prefix% &cError: &e/easteregg help&a."
+        world-error: "%prefix% &cYou are not in an authorized world."
+        not-existing: "%prefix% &cThis easteregg doesn't existing."
+        not-head: "%prefix% &cYou need to have a head on your front."
+        amount: "%prefix% &aActually &e%amount% &aeasteegg exist"
+        validated: "%prefix% &aYou have find a new easteegg. &7(&e%amount%&7/&f%max-amount&7)"
+        validated-title:
+            - "&3H-EasterEggs"
+            - "&7(&e%amount%&7/&f%max-amount%&7)"
+        already-validated: "%prefix% &cYou have already find this easteegg.)"
+        already-validated-title:
+            - "&3H-EasterEggs"
+            - "&cAlready find"
+        help:
+            - "&e-------------{ &3H-EasterEggs &e}-------------"
+            - "&f/eegg set|add&7: &aCommmand to make a player head was an easteregg."
+            - "&f/eegg remove|delete&7: &aCommmand to remove an easteregg."
+            - "&f/eegg amount&7: &aCommmand to know how much easteregg exist."
+            - "&f/eegg help&7: &aCommmand to show this page."
+
+    settings:
+        #If set to true the message was sent in title else if it's set to false the massage was sent in the chat.
+        title: true
+        #List of world where the player can click on an easteregg.
+        worlds:
+            - world
+        #List of all the gift the player can get.
+        #If "command" is set to true in gift you can write a command without the "/",
+        #but if is set to false write the item in uppercase and the amount of you want
+        #(exemple: IRON_INGOT:2).
+        gifts:
+            1:
+                command: false
+                gift: IRON_INGOT:2
+            2:
+                command: true
+                gift: "say something..."
+
+    #List of all the eastereggs created.
+    eastereggs: [ ]
+
+
 fist-join-commands:
