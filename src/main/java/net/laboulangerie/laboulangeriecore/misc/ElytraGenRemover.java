@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
@@ -16,34 +17,23 @@ import org.bukkit.inventory.ItemStack;
 
 public class ElytraGenRemover implements Listener {
 
-    private List<Chunk> newChunks;
+    private List<String> newChunks;
 
     public ElytraGenRemover() {
-        this.newChunks = new ArrayList<Chunk>();
+        this.newChunks = new ArrayList<String>();
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        if (event.isNewChunk())
-            this.newChunks.add(event.getChunk());
+        if (event.isNewChunk() && event.getChunk().getWorld().getEnvironment() == Environment.THE_END)
+            this.newChunks.add(getId(event.getChunk()));
     }
 
     @EventHandler
     public void onEntitiesLoad(EntitiesLoadEvent event) {
+        if (!newChunks.contains(getId(event.getChunk()))) return;
 
-        Chunk chunk = event.getChunk();
-        boolean isNewChunk = false;
-
-        for (Chunk newChunk : newChunks) {
-            if (newChunk.getX() == chunk.getX() && newChunk.getZ() == chunk.getZ()) {
-                isNewChunk = true;
-            }
-        }
-
-        if (!isNewChunk)
-            return;
-
-        newChunks.remove(event.getChunk());
+        newChunks.remove(getId(event.getChunk()));
 
         List<Entity> entities = event.getEntities();
 
@@ -56,5 +46,8 @@ public class ElytraGenRemover implements Listener {
                 itemFrame.setItem(new ItemStack(Material.BREAD, 1));
             }
         }
+    }
+    private String getId(Chunk chunk) {
+        return chunk.getWorld().getName() + " " + chunk.getX() + " " + chunk.getZ();
     }
 }
