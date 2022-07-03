@@ -26,6 +26,11 @@ commands:
         description: Voir ses points divins
     reloadnametag:
         description: Recharge les nametag des joueurs
+    easteregg:
+        description: Main command for the easteregg part
+        aliases:
+            - eastereggs
+            - eegg
 permissions:
     laboulangeriecore.*:
         default: op

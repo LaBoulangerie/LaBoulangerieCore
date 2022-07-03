@@ -2,9 +2,13 @@ package net.laboulangerie.laboulangeriecore;
 
 import java.util.Arrays;
 
+import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
+import net.laboulangerie.laboulangeriecore.eastereggs.command.eEggCommand;
+import net.laboulangerie.laboulangeriecore.eastereggs.event.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
 import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,6 +59,12 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("github").setExecutor(new LinkCommands());
 
         getLogger().info("Enabled Successfully");
+
+
+        /** EasterEggs */
+        eEggFileUtil.createFolder();
+        Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
+        getCommand("easteregg").setExecutor(new eEggCommand());
     }
 
     public ComponentRenderer getComponentRenderer() {
