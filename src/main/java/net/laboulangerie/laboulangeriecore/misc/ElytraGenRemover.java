@@ -35,15 +35,14 @@ public class ElytraGenRemover implements Listener {
 
         newChunks.remove(getId(event.getChunk()));
 
-        List<Entity> entities = event.getEntities();
+        for (Entity entity : event.getEntities()) {
+            if (entity.getType() != EntityType.ITEM_FRAME) continue;
 
-        ItemFrame[] itemFrames = entities.stream().filter(e -> e.getType().equals(EntityType.ITEM_FRAME))
-                .toArray(ItemFrame[]::new);
-
-        for (ItemFrame itemFrame : itemFrames) {
-            if (itemFrame.getItem().getType().equals(Material.ELYTRA)) {
+            ItemFrame frame = (ItemFrame) entity;
+            if (frame.getItem().getType().equals(Material.ELYTRA)) {
                 // TODO: make a more special item
-                itemFrame.setItem(new ItemStack(Material.BREAD, 1));
+                frame.setItem(new ItemStack(Material.BREAD, 1));
+                break;
             }
         }
     }
