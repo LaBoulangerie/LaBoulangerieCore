@@ -50,6 +50,9 @@ commands:
         description: Modify house flags
         permission: laboulangeriecore.house.admin
         usage: /houseflag <name> [list|add|remove] (<flag>)
+    easteregg:
+        description: Main command for the easteregg part
+        aliases: [eastereggs, eegg]
 permissions:
     laboulangeriecore.*:
         default: op

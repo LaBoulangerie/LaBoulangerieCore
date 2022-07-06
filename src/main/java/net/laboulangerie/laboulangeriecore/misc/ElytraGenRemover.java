@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
@@ -16,45 +17,36 @@ import org.bukkit.inventory.ItemStack;
 
 public class ElytraGenRemover implements Listener {
 
-    private List<Chunk> newChunks;
+    private List<String> newChunks;
 
     public ElytraGenRemover() {
-        this.newChunks = new ArrayList<Chunk>();
+        this.newChunks = new ArrayList<String>();
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        if (event.isNewChunk())
-            this.newChunks.add(event.getChunk());
+        if (event.isNewChunk() && event.getChunk().getWorld().getEnvironment() == Environment.THE_END)
+            this.newChunks.add(getId(event.getChunk()));
     }
 
     @EventHandler
     public void onEntitiesLoad(EntitiesLoadEvent event) {
+        if (!newChunks.contains(getId(event.getChunk()))) return;
 
-        Chunk chunk = event.getChunk();
-        boolean isNewChunk = false;
+        newChunks.remove(getId(event.getChunk()));
 
-        for (Chunk newChunk : newChunks) {
-            if (newChunk.getX() == chunk.getX() && newChunk.getZ() == chunk.getZ()) {
-                isNewChunk = true;
-            }
-        }
+        for (Entity entity : event.getEntities()) {
+            if (entity.getType() != EntityType.ITEM_FRAME) continue;
 
-        if (!isNewChunk)
-            return;
-
-        newChunks.remove(event.getChunk());
-
-        List<Entity> entities = event.getEntities();
-
-        ItemFrame[] itemFrames = entities.stream().filter(e -> e.getType().equals(EntityType.ITEM_FRAME))
-                .toArray(ItemFrame[]::new);
-
-        for (ItemFrame itemFrame : itemFrames) {
-            if (itemFrame.getItem().getType().equals(Material.ELYTRA)) {
+            ItemFrame frame = (ItemFrame) entity;
+            if (frame.getItem().getType().equals(Material.ELYTRA)) {
                 // TODO: make a more special item
-                itemFrame.setItem(new ItemStack(Material.BREAD, 1));
+                frame.setItem(new ItemStack(Material.BREAD, 1));
+                break;
             }
         }
+    }
+    private String getId(Chunk chunk) {
+        return chunk.getWorld().getName() + " " + chunk.getX() + " " + chunk.getZ();
     }
 }

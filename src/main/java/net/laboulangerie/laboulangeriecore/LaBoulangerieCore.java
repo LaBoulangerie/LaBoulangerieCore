@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,6 +13,9 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
+import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
+import net.laboulangerie.laboulangeriecore.eastereggs.command.eEggCommand;
+import net.laboulangerie.laboulangeriecore.eastereggs.event.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
@@ -110,6 +114,12 @@ public class LaBoulangerieCore extends JavaPlugin {
         }
 
         getLogger().info("Enabled Successfully");
+
+
+        /** EasterEggs */
+        eEggFileUtil.createFolder();
+        Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
+        getCommand("easteregg").setExecutor(new eEggCommand());
     }
 
     public ComponentRenderer getComponentRenderer() {
