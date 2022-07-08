@@ -21,6 +21,7 @@ public class NameTagListener implements Listener {
         final Player player = event.getPlayer();
 
         Bukkit.getOnlinePlayers().forEach(p -> {
+            if (p == player) return;
             LaBoulangerieCore.PLUGIN.getNameTagManager().updateNameTag(p);
         });
 
@@ -61,6 +62,7 @@ public class NameTagListener implements Listener {
         toggleTextVisibility(!player.isInvisible(), below);
 
         Bukkit.getOnlinePlayers().forEach(p -> {
+            if (player == p) return;
             NMSEntityMetadata.send(p, above);
             NMSEntityMetadata.send(p, nameTagAbove);
             NMSEntityMetadata.send(p, below);
@@ -98,6 +100,7 @@ public class NameTagListener implements Listener {
         }
 
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (player == p) return;
             NMSEntityMetadata.send(p, playerNameTag.getAbove());
             NMSEntityMetadata.send(p, playerNameTag.getNameTag());
             NMSEntityMetadata.send(p, playerNameTag.getBelow());
@@ -116,6 +119,7 @@ public class NameTagListener implements Listener {
         final NMSEntities below = playerNameTag.getBelow();
 
         Bukkit.getOnlinePlayers().forEach(p -> {
+            if (p == event.getPlayer()) return;
             NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4, location.getZ());
             NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1, location.getZ());
             NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8, location.getZ());
@@ -182,6 +186,7 @@ public class NameTagListener implements Listener {
             PlayerNameTag.nameTags.remove(playerNameTag);
 
             Bukkit.getOnlinePlayers().forEach(p -> {
+                if (player == p) return;
                 NMSEntityDestroy.send(p, playerNameTag.getAbove().getID());
                 NMSEntityDestroy.send(p, playerNameTag.getNameTag().getID());
                 NMSEntityDestroy.send(p, playerNameTag.getBelow().getID());
