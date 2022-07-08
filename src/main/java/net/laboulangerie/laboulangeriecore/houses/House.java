@@ -30,7 +30,7 @@ public class House implements ConfigurationSerializable {
         uuid = UUID.fromString((String) data.get("uuid"));
         name = (String) data.get("name");
         flags = ((List<String>) data.get("flags")).stream().map(HouseFlags::valueOf).collect(Collectors.toList());
-        members = (List<UUID>) data.get("members");
+        members = ((List<String>) data.get("members")).stream().map(UUID::fromString).collect(Collectors.toList());
         anchor = (Location) data.get("anchor");
     }
     public UUID getUUID() {
@@ -116,7 +116,7 @@ public class House implements ConfigurationSerializable {
         map.put("anchor", anchor);
         map.put("name", name);
         map.put("flags", flags.stream().map(HouseFlags::toString).collect(Collectors.toList()));
-        map.put("members", members);
+        map.put("members", members.stream().map(UUID::toString).collect(Collectors.toList()));
         return map;
     }
 }

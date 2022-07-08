@@ -12,6 +12,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.houses.House;
 
 public class HouseShopCmd implements CommandExecutor {
 
@@ -47,10 +48,11 @@ public class HouseShopCmd implements CommandExecutor {
                 player.sendMessage("§cVous devez être roi de la nation pour faire ça !");
                 return true;
             }
-            LaBoulangerieCore.nationHouseHolder.freeHouse(
-                LaBoulangerieCore.nationHouseHolder.getHouseOfNation(nation.getUUID())
-            );
+            House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(nation.getUUID()));
+            LaBoulangerieCore.nationHouseHolder.freeHouse(house.getUUID());
+
             player.sendMessage("§aVotre maison de nation a été vendue.");
+            house.getMembers().clear();
             return true;
         }
         return true;

@@ -139,5 +139,6 @@ public class HouseShop implements Listener {
             + house.getAnchor().getZ() + "§a)"
         );
         player.closeInventory();
+        house.addMember(player.getUniqueId());
     }
 }
