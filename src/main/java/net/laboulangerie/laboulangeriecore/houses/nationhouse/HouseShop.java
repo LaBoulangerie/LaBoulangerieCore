@@ -4,10 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Nation;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,6 +15,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.event.nation.NationRankAddEvent;
+import com.palmergames.bukkit.towny.event.nation.NationRankRemoveEvent;
+import com.palmergames.bukkit.towny.event.nation.NationTownLeaveEvent;
+import com.palmergames.bukkit.towny.event.town.TownLeaveEvent;
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.exceptions.TownyException;
+import com.palmergames.bukkit.towny.object.Nation;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -140,5 +145,47 @@ public class HouseShop implements Listener {
         );
         player.closeInventory();
         house.addMember(player.getUniqueId());
+        nation.getResidents().stream().filter(resident -> resident.hasNationRank("assistant"))
+            .forEach(resident -> house.addMember(resident.getUUID()));
+    }
+    @EventHandler
+    public void onAddRank(NationRankAddEvent event) {
+        if (event.getRank().equals("assistant") && LaBoulangerieCore.nationHouseHolder.hasHouse(event.getNation().getUUID())) {
+            House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNation().getUUID()));
+
+            house.addMember(event.getResident().getUUID());
+        }
+    }
+    @EventHandler
+    public void onRemoveRank(NationRankRemoveEvent event) {
+        if (event.getRank().equals("assistant") && LaBoulangerieCore.nationHouseHolder.hasHouse(event.getNation().getUUID())) {
+            House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNation().getUUID()));
+
+            house.removeMember(event.getResident().getUUID());
+        }
+    }
+    @EventHandler
+    public void onLeaveTown(TownLeaveEvent event) {
+        try {
+            if (event.getTown().hasNation()
+                && event.getResident().getNationRanks().contains("assistant")
+                && LaBoulangerieCore.nationHouseHolder.hasHouse(event.getTown().getNation().getUUID())
+            ) {
+                House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getTown().getNation().getUUID()));
+
+                house.removeMember(event.getResident().getUUID());
+            }
+        } catch (NotRegisteredException e) {
+            e.printStackTrace();
+        }
+    }
+    @EventHandler
+    public void onLeaveNation(NationTownLeaveEvent event) {
+        if (LaBoulangerieCore.nationHouseHolder.hasHouse(event.getNation().getUUID())) {
+
+            House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNation().getUUID()));
+            event.getTown().getResidents().stream().filter(resident -> resident.hasTownRank("assistant"))
+                .forEach(resident -> house.removeMember(resident.getUUID()));
+        }
     }
 }
