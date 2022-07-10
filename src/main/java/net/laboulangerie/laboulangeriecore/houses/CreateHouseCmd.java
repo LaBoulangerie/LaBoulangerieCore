@@ -20,10 +20,10 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class CreateHouseCmd implements CommandExecutor {
 
-    private void saveHouseToFile(@NotNull CommandSender sender, @NotNull String houseName, @NotNull ArrayList<Location> blocks) {
+    private void saveHouseToFile(@NotNull Player player, @NotNull String houseName, @NotNull ArrayList<Location> blocks) {
         final House house = new House(houseName);
         house.addBlocks(blocks);
-        Location anchor = house.getBlocks().stream().reduce(new Location(blocks.get(0).getWorld(), 0, 0, 0), (e1, e2) -> e1.add(e2)).multiply((double) 1 / blocks.size());
+        Location anchor = house.getBlocks().stream().reduce(new Location(player.getWorld(), 0, 0, 0), (e1, e2) -> e1.add(e2)).multiply((double) 1 / blocks.size());
         house.setAnchor(anchor);
 
         LaBoulangerieCore.housesManager.addHouse(house);
@@ -32,14 +32,14 @@ public class CreateHouseCmd implements CommandExecutor {
             LaBoulangerieCore.housesManager.saveHouses();
         } catch(Exception e) {
             e.printStackTrace();
-            sender.sendMessage("§4An error occurred when trying to save the house");
+            player.sendMessage("§4An error occurred when trying to save the house");
             return;
         }
 
-        sender.sendMessage("§aHouse successfully saved!");
+        player.sendMessage("§aHouse successfully saved!");
     }
 
-    private void scanSponges(@NotNull CommandSender sender, @NotNull String houseName) {
+    private void scanSponges(@NotNull Player player, @NotNull String houseName) {
         final World world = firstPos.getWorld();
         final int xMin = Integer.min(firstPos.getBlockX(), secondPos.getBlockX());
         final int xMax = Integer.max(firstPos.getBlockX(), secondPos.getBlockX());
@@ -64,7 +64,7 @@ public class CreateHouseCmd implements CommandExecutor {
                 }
             }
         }
-        saveHouseToFile(sender, houseName, blocks);
+        saveHouseToFile(player, houseName, blocks);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class CreateHouseCmd implements CommandExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
-                scanSponges(sender, args[0]);
+                scanSponges((Player) sender, args[0]);
             }
         }.runTask(LaBoulangerieCore.PLUGIN);
         return false;
