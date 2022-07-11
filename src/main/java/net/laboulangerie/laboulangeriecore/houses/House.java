@@ -69,8 +69,8 @@ public class House implements ConfigurationSerializable {
         this.blocks.addAll(blocks);
     }
 
-    public void removeBlock(Location block) {
-        blocks.remove(block);
+    public boolean removeBlock(Location block) {
+        return blocks.remove(block);
     }
 
     public boolean hasBlock(Location block) {
@@ -81,16 +81,16 @@ public class House implements ConfigurationSerializable {
         flags.add(flag);
     }
 
-    public void removeFlag(HouseFlags flag) {
-        flags.remove(flag);
+    public boolean removeFlag(HouseFlags flag) {
+        return flags.remove(flag);
     }
 
     public void addMember(UUID memberId) {
         members.add(memberId);
     }
 
-    public void removeMember(UUID memberId) {
-        members.remove(memberId);
+    public boolean removeMember(UUID memberId) {
+        return members.remove(memberId);
     }
 
     public boolean hasMember(UUID memberId) {
