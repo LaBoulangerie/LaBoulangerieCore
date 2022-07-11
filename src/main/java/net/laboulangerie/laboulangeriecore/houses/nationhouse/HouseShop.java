@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.event.DeleteNationEvent;
 import com.palmergames.bukkit.towny.event.NationRemoveTownEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.event.nation.NationRankAddEvent;
@@ -186,6 +187,12 @@ public class HouseShop implements Listener {
             House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNation().getUUID()));
             event.getTown().getResidents().stream().filter(resident -> resident.hasTownRank("assistant"))
                 .forEach(resident -> house.removeMember(resident.getUUID()));
+        }
+    }
+    @EventHandler
+    public void onDeleteNation(DeleteNationEvent event) {
+        if (LaBoulangerieCore.nationHouseHolder.hasHouse(event.getNationKing())) {
+            LaBoulangerieCore.nationHouseHolder.freeHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNationUUID()));
         }
     }
 }
