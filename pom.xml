@@ -53,7 +53,11 @@
         <repository>
             <id>betonquest</id>
             <url>https://betonquest.org/nexus/repository/betonquest/</url>
-        </repository> 
+        </repository>
+        <repository>
+            <id>quickshop-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -84,7 +88,7 @@
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.7.1</version>
+            <version>1.7</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -98,6 +102,17 @@
             <artifactId>betonquest</artifactId>
             <version>1.12.9</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.maxgamer</groupId>
+            <artifactId>QuickShop</artifactId>
+            <version>5.1.0.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.LaBoulangerie</groupId>
+            <artifactId>Gringotts</artifactId>
+            <version>2.12.2</version>
         </dependency>
     </dependencies>
 </project>
