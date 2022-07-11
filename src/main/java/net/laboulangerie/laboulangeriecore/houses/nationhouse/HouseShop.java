@@ -17,10 +17,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.event.NationRemoveTownEvent;
+import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.event.nation.NationRankAddEvent;
 import com.palmergames.bukkit.towny.event.nation.NationRankRemoveEvent;
-import com.palmergames.bukkit.towny.event.nation.NationTownLeaveEvent;
-import com.palmergames.bukkit.towny.event.town.TownLeaveEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Nation;
@@ -165,7 +165,7 @@ public class HouseShop implements Listener {
         }
     }
     @EventHandler
-    public void onLeaveTown(TownLeaveEvent event) {
+    public void onLeaveTown(TownRemoveResidentEvent event) {
         try {
             if (event.getTown().hasNation()
                 && event.getResident().getNationRanks().contains("assistant")
@@ -180,7 +180,7 @@ public class HouseShop implements Listener {
         }
     }
     @EventHandler
-    public void onLeaveNation(NationTownLeaveEvent event) {
+    public void onLeaveNation(NationRemoveTownEvent event) {
         if (LaBoulangerieCore.nationHouseHolder.hasHouse(event.getNation().getUUID())) {
 
             House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNation().getUUID()));
