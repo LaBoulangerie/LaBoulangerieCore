@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
+import net.laboulangerie.laboulangeriecore.commands.chestshop.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
@@ -22,7 +23,6 @@ import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
-import org.checkerframework.checker.units.qual.N;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
@@ -34,7 +34,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!setupEconomy() ) {
+        if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
@@ -60,7 +60,6 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         getLogger().info("Enabled Successfully");
 
-
         /** EasterEggs */
         eEggFileUtil.createFolder();
         Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
@@ -83,8 +82,11 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook(), new FirstJoinActions()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
+                new ChestShopListener(),
+                new TradesHook(), new FirstJoinActions())
+                .forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
+
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
