@@ -49,7 +49,11 @@ commands:
     houseflag:
         description: Modify house flags
         permission: laboulangeriecore.house.admin
-        usage: /houseflag <name> [list|add|remove] (<flag>)
+        usage: /houseflag <house> [list|add|remove] (<flag>)
+    housemembers:
+        description: Modify house members
+        permission: laboulangeriecore.house.admin
+        usage: /housemembers <house> [list|add|remove] (<member>)
     easteregg:
         description: Main command for the easteregg part
         aliases: [eastereggs, eegg]
