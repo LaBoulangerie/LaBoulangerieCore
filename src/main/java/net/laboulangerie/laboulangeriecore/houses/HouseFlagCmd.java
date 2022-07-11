@@ -6,16 +6,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
-public class HouseFlagCmd implements CommandExecutor, TabCompleter {
-
+public class HouseFlagCmd implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
         if (args.length < 2 || !Arrays.asList("list", "add", "remove").contains(args[1].toLowerCase())) return false;
@@ -32,12 +30,12 @@ public class HouseFlagCmd implements CommandExecutor, TabCompleter {
             house.get().getFlags().forEach(flag -> sender.sendMessage("§b- " + flag.toString()));
             return true;
         }
-        
+
         if (args.length < 3) return false;
         HouseFlags flag;
 
         try { flag = HouseFlags.valueOf(args[2]); }
-        catch (Exception e) { 
+        catch (Exception e) {
             sender.sendMessage("§4Invalid flag: " + args[2]);
             return true;
         }
@@ -53,12 +51,10 @@ public class HouseFlagCmd implements CommandExecutor, TabCompleter {
         }
 
         if (args[1].equalsIgnoreCase("remove")) {
-            if (!house.get().getFlags().contains(flag)) {
+            if (house.get().getFlags().remove(flag))
+                sender.sendMessage("§aFlag removed.");
+            else
                 sender.sendMessage("§4House doesn't contain flag: " + args[2]);
-                return true;
-            }
-            house.get().getFlags().remove(flag);
-            sender.sendMessage("§aFlag removed.");
             return true;
         }
         return false;
@@ -73,12 +69,11 @@ public class HouseFlagCmd implements CommandExecutor, TabCompleter {
                 .stream().map(House::getName).collect(Collectors.toList());
         }else if (args.length == 2) {
             suggestions = Arrays.asList("add", "remove", "list");
-        }else if (args.length == 3 && !args[2].equalsIgnoreCase("list")) {
+        }else if (args.length == 3 && !args[1].equalsIgnoreCase("list")) {
             suggestions = Arrays.asList(HouseFlags.values()).stream().map(HouseFlags::toString).collect(Collectors.toList());
         }
 
         return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
             .collect(Collectors.toList());
     }
-    
 }
