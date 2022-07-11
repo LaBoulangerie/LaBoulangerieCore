@@ -1,6 +1,7 @@
 package net.laboulangerie.laboulangeriecore.commands.chestshop;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +31,7 @@ public class ChestShopListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     private void onShopPurchase(ShopPurchaseEvent event) {
         Shop shop = event.getShop();
-        Player owner = Bukkit.getPlayer(shop.getOwner());
+        OfflinePlayer owner = Bukkit.getPlayer(shop.getOwner());
         Player purchaser = Bukkit.getPlayer(event.getPurchaser());
         Chest chest = (Chest) shop.getLocation().getBlock().getState();
         int total = (int) event.getTotal();
