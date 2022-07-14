@@ -18,8 +18,7 @@ public class eEggCommand implements CommandExecutor {
             Player p = (Player)sender;
             if(args.length == 1){
                 if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")){
-                    if(p.hasPermission("heastereggs.add")){
-                        if(eEggUtil.getWorld().contains(p.getWorld().getName())){
+                    if(p.hasPermission("eastereggs.add")){
                             if(p.getTargetBlockExact(5).getType() == Material.PLAYER_HEAD || p.getTargetBlockExact(5).getType() == Material.PLAYER_WALL_HEAD) {
                                 int x = p.getTargetBlockExact(5).getX();
                                 int y = p.getTargetBlockExact(5).getY();
@@ -34,8 +33,7 @@ public class eEggCommand implements CommandExecutor {
                     }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission").replace("%prefix%", eEggUtil.getPrefix()));
 
                 } else if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("delete")) {
-                    if(p.hasPermission("heastereggs.remove")) {
-                        if (eEggUtil.getWorld().contains(p.getWorld().getName())) {
+                    if(p.hasPermission("eastereggs.remove")) {
                             if(p.getTargetBlockExact(5).getType() == Material.PLAYER_HEAD || p.getTargetBlockExact(5).getType() == Material.PLAYER_WALL_HEAD) {
                                 int x = p.getTargetBlockExact(5).getX();
                                 int y = p.getTargetBlockExact(5).getY();

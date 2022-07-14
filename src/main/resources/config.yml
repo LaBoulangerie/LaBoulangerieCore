@@ -35,7 +35,6 @@ eastereggs:
         deleted: "%prefix% §cEasterEgg successfully deleted."
         permission: "%prefix% §cYou don't have permission to execute this command."
         utilisation: "%prefix% §cError: §e/easteregg help§a."
-        world-error: "%prefix% §cYou are not in an authorized world."
         not-existing: "%prefix% §cThis easteregg doesn't existing."
         not-head: "%prefix% §cYou need to have a head on your front."
         amount: "%prefix% §aActually §e%amount% §aeasteegg exist"
