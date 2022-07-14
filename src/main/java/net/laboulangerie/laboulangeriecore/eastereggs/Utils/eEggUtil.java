@@ -30,16 +30,7 @@ public class eEggUtil {
     }
 
     /**Here I get the prefix for thr messages*/
-    public static String getPrefix(){return LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.prefix").replace("&","§");}
-
-    /**Here I get all authorized worlds where you can set a easteregg*/
-    public static List<String> getWorld(){
-        List<String> result = new ArrayList<>();
-        for (String s: LaBoulangerieCore.PLUGIN.getConfig().getStringList("eastereggs.settings.worlds")){
-            result.add(s);
-        }
-        return result;
-    }
+    public static String getPrefix() { return LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.prefix"); }
 
     /**Here I get all the gifts and I get a random integer for give a random gift to the player*/
     public static void giveGift(Player p){
@@ -75,7 +66,6 @@ public class eEggUtil {
             p.sendTitle(title.get(0), title.get(1), 40, 20,20);
         }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages..validated")
                 .replace("%prefix%", getPrefix())
-                .replace("&","§")
                 .replace("%max-amount%", getMaxAmount().toString())
                 .replace("%amount%", getPlayerAmount(p).toString()));
     }
@@ -85,14 +75,13 @@ public class eEggUtil {
         if(LaBoulangerieCore.PLUGIN.getConfig().getBoolean("settings.title") == true){
             List<String> getTitle = LaBoulangerieCore.PLUGIN.getConfig().getStringList("messages.already-validated-title");
             List<String> title = new ArrayList<String>();
-            for(String s:getTitle){
-                title.add(s.replace("&","§"));
+            for(String s : getTitle){
+                title.add(s);
             }
             p.sendTitle(title.get(0), title.get(1), 40, 20,20);
-        }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages..already-validated")
+        }else p.sendMessage(
+            LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.already-validated")
                 .replace("%prefix%", getPrefix())
-                .replace("&","§"));
+        );
     }
-
-
 }

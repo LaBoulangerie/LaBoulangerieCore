@@ -29,30 +29,30 @@ bundle:
 eastereggs:
     #You can edit all the message of the plugin here.
     messages:
-        prefix: "&3H-EasterEggs &7>>"
+        prefix: "§3H-EasterEggs §7>>"
         console: "[H-EasterEggs] The command only can be used by a player."
-        added: "%prefix% &aEasterEgg successfully added."
-        deleted: "%prefix% &cEasterEgg successfully deleted."
-        permission: "%prefix% &cYou don't have permission to execute this command."
-        utilisation: "%prefix% &cError: &e/easteregg help&a."
-        world-error: "%prefix% &cYou are not in an authorized world."
-        not-existing: "%prefix% &cThis easteregg doesn't existing."
-        not-head: "%prefix% &cYou need to have a head on your front."
-        amount: "%prefix% &aActually &e%amount% &aeasteegg exist"
-        validated: "%prefix% &aYou have find a new easteegg. &7(&e%amount%&7/&f%max-amount&7)"
+        added: "%prefix% §aEasterEgg successfully added."
+        deleted: "%prefix% §cEasterEgg successfully deleted."
+        permission: "%prefix% §cYou don't have permission to execute this command."
+        utilisation: "%prefix% §cError: §e/easteregg help§a."
+        world-error: "%prefix% §cYou are not in an authorized world."
+        not-existing: "%prefix% §cThis easteregg doesn't existing."
+        not-head: "%prefix% §cYou need to have a head on your front."
+        amount: "%prefix% §aActually §e%amount% §aeasteegg exist"
+        validated: "%prefix% §aYou have find a new easteegg. §7(§e%amount%§7/§f%max-amount§7)"
         validated-title:
-            - "&3H-EasterEggs"
-            - "&7(&e%amount%&7/&f%max-amount%&7)"
-        already-validated: "%prefix% &cYou have already find this easteegg.)"
+            - "§3H-EasterEggs"
+            - "§7(§e%amount%§7/§f%max-amount%§7)"
+        already-validated: "%prefix% §cYou have already find this easteegg.)"
         already-validated-title:
-            - "&3H-EasterEggs"
-            - "&cAlready find"
+            - "§3H-EasterEggs"
+            - "§cAlready find"
         help:
-            - "&e-------------{ &3H-EasterEggs &e}-------------"
-            - "&f/eegg set|add&7: &aCommmand to make a player head was an easteregg."
-            - "&f/eegg remove|delete&7: &aCommmand to remove an easteregg."
-            - "&f/eegg amount&7: &aCommmand to know how much easteregg exist."
-            - "&f/eegg help&7: &aCommmand to show this page."
+            - "§e-------------{ §3H-EasterEggs §e}-------------"
+            - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
+            - "§f/eegg remove|delete§7: §aCommmand to remove an easteregg."
+            - "§f/eegg amount§7: §aCommmand to know how much easteregg exist."
+            - "§f/eegg help§7: §aCommmand to show this page."
 
     settings:
         #If set to true the message was sent in title else if it's set to false the massage was sent in the chat.
