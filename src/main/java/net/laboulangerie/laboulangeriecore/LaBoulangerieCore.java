@@ -1,5 +1,6 @@
 package net.laboulangerie.laboulangeriecore;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
@@ -57,13 +58,17 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("twitter").setExecutor(new LinkCommands());
         getCommand("map").setExecutor(new LinkCommands());
         getCommand("github").setExecutor(new LinkCommands());
-
-        getLogger().info("Enabled Successfully");
-
+        
         /** EasterEggs */
-        eEggFileUtil.createFolder();
+        try {
+            eEggFileUtil.ensureFilesExist();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
         getCommand("easteregg").setExecutor(new eEggCommand());
+
+        getLogger().info("Enabled Successfully");
     }
 
     public ComponentRenderer getComponentRenderer() {

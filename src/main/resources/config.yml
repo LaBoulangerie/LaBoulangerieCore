@@ -71,8 +71,4 @@ eastereggs:
                 command: true
                 gift: "say something..."
 
-    #List of all the eastereggs created.
-    eastereggs: [ ]
-
-
 fist-join-commands:
