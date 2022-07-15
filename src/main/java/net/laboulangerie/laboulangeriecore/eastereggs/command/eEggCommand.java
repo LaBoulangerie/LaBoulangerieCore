@@ -30,45 +30,60 @@ public class eEggCommand implements CommandExecutor {
         }
         if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")){
             if(p.hasPermission("eastereggs.add")) {
-                Block block = p.getTargetBlockExact(5);
-                if(block.getType() == Material.PLAYER_HEAD || block.getType() == Material.PLAYER_WALL_HEAD) {
+                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
+                return true;
+            }
 
-                    List<String> eggs = eEggFileUtil.eggsData.getStringList("eggs");
-                    eggs.add(eEggUtil.getBlockIdentifier(block));
+            Block block = p.getTargetBlockExact(5);
 
-                    eEggFileUtil.eggsData.set("eggs", eggs);
-                    try {
-                        eEggFileUtil.eggsData.save(eEggFileUtil.eggsFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.added").replace("&", "§"));
-                }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head"));
-            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
+            if(block.getType() != Material.PLAYER_HEAD && block.getType() != Material.PLAYER_WALL_HEAD) {
+                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head"));
+                return true;
+            }
+
+            List<String> eggs = eEggFileUtil.eggsData.getStringList("eggs");
+            eggs.add(eEggUtil.getBlockIdentifier(block));
+
+            eEggFileUtil.eggsData.set("eggs", eggs);
+            try {
+                eEggFileUtil.eggsData.save(eEggFileUtil.eggsFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.added"));
             return true;
         }
 
         if(args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("delete")) {
-            if(p.hasPermission("eastereggs.remove")) {
-                Block block = p.getTargetBlockExact(5);
-                if(block.getType() == Material.PLAYER_HEAD || block.getType() == Material.PLAYER_WALL_HEAD) {
+            if(!p.hasPermission("eastereggs.remove")) {
+                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
+                return true;
+            }
 
-                    String result = eEggUtil.getBlockIdentifier(block);
-                    List<String> eggs = eEggFileUtil.eggsData.getStringList("eggs");
+            Block block = p.getTargetBlockExact(5);
+            if(block.getType() != Material.PLAYER_HEAD && block.getType() == Material.PLAYER_WALL_HEAD) {
+                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head"));
+                return true;
+            }
 
-                    if (eggs.contains(result)) {
-                        eggs.remove(result);
-                        eEggFileUtil.eggsData.set("eggs", eggs);
-                        try {
-                            eEggFileUtil.eggsData.save(eEggFileUtil.eggsFile);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.deleted"));
-                    }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-existing"));
-                }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head"));
-            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
+            String result = eEggUtil.getBlockIdentifier(block);
+            List<String> eggs = eEggFileUtil.eggsData.getStringList("eggs");
+
+            if (!eggs.contains(result)) {
+                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-existing"));
+                return true;
+            }
+
+            eggs.remove(result);
+            eEggFileUtil.eggsData.set("eggs", eggs);
+            try {
+                eEggFileUtil.eggsData.save(eEggFileUtil.eggsFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.deleted"));
             return true;
+            
         }
         if(args[0].equalsIgnoreCase("help")) {
             if(p.hasPermission("eastereggs.help")) {
