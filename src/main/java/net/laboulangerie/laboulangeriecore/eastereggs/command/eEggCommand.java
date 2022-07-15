@@ -70,20 +70,17 @@ public class eEggCommand implements CommandExecutor {
             }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
             return true;
         }
-
-        if(args[0].equalsIgnoreCase("amount")){
-            if(p.hasPermission("eastereggs.amount")){
-                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.amount").replace("%amount%", eEggUtil.getMaxAmount().toString()));
-            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
-        }else if(args[0].equalsIgnoreCase("help")){
-            if(p.hasPermission("eastereggs.help")){
+        if(args[0].equalsIgnoreCase("help")) {
+            if(p.hasPermission("eastereggs.help")) {
                 List<String> list = LaBoulangerieCore.PLUGIN.getConfig().getStringList("eastereggs.messages.help");
-                for(int i = 0; i < list.size(); i++){
+                for (int i = 0; i < list.size(); i++) {
                     p.sendMessage(list.get(i));
                 }
             }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
-        }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilisation"));
+            return true;
+        }
 
-        return false;
+        p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilization"));
+        return true;
     }
 }

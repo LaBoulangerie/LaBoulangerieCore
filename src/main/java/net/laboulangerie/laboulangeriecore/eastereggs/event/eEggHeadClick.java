@@ -12,14 +12,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
 import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggUtil;
 
 public class eEggHeadClick implements Listener {
-
     @EventHandler
     public void eastereggClick (PlayerInteractEvent e) throws IOException {
 
@@ -53,7 +55,7 @@ public class eEggHeadClick implements Listener {
                             return;
                         }
                     }
-                }else{
+                }else {
                     eEggUtil.sendValidation(p);
                     foundEggs.add(result);
                     playerData.set("eggs", foundEggs);
@@ -64,5 +66,16 @@ public class eEggHeadClick implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event) { // Add number of eggs found to the infos sent by the cmd /stats of LaBoulangerieMmo
+        if (!event.getMessage().equals("/stats")) return;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                event.getPlayer().sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.eggs-found").replace("%amount%", eEggUtil.getMaxAmount().toString()));
+            }
+        }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN); // Run asynchronously to add the text at the end
     }
 }
