@@ -1,9 +1,11 @@
 package net.laboulangerie.laboulangeriecore.eastereggs.Utils;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,6 +14,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class eEggUtil {
@@ -54,39 +58,22 @@ public class eEggUtil {
         }
     }
 
-
     /**Here I prepare the message "validated"*/
     public static void sendValidation(Player p) {
-        if(LaBoulangerieCore.PLUGIN.getConfig().getBoolean("settings.title") == true) {
-            List<String> getTitle = LaBoulangerieCore.PLUGIN.getConfig().getStringList("messages.validated-title");
-            List<String> title = new ArrayList<String>();
-            for(String s : getTitle){
-                title.add(s
-                    .replace("%max-amount%", getMaxAmount().toString())
-                    .replace("%amount%", getPlayerAmount(p).toString())
-                );
-            }
-            p.sendTitle(title.get(0), title.get(1), 40, 20,20);
-        }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.validated")
-            .replace("%prefix%", getPrefix())
-            .replace("%max-amount%", getMaxAmount().toString())
-            .replace("%amount%", getPlayerAmount(p).toString())
-        );
+        List<String> titles = LaBoulangerieCore.PLUGIN.getConfig().getStringList("eastereggs.messages.validated-titles")
+        .stream().map(str -> str.replace("%max-amount%", getMaxAmount().toString()).replace("%amount%", getPlayerAmount(p).toString()))
+        .collect(Collectors.toList());
+
+        p.showTitle(Title.title(
+            Component.text(titles.get(0)),
+            Component.text(titles.get(1)),
+            Title.Times.times(Duration.ofSeconds(2), Duration.ofSeconds(1), Duration.ofSeconds(1))
+        ));
     }
 
     /**Here I prepare the message "already validated"*/
     public static void sendAlreadyValidated(Player p){
-        if(LaBoulangerieCore.PLUGIN.getConfig().getBoolean("settings.title") == true) {
-            List<String> getTitle = LaBoulangerieCore.PLUGIN.getConfig().getStringList("messages.already-validated-title");
-            List<String> title = new ArrayList<String>();
-            for(String s : getTitle){
-                title.add(s);
-            }
-            p.sendTitle(title.get(0), title.get(1), 40, 20,20);
-        }else p.sendMessage(
-            LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.already-validated")
-            .replace("%prefix%", getPrefix())
-        );
+        p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.already-validated"));
     }
     public static String getBlockIdentifier(Block block) {
         return block.getWorld().getName() + "!" + block.getX() + "!" + block.getY() + "!" + block.getZ();

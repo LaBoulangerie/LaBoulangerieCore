@@ -38,14 +38,10 @@ eastereggs:
         not-existing: "%prefix% §cThis easteregg doesn't existing."
         not-head: "%prefix% §cYou need to have a head on your front."
         amount: "%prefix% §aActually §e%amount% §aeasteegg exist"
-        validated: "%prefix% §aYou have find a new easteegg. §7(§e%amount%§7/§f%max-amount§7)"
         validated-title:
-            - "§3H-EasterEggs"
+            - "§3New Easter Egg!"
             - "§7(§e%amount%§7/§f%max-amount%§7)"
-        already-validated: "%prefix% §cYou have already find this easteegg.)"
-        already-validated-title:
-            - "§3H-EasterEggs"
-            - "§cAlready find"
+        already-validated: "§cYou already found this easteregg.)"
         help:
             - "§e-------------{ §3H-EasterEggs §e}-------------"
             - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
