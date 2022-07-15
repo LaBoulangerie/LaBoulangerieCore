@@ -29,15 +29,14 @@ bundle:
 eastereggs:
     #You can edit all the message of the plugin here.
     messages:
-        prefix: "§3H-EasterEggs §7>>"
         console: "[H-EasterEggs] The command only can be used by a player."
-        added: "%prefix% §aEasterEgg successfully added."
-        deleted: "%prefix% §cEasterEgg successfully deleted."
-        permission: "%prefix% §cYou don't have permission to execute this command."
-        utilisation: "%prefix% §cError: §e/easteregg help§a."
-        not-existing: "%prefix% §cThis easteregg doesn't existing."
-        not-head: "%prefix% §cYou need to have a head on your front."
-        amount: "%prefix% §aActually §e%amount% §aeasteegg exist"
+        added: "§aEasterEgg successfully added."
+        deleted: "§cEasterEgg successfully deleted."
+        permission: "§cYou don't have permission to execute this command."
+        utilisation: "§cError: §e/easteregg help§a."
+        not-existing: "§cThis easteregg doesn't existing."
+        not-head: "§cYou need to have a head on your front."
+        amount: "§aActually §e%amount% §aeasteegg exist"
         validated-title:
             - "§3New Easter Egg!"
             - "§7(§e%amount%§7/§f%max-amount%§7)"

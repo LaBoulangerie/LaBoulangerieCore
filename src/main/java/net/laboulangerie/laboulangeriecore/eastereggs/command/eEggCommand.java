@@ -25,7 +25,7 @@ public class eEggCommand implements CommandExecutor {
 
         Player p = (Player) sender;
         if(args.length != 1) {
-            p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilisation").replace("%prefix%", eEggUtil.getPrefix()));
+            p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilisation"));
             return true;
         }
         if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")){
@@ -42,9 +42,9 @@ public class eEggCommand implements CommandExecutor {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.added").replace("%prefix%", eEggUtil.getPrefix()).replace("&", "§"));
-                }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head").replace("%prefix%", eEggUtil.getPrefix()));
-            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission").replace("%prefix%", eEggUtil.getPrefix()));
+                    p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.added").replace("&", "§"));
+                }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head"));
+            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
             return true;
         }
 
@@ -64,25 +64,25 @@ public class eEggCommand implements CommandExecutor {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.deleted").replace("%prefix%", eEggUtil.getPrefix()));
-                    }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-existing").replace("%prefix%", eEggUtil.getPrefix()));
-                }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head").replace("%prefix%", eEggUtil.getPrefix()));
-            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission").replace("%prefix%", eEggUtil.getPrefix()));
+                        p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.deleted"));
+                    }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-existing"));
+                }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head"));
+            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
             return true;
         }
 
         if(args[0].equalsIgnoreCase("amount")){
             if(p.hasPermission("eastereggs.amount")){
-                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.amount").replace("%prefix%", eEggUtil.getPrefix()).replace("%amount%", eEggUtil.getMaxAmount().toString()));
-            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission").replace("%prefix%", eEggUtil.getPrefix()));
+                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.amount").replace("%amount%", eEggUtil.getMaxAmount().toString()));
+            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
         }else if(args[0].equalsIgnoreCase("help")){
             if(p.hasPermission("eastereggs.help")){
                 List<String> list = LaBoulangerieCore.PLUGIN.getConfig().getStringList("eastereggs.messages.help");
                 for(int i = 0; i < list.size(); i++){
                     p.sendMessage(list.get(i));
                 }
-            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission").replace("%prefix%", eEggUtil.getPrefix()));
-        }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilisation").replace("%prefix%", eEggUtil.getPrefix()));
+            }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
+        }else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilisation"));
 
         return false;
     }

@@ -35,9 +35,6 @@ public class eEggUtil {
 
     }
 
-    /**Here I get the prefix for thr messages*/
-    public static String getPrefix() { return LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.prefix"); }
-
     /**Here I get all the gifts and I get a random integer for give a random gift to the player*/
     public static void giveGift(Player p){
         List<String> keys = new ArrayList<>();
