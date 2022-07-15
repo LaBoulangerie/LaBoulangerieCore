@@ -25,7 +25,7 @@ public class eEggCommand implements CommandExecutor {
 
         Player p = (Player) sender;
         if(args.length != 1) {
-            p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilisation"));
+            p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilization"));
             return true;
         }
         if(args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")){
