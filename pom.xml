@@ -50,13 +50,21 @@
             <id>laboulangeriemmo</id>
             <url>https://maven.pkg.github.com/laboulangerie/laboulangeriemmo</url>
         </repository>
+        <repository>
+            <id>betonquest</id>
+            <url>https://betonquest.org/nexus/repository/betonquest/</url>
+        </repository>
+        <repository>
+            <id>quickshop-repo</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -88,6 +96,23 @@
             <artifactId>laboulangeriemmo</artifactId>
             <version>2.1.1</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>pl.betoncraft</groupId>
+            <artifactId>betonquest</artifactId>
+            <version>1.12.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.maxgamer</groupId>
+            <artifactId>QuickShop</artifactId>
+            <version>5.1.0.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.LaBoulangerie</groupId>
+            <artifactId>Gringotts</artifactId>
+            <version>2.12.2</version>
         </dependency>
     </dependencies>
 </project>

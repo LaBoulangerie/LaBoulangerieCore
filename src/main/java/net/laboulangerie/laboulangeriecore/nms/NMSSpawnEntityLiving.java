@@ -14,7 +14,7 @@ public class NMSSpawnEntityLiving {
      */
     public static void send(Player player, NMSEntities entity) {
         try {
-            final Class<?> packetClass = NMS.getClass("net.minecraft.network.protocol.game.PacketPlayOutSpawnEntityLiving");
+            final Class<?> packetClass = NMS.getClass("net.minecraft.network.protocol.game.PacketPlayOutSpawnEntity");
             final Class<?> entityLivingClass = NMS.getClass("net.minecraft.world.entity.EntityLiving");
 
             final Constructor<?> packetConstructor = packetClass.getConstructor(entityLivingClass);

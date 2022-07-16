@@ -4,7 +4,7 @@ main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.17
 authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3]
 depend: [Towny, LuckPerms]
-softdepend: [PlaceholderAPI, LaBoulangerieMmo]
+softdepend: [PlaceholderAPI, ChestShop, LaBoulangerieMmo]
 commands:
     authenticate:
         permission: laboulangerie.authenticate
@@ -26,6 +26,9 @@ commands:
         description: Voir ses points divins
     reloadnametag:
         description: Recharge les nametag des joueurs
+    easteregg:
+        description: Main command for the easteregg part
+        aliases: [eegg]
 permissions:
     laboulangeriecore.*:
         default: op

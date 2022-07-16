@@ -15,9 +15,9 @@ public class ComponentRenderer {
 
         return MiniMessage.builder().tags(
                 TagResolver.builder()
-                .resolver(StandardTags.defaults())
-                .resolver(papiTagResolver(player))
-                .build())
+                        .resolver(StandardTags.defaults())
+                        .resolver(papiTagResolver(player))
+                        .build())
                 .build();
     }
 

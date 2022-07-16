@@ -1,10 +1,11 @@
 package net.laboulangerie.laboulangeriecore;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
-import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
-import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
-import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -12,13 +13,20 @@ import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
+import net.laboulangerie.laboulangeriecore.commands.chestshop.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
+import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
+import net.laboulangerie.laboulangeriecore.eastereggs.command.eEggCommand;
+import net.laboulangerie.laboulangeriecore.eastereggs.event.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
+import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
+import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
+import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
 import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
-import org.checkerframework.checker.units.qual.N;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
@@ -30,7 +38,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!setupEconomy() ) {
+        if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
@@ -54,6 +62,15 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("map").setExecutor(new LinkCommands());
         getCommand("github").setExecutor(new LinkCommands());
 
+        /** EasterEggs */
+        try {
+            eEggFileUtil.ensureFilesExist();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
+        getCommand("easteregg").setExecutor(new eEggCommand());
+
         getLogger().info("Enabled Successfully");
     }
 
@@ -71,10 +88,15 @@ public class LaBoulangerieCore extends JavaPlugin {
     }
 
     private void registerListeners() {
-        Arrays.asList(
-                new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(), new AdvancementListeners(),
-                new TradesHook()).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
+        List<Listener> listeners = Arrays.asList(
+                new LoreUpdater(), new TabListener(), new NameTagListener(),
+                new ElytraGenRemover(), new TradesHook(), new AdvancementListeners(), new FirstJoinActions()
+        );
+        if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
+
+        listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
+
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
