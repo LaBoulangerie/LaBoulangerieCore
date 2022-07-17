@@ -56,7 +56,7 @@ commands:
         usage: /housemembers <house> [list|add|remove] (<member>)
     easteregg:
         description: Main command for the easteregg part
-        aliases: [eastereggs, eegg]
+        aliases: [eegg]
 permissions:
     laboulangeriecore.*:
         default: op

@@ -28,9 +28,9 @@ public class PlayerNameTag {
     public PlayerNameTag(@Nonnull Player player) {
         this.tagsVisible = new HashMap<>();
         this.player = player;
-        this.above = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.4, player.getLocation().getZ());
-        this.nameTag = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 2.1, player.getLocation().getZ());
-        this.below = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getLocation().getY() + 1.8, player.getLocation().getZ());
+        this.above = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.6, player.getLocation().getZ());
+        this.nameTag = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.3, player.getLocation().getZ());
+        this.below = new NMSEntities(player.getWorld(), NMSEntities.EntityType.ARMOR_STAND, player.getLocation().getX(), player.getBoundingBox().getMaxY(), player.getLocation().getZ());
     }
 
     public @Nonnull Player getPlayer() {

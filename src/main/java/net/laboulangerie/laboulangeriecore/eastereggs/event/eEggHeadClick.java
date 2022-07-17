@@ -1,8 +1,10 @@
 package net.laboulangerie.laboulangeriecore.eastereggs.event;
 
-import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
-import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggUtil;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -10,64 +12,70 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
+import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggUtil;
 
 public class eEggHeadClick implements Listener {
-
     @EventHandler
     public void eastereggClick (PlayerInteractEvent e) throws IOException {
 
-        if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock().getType() == null)return;
-        if(e.getAction() == Action.RIGHT_CLICK_BLOCK){
-            if(e.getClickedBlock().getType() == Material.PLAYER_HEAD || e.getClickedBlock().getType() == Material.PLAYER_WALL_HEAD){
-                Player p = e.getPlayer();
-                eEggFileUtil.fileExist(p);
-                File file = new File("plugins/LaBoulangerieCore/PlayerData/"+p.getName()+".yml");
-                YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-                Block b = e.getClickedBlock();
+        if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock().getType() == null) return;
+        if(e.getClickedBlock().getType() == Material.PLAYER_HEAD || e.getClickedBlock().getType() == Material.PLAYER_WALL_HEAD){
+            Player p = e.getPlayer();
+            eEggFileUtil.fileExist(p);
 
-                int x = b.getX();
-                int y = b.getY();
-                int z = b.getZ();
-                String world = b.getWorld().getName();
-                String result = world + "!" + x + "!" + y + "!" + z;
-                List<String> list = new ArrayList<>();
+            File file = eEggFileUtil.getPlayerFile(p);
+            YamlConfiguration playerData = YamlConfiguration.loadConfiguration(file);
+            Block block = e.getClickedBlock();
 
-                if(LaBoulangerieCore.PLUGIN.getConfig().getStringList("eastereggs.eastereggs").contains(result)) {
-                    if(config.getStringList("eastereggs") != null || !config.getStringList("eastereggs").isEmpty()){
+            String result = eEggUtil.getBlockIdentifier(block);
+            List<String> foundEggs = new ArrayList<>();
 
-                        list = config.getStringList("eastereggs");
-                        if(e.getHand() == EquipmentSlot.HAND) {
-                            if (list.contains(result)) {
-                                eEggUtil.sendAlreadyValidated(p);
-                                return;
-                            }
-                            if (!list.contains(result)) {
-                                list.add(world + "!" + x + "!" + y + "!" + z);
-                                config.set("eastereggs", list);
-                                config.save(file);
-                                eEggUtil.giveGift(p);
-                                eEggUtil.sendValidation(p);
-                                return;
-                            }
+            if(eEggFileUtil.eggsData.getStringList("eggs").contains(result)) {
+                if(playerData.getStringList("eggs") != null || !playerData.getStringList("eggs").isEmpty()){
+
+                    foundEggs = playerData.getStringList("eggs");
+                    if(e.getHand() == EquipmentSlot.HAND) {
+                        if (foundEggs.contains(result)) {
+                            eEggUtil.sendAlreadyValidated(p);
+                            return;
                         }
-                    }else{
-                        eEggUtil.sendValidation(p);
-                        list.add(world+"!"+x+"!"+y+"!"+z);
-                        config.set("eastereggs", list);
-                        config.save(file);
-                        eEggUtil.giveGift(p);
-                        eEggUtil.sendValidation(p);
-                        return;
+                        if (!foundEggs.contains(result)) {
+                            foundEggs.add(eEggUtil.getBlockIdentifier(block));
+                            playerData.set("eggs", foundEggs);
+                            playerData.save(file);
+                            eEggUtil.giveGift(p);
+                            eEggUtil.sendValidation(p);
+                            return;
+                        }
                     }
+                }else {
+                    eEggUtil.sendValidation(p);
+                    foundEggs.add(result);
+                    playerData.set("eggs", foundEggs);
+                    playerData.save(file);
+                    eEggUtil.giveGift(p);
+                    eEggUtil.sendValidation(p);
+                    return;
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent event) { // Add number of eggs found to the infos sent by the cmd /stats of LaBoulangerieMmo
+        if (!event.getMessage().equals("/stats")) return;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                event.getPlayer().sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.eggs-found").replace("%amount%", eEggUtil.getMaxAmount().toString()));
+            }
+        }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN); // Run asynchronously to add the text at the end
     }
 }

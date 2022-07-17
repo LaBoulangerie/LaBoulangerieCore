@@ -1,7 +1,7 @@
 package net.laboulangerie.laboulangeriecore.nametag;
 
-import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.nms.*;
+import java.lang.reflect.Method;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,10 +9,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.Method;
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.nms.NMSEntities;
+import net.laboulangerie.laboulangeriecore.nms.NMSEntityDestroy;
+import net.laboulangerie.laboulangeriecore.nms.NMSEntityMetadata;
+import net.laboulangerie.laboulangeriecore.nms.NMSEntityTeleport;
+import net.laboulangerie.laboulangeriecore.nms.NMSSpawnEntityLiving;
 
 public class NameTagListener implements Listener {
 
@@ -21,6 +31,7 @@ public class NameTagListener implements Listener {
         final Player player = event.getPlayer();
 
         Bukkit.getOnlinePlayers().forEach(p -> {
+            if (p == player) return;
             LaBoulangerieCore.PLUGIN.getNameTagManager().updateNameTag(p);
         });
 
@@ -40,33 +51,32 @@ public class NameTagListener implements Listener {
         }
     }
 
-    private void moveNameTag(Player player, boolean sneak) {
+    private void moveNameTag(Player player) {
         final PlayerNameTag playerNameTag = PlayerNameTag.get(player);
         if (playerNameTag == null) return;
 
         final Location location = player.getLocation();
 
-        final double sneakHeight = sneak ? 0.4 : 0;
-
         final NMSEntities above = playerNameTag.getAbove();
         final NMSEntities nameTagAbove = playerNameTag.getNameTag();
         final NMSEntities below = playerNameTag.getBelow();
 
-        toggleTextSneak(sneak, above);
-        toggleTextSneak(sneak, nameTagAbove);
-        toggleTextSneak(sneak, below);
+        toggleTextSneak(player.isSneaking(), above);
+        toggleTextSneak(player.isSneaking(), nameTagAbove);
+        toggleTextSneak(player.isSneaking(), below);
 
         toggleTextVisibility(!player.isInvisible(), above);
         toggleTextVisibility(!player.isInvisible(), nameTagAbove);
         toggleTextVisibility(!player.isInvisible(), below);
 
         Bukkit.getOnlinePlayers().forEach(p -> {
+            if (player == p) return;
             NMSEntityMetadata.send(p, above);
             NMSEntityMetadata.send(p, nameTagAbove);
             NMSEntityMetadata.send(p, below);
-            NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4 - sneakHeight, location.getZ());
-            NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1 - sneakHeight, location.getZ());
-            NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8 - sneakHeight, location.getZ());
+            NMSEntityTeleport.send(p, above, location.getX(), player.getBoundingBox().getMaxY() + 0.6, location.getZ());
+            NMSEntityTeleport.send(p, nameTagAbove, location.getX(), player.getBoundingBox().getMaxY() + 0.3, location.getZ());
+            NMSEntityTeleport.send(p, below, location.getX(), player.getBoundingBox().getMaxY(), location.getZ());
         });
     }
 
@@ -98,6 +108,7 @@ public class NameTagListener implements Listener {
         }
 
         for (Player p : Bukkit.getOnlinePlayers()) {
+            if (player == p) return;
             NMSEntityMetadata.send(p, playerNameTag.getAbove());
             NMSEntityMetadata.send(p, playerNameTag.getNameTag());
             NMSEntityMetadata.send(p, playerNameTag.getBelow());
@@ -116,9 +127,10 @@ public class NameTagListener implements Listener {
         final NMSEntities below = playerNameTag.getBelow();
 
         Bukkit.getOnlinePlayers().forEach(p -> {
-            NMSEntityTeleport.send(p, above, location.getX(), location.getY() + 2.4, location.getZ());
-            NMSEntityTeleport.send(p, nameTagAbove, location.getX(), location.getY() + 2.1, location.getZ());
-            NMSEntityTeleport.send(p, below, location.getX(), location.getY() + 1.8, location.getZ());
+            if (p == event.getPlayer()) return;
+            NMSEntityTeleport.send(p, above, location.getX(), event.getPlayer().getBoundingBox().getMaxY() + 0.6, location.getZ());
+            NMSEntityTeleport.send(p, nameTagAbove, location.getX(), event.getPlayer().getBoundingBox().getMaxY() + 0.3, location.getZ());
+            NMSEntityTeleport.send(p, below, location.getX(), event.getPlayer().getBoundingBox().getMaxY(), location.getZ());
         });
     }
 
@@ -166,12 +178,17 @@ public class NameTagListener implements Listener {
             }
         }
 
-        moveNameTag(event.getPlayer(), event.getPlayer().isSneaking());
+        moveNameTag(event.getPlayer());
     }
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
-        moveNameTag(event.getPlayer(), event.isSneaking());
+        new BukkitRunnable() { //Event is fired before the player is actually sneaking, so its bounding box
+            @Override          //is still standing, thus we wait 2 ticks before updating the nametag
+            public void run() {
+                moveNameTag(event.getPlayer());
+            }
+        }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 
     @EventHandler
@@ -182,6 +199,7 @@ public class NameTagListener implements Listener {
             PlayerNameTag.nameTags.remove(playerNameTag);
 
             Bukkit.getOnlinePlayers().forEach(p -> {
+                if (player == p) return;
                 NMSEntityDestroy.send(p, playerNameTag.getAbove().getID());
                 NMSEntityDestroy.send(p, playerNameTag.getNameTag().getID());
                 NMSEntityDestroy.send(p, playerNameTag.getBelow().getID());

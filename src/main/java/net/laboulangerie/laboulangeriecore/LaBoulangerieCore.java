@@ -3,15 +3,18 @@ package net.laboulangerie.laboulangeriecore;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
+import net.laboulangerie.laboulangeriecore.commands.chestshop.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
 import net.laboulangerie.laboulangeriecore.eastereggs.command.eEggCommand;
@@ -55,7 +58,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (!setupEconomy() ) {
+        if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
             return;
@@ -117,11 +120,16 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         getLogger().info("Enabled Successfully");
 
-
         /** EasterEggs */
-        eEggFileUtil.createFolder();
+        try {
+            eEggFileUtil.ensureFilesExist();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
         getCommand("easteregg").setExecutor(new eEggCommand());
+
+        getLogger().info("Enabled Successfully");
     }
 
     public ComponentRenderer getComponentRenderer() {
@@ -150,12 +158,16 @@ public class LaBoulangerieCore extends JavaPlugin {
     }
 
     private void registerListeners() {
-        Arrays.asList(
+        List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(),
                 new FirstJoinActions(), new HouseWandListener()
-        ).forEach(l -> getServer().getPluginManager().registerEvents(l, this));
+        );
+        if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
+
+        listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
+
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
