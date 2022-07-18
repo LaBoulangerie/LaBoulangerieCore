@@ -16,6 +16,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntities;
@@ -205,5 +206,25 @@ public class NameTagListener implements Listener {
                 NMSEntityDestroy.send(p, playerNameTag.getBelow().getID());
             });
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onMountEntity(EntityMountEvent event) {
+        if (!(event.getEntity() instanceof Player) || event.isCancelled()) return;
+        Player player = (Player) event.getEntity();
+
+        final PlayerNameTag playerNameTag = PlayerNameTag.get(player);
+        if (playerNameTag == null) return;
+
+        final NMSEntities above = playerNameTag.getAbove();
+        final NMSEntities nameTagAbove = playerNameTag.getNameTag();
+        final NMSEntities below = playerNameTag.getBelow();
+
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            if (p == player) return;
+            NMSEntityTeleport.send(p, above, player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.6, player.getLocation().getZ());
+            NMSEntityTeleport.send(p, nameTagAbove, player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.3, player.getLocation().getZ());
+            NMSEntityTeleport.send(p, below, player.getLocation().getX(), player.getBoundingBox().getMaxY(), player.getLocation().getZ());
+        });
     }
 }
