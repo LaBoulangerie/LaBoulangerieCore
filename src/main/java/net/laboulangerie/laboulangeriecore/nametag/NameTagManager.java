@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 public class NameTagManager {
 
 
-    private final ConfigurationSection configTabSection;
+    private ConfigurationSection configTabSection;
     private final ComponentRenderer renderer;
 
     public NameTagManager() {
@@ -28,6 +28,7 @@ public class NameTagManager {
     }
 
     public void reload() {
+        configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("nametag");
         Bukkit.getOnlinePlayers().forEach(this::updateNameTag);
     }
 
