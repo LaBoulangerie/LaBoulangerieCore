@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
+import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
@@ -22,7 +22,6 @@ import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
-import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
 import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.milkbowl.vault.economy.Economy;
@@ -47,12 +46,19 @@ public class LaBoulangerieCore extends JavaPlugin {
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
 
+        try {
+            eEggFileUtil.ensureFilesExist();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         saveDefaultConfig();
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
         getCommand("pointsdivins").setExecutor(new DivinePointsCmd());
-        getCommand("reloadnametag").setExecutor(new ReloadNameTagCmd());
+        getCommand("core").setExecutor(new CoreCommand());
+        getCommand("easteregg").setExecutor(new eEggCommand());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -60,15 +66,6 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("twitter").setExecutor(new LinkCommands());
         getCommand("map").setExecutor(new LinkCommands());
         getCommand("github").setExecutor(new LinkCommands());
-        
-        /** EasterEggs */
-        try {
-            eEggFileUtil.ensureFilesExist();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
-        getCommand("easteregg").setExecutor(new eEggCommand());
 
         getLogger().info("Enabled Successfully");
     }
@@ -89,7 +86,8 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(),
-                new ElytraGenRemover(), new TradesHook(), new FirstJoinActions()
+                new ElytraGenRemover(), new TradesHook(), new FirstJoinActions(),
+                new eEggHeadClick()
         );
         if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
 

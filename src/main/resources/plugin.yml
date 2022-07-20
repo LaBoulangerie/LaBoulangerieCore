@@ -24,19 +24,23 @@ commands:
         description: Sends the map link
     pointsdivins:
         description: Voir ses points divins
-    reloadnametag:
-        description: Recharge les nametag des joueurs
     easteregg:
         description: Main command for the easteregg part
         aliases: [eegg]
+    core:
+        description: Admin commands for the plugin
+        usage: /core reload
+        aliases: [lcore]
 permissions:
     laboulangeriecore.*:
         default: op
         children:
             - laboulangeriecore.authenticate
+            - laboulangeriecore.divinepoints.admin
+            - laboulangeriecore.admin
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinepoints.admin:
         default: op
-    laboulangeriecore.nametag.admin:
+    laboulangeriecore.admin:
         default: op
