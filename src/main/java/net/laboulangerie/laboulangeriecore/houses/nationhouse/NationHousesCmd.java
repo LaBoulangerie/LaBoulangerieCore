@@ -46,7 +46,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
                     House house = LaBoulangerieCore.housesManager.getHouse(id);
                     sender.sendMessage("§2" + house.getName() + " §r--- §3" + LaBoulangerieCore.nationHouseHolder.getHousePrice(id) + "$");
                 }
-            }else {
+            } else {
                 for (int i = pageToDisplay*8; i < LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().size() && i < (pageToDisplay+1)*8; i++) {
                     UUID id = (UUID) LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().toArray()[i];
                     House house = LaBoulangerieCore.housesManager.getHouse(id);

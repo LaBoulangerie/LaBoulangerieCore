@@ -93,7 +93,7 @@ public class HouseShop implements Listener {
         if (item.getType() == Material.ARROW) {
             if (item.getItemMeta().getCustomModelData() == 2) { //Right arrow is clicked
                 displayShop(player, page); //No need for page++; because page's title is aldready increased by 1 to prevent displaying "page 0"
-            }else { //Left arrow is clicked (CustomModelData = 2)
+            } else { //Left arrow is clicked (CustomModelData = 1)
                 page-=2; //2 accounts for the increased page's title (see before)
                 displayShop(player, page);
             }

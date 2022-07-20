@@ -69,14 +69,14 @@ public class HouseMembersCmd implements TabExecutor {
         if (args.length == 1) {
             suggestions = LaBoulangerieCore.housesManager.getHouses().values()
                 .stream().map(House::getName).collect(Collectors.toList());
-        }else if (args.length == 2) {
+        } else if (args.length == 2) {
             suggestions = Arrays.asList("add", "remove", "list");
-        }else if (args.length == 3 && args[1].equalsIgnoreCase("remove")) {
+        } else if (args.length == 3 && args[1].equalsIgnoreCase("remove")) {
             Optional<House> house = LaBoulangerieCore.housesManager.getHouseByName(args[0]);
             if (house.isPresent()) {
                 suggestions = house.get().getMembers().stream().map(member -> Bukkit.getOfflinePlayer(member).getName()).collect(Collectors.toList());
             }
-        }else if (args.length == 3 && args[1].equalsIgnoreCase("add")) {
+        } else if (args.length == 3 && args[1].equalsIgnoreCase("add")) {
             suggestions = Arrays.asList(Bukkit.getOfflinePlayers()).stream().map(OfflinePlayer::getName).collect(Collectors.toList());
         }
 

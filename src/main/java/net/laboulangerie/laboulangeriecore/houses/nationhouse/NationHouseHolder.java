@@ -36,19 +36,19 @@ public class NationHouseHolder {
         YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
         if (data.getList("free-houses") != null) {
             freeHouses = (List<UUID>) data.getStringList("free-houses").stream().map(UUID::fromString).collect(Collectors.toList());
-        }else data.createSection("free-houses");
+        } else data.createSection("free-houses");
 
         if (data.contains("occupied-houses")) {
             for (String houseId : data.getConfigurationSection("occupied-houses").getKeys(false)) {
                 occupiedHouses.put(UUID.fromString(houseId), UUID.fromString(data.getString("occupied-houses." + houseId)));
             }
-        }else data.createSection("occupied-houses");
+        } else data.createSection("occupied-houses");
 
         if (data.contains("prices")) {
             for (String houseId : data.getConfigurationSection("prices").getKeys(false)) {
                 prices.put(UUID.fromString(houseId), data.getDouble("prices." + houseId));
             }
-        }else data.createSection("prices");
+        } else data.createSection("prices");
     }
 
     public void saveData() throws IOException {
