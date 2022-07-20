@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.villagers;
+package net.laboulangerie.laboulangeriecore.misc;
 
 import java.util.List;
 import java.util.stream.Collectors;

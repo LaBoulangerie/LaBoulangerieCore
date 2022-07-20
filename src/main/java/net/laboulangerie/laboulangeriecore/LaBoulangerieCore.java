@@ -19,12 +19,12 @@ import net.laboulangerie.laboulangeriecore.eastereggs.eEggFileUtil;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
+import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
 import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
 import net.laboulangerie.laboulangeriecore.points.DivinePointsCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
-import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
 
 public class LaBoulangerieCore extends JavaPlugin {
