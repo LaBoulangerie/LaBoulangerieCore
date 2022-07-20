@@ -20,7 +20,7 @@ public class HouseWandListener implements Listener {
     public static Location firstPos;
     public static Location secondPos;
 
-    private int getBlocksCount() {
+    private double getBlocksCount() {
         final int xMin = Integer.min(firstPos.getBlockX(), secondPos.getBlockX());
         final int xMax = Integer.max(firstPos.getBlockX(), secondPos.getBlockX());
         final int yMin = Integer.min(firstPos.getBlockY(), secondPos.getBlockY());
@@ -28,12 +28,8 @@ public class HouseWandListener implements Listener {
         final int zMin = Integer.min(firstPos.getBlockZ(), secondPos.getBlockZ());
         final int zMax = Integer.max(firstPos.getBlockZ(), secondPos.getBlockZ());
 
-        int count = 0;
-        for (int i = xMin; i <= xMax; count++,i++);
-        for (int i = yMin; i <= yMax; count++,i++);
-        for (int i = zMin; i <= zMax; count++,i++);
 
-        return (count);
+        return (Math.abs(xMax-xMin)+1) * (Math.abs(yMax-yMin)+1) * (Math.abs(zMax-zMin)+1);
     }
 
     private boolean isHoldingWand(@NotNull ItemStack item) {
@@ -52,7 +48,7 @@ public class HouseWandListener implements Listener {
                 .append(location.getBlockZ()).append(")");
 
         if (firstPos != null && secondPos != null) {
-            builder.append(" (").append(getBlocksCount()).append(")");
+            builder.append(" (").append(getBlocksCount()).append(" blocks)");
         }
 
         return (builder.toString());
