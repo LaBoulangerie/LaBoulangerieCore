@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
-import net.laboulangerie.laboulangeriecore.commands.chestshop.ChestShopListener;
+import net.laboulangerie.laboulangeriecore.core.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggFileUtil;
