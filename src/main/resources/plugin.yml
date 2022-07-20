@@ -1,10 +1,10 @@
 name: LaBoulangerieCore
-version: ${project.version}
+version: 1.0-SNAPSHOT
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
-api-version: 1.17
+api-version: 1.19
 authors: [Grooble_, PainOchoco, Blackoutburst]
 depend: [Towny, LuckPerms]
-softdepend: [PlaceholderAPI, ChestShop]
+softdepend: [PlaceholderAPI, BetonQuest]
 commands:
     authenticate:
         permission: laboulangerie.authenticate
@@ -22,8 +22,36 @@ commands:
         description: Sends the github link
     map:
         description: Sends the map link
-    pointsdivins:
-        description: Voir ses points divins
+    faveursdivines:
+        description: Voir ses faveurs divines
+    housewand:
+        description: Donne l'outils de creation de maison de nation
+        permission: laboulangeriecore.house.admin
+    createhouse:
+        description: Créer une maison de nation
+        permission: laboulangeriecore.house.admin
+    listhouse:
+        description: Liste les maisons de nation
+        permission: laboulangeriecore.house.admin
+    deletehouse:
+        description: Supprime une maisons de nation
+        permission: laboulangeriecore.house.admin
+    nationhouses:
+        description: Manage nation houses
+        permission: laboulangeriecore.house.admin
+        usage: /nationhouses [list|create|delete] ([free|occupied] | <id>)
+    houseshop:
+        description: Houses of nations shop
+        permission: laboulangeriecore.houseshop
+        usage: /houseshop (sell)
+    houseflag:
+        description: Modify house flags
+        permission: laboulangeriecore.house.admin
+        usage: /houseflag <house> [list|add|remove] (<flag>)
+    housemembers:
+        description: Modify house members
+        permission: laboulangeriecore.house.admin
+        usage: /housemembers <house> [list|add|remove] (<member>)
     easteregg:
         description: Main command for the easteregg part
         aliases: [eegg]
@@ -36,11 +64,17 @@ permissions:
         default: op
         children:
             - laboulangeriecore.authenticate
-            - laboulangeriecore.divinepoints.admin
+            - laboulangeriecore.divinefavors.admin
+            - laboulangeriecore.house.admin
             - laboulangeriecore.admin
+            - laboulangeriecore.houseshop
     laboulangeriecore.authenticate:
         default: op
-    laboulangeriecore.divinepoints.admin:
+    laboulangeriecore.divinefavors.admin:
+        default: op
+    laboulangeriecore.house.admin:
         default: op
     laboulangeriecore.admin:
+        default: op
+    laboulangeriecore.houseshop:
         default: op

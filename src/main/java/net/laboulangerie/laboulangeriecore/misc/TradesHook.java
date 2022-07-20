@@ -12,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import net.kyori.adventure.text.Component;
 
 public class TradesHook implements Listener {
     @EventHandler
@@ -32,8 +35,14 @@ public class TradesHook implements Listener {
                 recipe.getPriceMultiplier()
             );
             newRecipe.setIngredients(recipe.getIngredients().stream().map(ingredient -> {
-                if (ingredient.getType() == Material.EMERALD) 
-                    ingredient.setType(Material.BREAD); //TODO: Replace with another item
+                if (ingredient.getType() == Material.EMERALD) {
+                    ItemMeta meta = ingredient.getItemMeta();
+                    ingredient.setType(Material.CLOCK);
+                    meta.setCustomModelData(1);
+                    meta.displayName(Component.text("§fPièce Brioche"));
+                    ingredient.setItemMeta(meta);
+                    ingredient.setAmount(ingredient.getAmount() * 2);
+                }
                 return ingredient;
             }).collect(Collectors.toList()));
 
