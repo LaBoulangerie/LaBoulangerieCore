@@ -80,7 +80,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
             house.addFlag(HouseFlags.CAN_BUILD);
             house.addFlag(HouseFlags.CAN_SET_ARMOR_STANDS);
             house.addFlag(HouseFlags.CAN_SET_HANGINGS);
-            sender.sendMessage("§2House of nation successfuly created!");
+            sender.sendMessage("§2House of nation successfully created!");
             return true;
         }
         if (args[0].equalsIgnoreCase("delete")) {
@@ -90,7 +90,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
                 return true;
             }
             LaBoulangerieCore.nationHouseHolder.deleteNationHouse(house.getUUID());
-            sender.sendMessage("§2House of nation successfuly deleted!");
+            sender.sendMessage("§2House of nation successfully deleted!");
             return true;
         }
         return false;
