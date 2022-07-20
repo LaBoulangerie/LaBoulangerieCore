@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.eastereggs.Utils;
+package net.laboulangerie.laboulangeriecore.eastereggs;
 
 import java.io.File;
 import java.io.IOException;
