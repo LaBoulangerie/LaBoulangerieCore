@@ -85,6 +85,10 @@ public class House implements ConfigurationSerializable {
         return flags.remove(flag);
     }
 
+    public boolean hasFlag(HouseFlags flag) {
+        return flags.contains(flag);
+    }
+
     public void addMember(UUID memberId) {
         members.add(memberId);
     }
