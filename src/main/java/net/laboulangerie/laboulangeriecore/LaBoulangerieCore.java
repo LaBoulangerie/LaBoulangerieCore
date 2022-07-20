@@ -24,6 +24,7 @@ import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.House;
 import net.laboulangerie.laboulangeriecore.houses.HouseFlagCmd;
+import net.laboulangerie.laboulangeriecore.houses.HouseListener;
 import net.laboulangerie.laboulangeriecore.houses.HouseMembersCmd;
 import net.laboulangerie.laboulangeriecore.houses.HousesManager;
 import net.laboulangerie.laboulangeriecore.houses.ListHouseCmd;
@@ -161,7 +162,8 @@ public class LaBoulangerieCore extends JavaPlugin {
         List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(),
-                new FirstJoinActions(), new HouseWandListener()
+                new FirstJoinActions(), new HouseWandListener(),
+                new HouseListener()
         );
         if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
 

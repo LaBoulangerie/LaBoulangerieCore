@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,5 +71,9 @@ public class HousesManager {
 
     public void addHouse(House house) {
         houses.put(house.getUUID(), house);
+    }
+
+    public Optional<House> getHouseAt(Location loc) {
+        return houses.values().stream().parallel().filter(house -> house.hasBlock(loc)).findAny();
     }
 }
