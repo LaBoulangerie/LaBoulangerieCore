@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.houses.House;
+import net.laboulangerie.laboulangeriecore.houses.HouseFlags;
 
 public class NationHousesCmd implements CommandExecutor, TabCompleter {
     public NationHousesCmd() {}
@@ -75,6 +76,10 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
                 return true;
             }
             LaBoulangerieCore.nationHouseHolder.newNationHouse(house.getUUID(), price);
+            house.addFlag(HouseFlags.CAN_BREAK);
+            house.addFlag(HouseFlags.CAN_BUILD);
+            house.addFlag(HouseFlags.CAN_SET_ARMOR_STANDS);
+            house.addFlag(HouseFlags.CAN_SET_HANGINGS);
             sender.sendMessage("§2House of nation successfuly created!");
             return true;
         }
