@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.points;
+package net.laboulangerie.laboulangeriecore.favors;
 
 import java.util.Arrays;
 
@@ -10,23 +10,23 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class DivinePointsCmd implements CommandExecutor {
+public class DivineFavorsCmd implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
             @NotNull String[] args) {
         if (args.length == 0) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage("§4Only players can see their divine points!");
+                sender.sendMessage("§4Only players can see their divine favors!");
                 return true;
             }
             sender.sendMessage(
                 "§bVous possédez §e"
-                + DivinePointsHolder.getDivinePointsAmount((OfflinePlayer) sender)
-                + "§b points divins"
+                + DivineFavorsHolder.getDivineFavorsAmount((OfflinePlayer) sender)
+                + "§b faveurs divines"
             );
             return true;
-        }else if (!sender.hasPermission("laboulangeriecore.divinepoints.admin")) {
+        }else if (!sender.hasPermission("laboulangeriecore.divinefavors.admin")) {
             sender.sendMessage("§4You don't have the permission to use this command");
             return false;
 
@@ -44,18 +44,18 @@ public class DivinePointsCmd implements CommandExecutor {
                 return true;
             }
             if (args[0].equalsIgnoreCase("give")) {
-                DivinePointsHolder.giveDivinePoints(target, amount);
-                sender.sendMessage("§bYou granted §e"+ args[2] +"§b divine points to §e"+ args[1]);
+                DivineFavorsHolder.giveDivineFavors(target, amount);
+                sender.sendMessage("§bYou granted §e"+ args[2] +"§b divine favors to §e"+ args[1]);
             }else {
-                if (!DivinePointsHolder.withdrawDivinePoints(target, amount))
+                if (!DivineFavorsHolder.withdrawDivineFavors(target, amount))
                     sender.sendMessage("§4Target "+ args[1] + " is too poor to withdraw " + args[2]);
                 else
-                    sender.sendMessage("§bYou subtracted §e"+ args[2] +"§b divine points from §e"+ args[1]);
+                    sender.sendMessage("§bYou subtracted §e"+ args[2] +"§b divine favors from §e"+ args[1]);
             }
             return true;
         }else {
             sender.sendMessage("§4Bad arguments!");
-            sender.sendMessage("usage: /pointsdivins [give|withdraw] <player> <amount>");
+            sender.sendMessage("usage: /faveursdivines [give|withdraw] <player> <amount>");
             return true;
         }
     }

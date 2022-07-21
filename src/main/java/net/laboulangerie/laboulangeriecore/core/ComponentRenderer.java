@@ -14,11 +14,12 @@ public class ComponentRenderer {
     public MiniMessage getPapiMiniMessage(OfflinePlayer player) {
 
         return MiniMessage.builder().tags(
-                TagResolver.builder()
-                        .resolver(StandardTags.defaults())
-                        .resolver(papiTagResolver(player))
-                        .build())
-                .build();
+            TagResolver.builder()
+                    .resolver(StandardTags.defaults())
+                    .resolver(papiTagResolver(player))
+                    .build()
+            )
+            .build();
     }
 
     private TagResolver papiTagResolver(OfflinePlayer player) {

@@ -1,19 +1,14 @@
 package net.laboulangerie.laboulangeriecore.nametag;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
-import net.luckperms.api.LuckPerms;
-import net.luckperms.api.LuckPermsProvider;
-import net.luckperms.api.model.group.Group;
-import net.luckperms.api.model.user.User;
+import javax.annotation.Nonnull;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.*;
 
-import javax.annotation.Nonnull;
+import net.kyori.adventure.text.Component;
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 
 public class NameTagManager {
 
