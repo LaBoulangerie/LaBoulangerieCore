@@ -80,6 +80,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
             house.addFlag(HouseFlags.CAN_BUILD);
             house.addFlag(HouseFlags.CAN_SET_ARMOR_STANDS);
             house.addFlag(HouseFlags.CAN_SET_HANGINGS);
+            house.addFlag(HouseFlags.CAN_FLICK);
             sender.sendMessage("§2House of nation successfully created!");
             return true;
         }
