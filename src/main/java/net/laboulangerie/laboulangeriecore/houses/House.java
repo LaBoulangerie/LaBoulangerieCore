@@ -109,7 +109,7 @@ public class House implements ConfigurationSerializable {
     }
 
     public void setAnchor(Location anchor) {
-        this.anchor = anchor;
+        this.anchor = anchor.toBlockLocation();
     }
 
     @Override
