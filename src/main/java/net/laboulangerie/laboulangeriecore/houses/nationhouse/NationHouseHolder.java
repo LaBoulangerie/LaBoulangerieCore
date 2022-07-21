@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.houses.House;
 
 public class NationHouseHolder {
     private File dataFile = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "nationshouses.yml");
@@ -97,8 +98,22 @@ public class NationHouseHolder {
     public Double getHousePrice(UUID id) {
         return prices.get(id);
     }
+
+    /**
+     * Test if nation has an nation house
+     * @param nationId the nation to check if it has an house
+     * @return
+     */
     public boolean hasHouse(UUID nationId) {
         return occupiedHouses.containsValue(nationId);
+    }
+    /**
+     * Check if this house is also an house of nation
+     * @param house
+     * @return
+     */
+    public boolean exists(House house) {
+        return occupiedHouses.containsKey(house.getUUID()) || freeHouses.contains(house.getUUID());
     }
     public UUID getHouseOfNation(UUID nationId) {
         if (!hasHouse(nationId)) return null;
