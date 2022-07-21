@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
@@ -161,7 +162,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook(), new HouseShop(),
+                new TradesHook(), new HouseShop(), new AdvancementListeners(),
                 new FirstJoinActions(), new HouseWandListener(),
                 new HouseListener()
         );
