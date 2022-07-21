@@ -25,7 +25,7 @@ public class ScoreBoardManager {
         player.getPlayer().setScoreboard(board);
         Score score = objective.getScore(player);
         score.setScore(score.getScore()+1);
-        if (score.getScore() >= 10) {
+        if (score.getScore() >= 100) {
             AdvancementManager.tryToCompleteAdvancement(player.getPlayer(), "mmo/farmer/grow_100_potatoes");
         }
     }
