@@ -66,7 +66,7 @@ public class HouseFlagCmd implements TabExecutor {
 
         if (args.length == 1) {
             suggestions = LaBoulangerieCore.housesManager.getHouses().values()
-                .stream().map(House::getName).collect(Collectors.toList());
+                .stream().map(house -> house.getName().replaceAll(" ", "_")).collect(Collectors.toList());
         }else if (args.length == 2) {
             suggestions = Arrays.asList("add", "remove", "list");
         }else if (args.length == 3 && !args[1].equalsIgnoreCase("list")) {

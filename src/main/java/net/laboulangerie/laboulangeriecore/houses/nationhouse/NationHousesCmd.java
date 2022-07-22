@@ -80,6 +80,7 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
             house.addFlag(HouseFlags.CAN_BUILD);
             house.addFlag(HouseFlags.CAN_SET_ARMOR_STANDS);
             house.addFlag(HouseFlags.CAN_SET_HANGINGS);
+            house.addFlag(HouseFlags.CAN_FLICK);
             sender.sendMessage("§2House of nation successfully created!");
             return true;
         }
@@ -98,22 +99,27 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
-        if (args.length == 1) return Arrays.asList("list", "create", "delete");
-        if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("list")) return Arrays.asList("free", "occupied");
-            if (args[0].equalsIgnoreCase("delete")) {
-                List<String> completions = LaBoulangerieCore.nationHouseHolder.getFreeHouses().stream()
-                    .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName())
+        List<String> suggestions = Arrays.asList("");
+        if (args.length == 1) suggestions = Arrays.asList("list", "create", "delete");
+        else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("list")) suggestions = Arrays.asList("free", "occupied");
+            else if (args[0].equalsIgnoreCase("delete")) {
+                suggestions = LaBoulangerieCore.nationHouseHolder.getFreeHouses().stream()
+                    .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName().replaceAll(" ", "_"))
                     .collect(Collectors.toList());
-                completions.addAll(
+
+                suggestions.addAll(
                     LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().stream()
                         .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName().replaceAll(" ", "_"))
                         .collect(Collectors.toList())
                 );
-                return completions;
+            } else if (args[0].equalsIgnoreCase("create")) {
+                suggestions = LaBoulangerieCore.housesManager.getHouses().values()
+                    .stream().filter(house -> !LaBoulangerieCore.nationHouseHolder.exists(house)).map(house -> house.getName().replaceAll(" ", "_")).collect(Collectors.toList());
             }
-        }
-        if (args.length == 3 && args[0].equalsIgnoreCase("create")) return Arrays.asList("100", "500", "1000", "5000");
-        return Arrays.asList("");
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("create")) suggestions = Arrays.asList("100", "500", "1000", "5000");
+
+        return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
+            .collect(Collectors.toList());
     }
 }
