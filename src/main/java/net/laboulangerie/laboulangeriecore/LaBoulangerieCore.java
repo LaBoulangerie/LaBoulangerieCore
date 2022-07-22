@@ -19,6 +19,7 @@ import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggFileUtil;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
+import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
@@ -156,9 +157,9 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook(), new HouseShop(),
-                new FirstJoinActions(), new HouseWandListener(),
-                new HouseListener(), new eEggHeadClick()
+                new TradesHook(), new HouseShop(), new FirstJoinActions(),
+                new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
+                new ConversionInv()
         );
         if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
 

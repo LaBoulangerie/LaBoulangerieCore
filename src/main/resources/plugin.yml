@@ -57,7 +57,7 @@ commands:
         aliases: [eegg]
     core:
         description: Admin commands for the plugin
-        usage: /core reload
+        usage: /core reload|conversion
         aliases: [lcore]
 permissions:
     laboulangeriecore.*:

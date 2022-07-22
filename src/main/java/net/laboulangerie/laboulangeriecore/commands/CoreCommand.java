@@ -6,10 +6,12 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
     @Override
@@ -21,6 +23,14 @@ public class CoreCommand implements TabExecutor {
             LaBoulangerieCore.PLUGIN.reloadConfig();
             sender.sendMessage("§bReloading name tags...");
             sender.sendMessage("§aReload complete");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("conversion")) {
+            if (!(sender instanceof Player))
+                sender.sendMessage("§4Only players can use that");
+            else
+                ConversionInv.displayConversionInv((Player) sender);
             return true;
         }
         return false;
