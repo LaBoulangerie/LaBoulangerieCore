@@ -11,6 +11,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.ItemStack;
@@ -48,5 +50,11 @@ public class ElytraGenRemover implements Listener {
     }
     private String getId(Chunk chunk) {
         return chunk.getWorld().getName() + " " + chunk.getX() + " " + chunk.getZ();
+    }
+
+    @EventHandler
+    public void onOpenEnderChest(PlayerInteractEvent event) {
+        if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.ENDER_CHEST && event.getAction() == Action.RIGHT_CLICK_BLOCK)
+            event.setCancelled(true);
     }
 }
