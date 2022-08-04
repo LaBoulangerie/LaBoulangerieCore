@@ -36,7 +36,7 @@ eastereggs:
         utilization: "§cError: §e/easteregg help§a."
         not-existing: "§cThis easteregg doesn't existing."
         not-head: "§cYou need to have a head on your front."
-        eggs-found: "§aEastereggs:\n§bYou have found §e%amount% §beastereggs"
+        eggs-found: "§aEastereggs:\n§bYou have found §e%amount%§a/§e%total% §beastereggs"
         validated-title:
             - "§3New Easter Egg!"
             - "§7(§e%amount%§7/§f%max-amount%§7)"

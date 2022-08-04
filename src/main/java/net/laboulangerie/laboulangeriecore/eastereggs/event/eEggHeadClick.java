@@ -74,7 +74,7 @@ public class eEggHeadClick implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                event.getPlayer().sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.eggs-found").replace("%amount%", eEggUtil.getMaxAmount().toString()));
+                event.getPlayer().sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.eggs-found").replace("%amount%", eEggUtil.getPlayerAmount(event.getPlayer()).toString()).replace("%total%", eEggUtil.getMaxAmount().toString()));
             }
         }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN); // Run asynchronously to add the text at the end
     }
