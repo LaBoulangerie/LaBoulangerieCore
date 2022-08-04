@@ -66,6 +66,7 @@ permissions:
             - laboulangeriecore.house.admin
             - laboulangeriecore.nametag.admin
             - laboulangeriecore.houseshop
+            - laboulangeriecore.admin
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
@@ -75,4 +76,6 @@ permissions:
     laboulangeriecore.nametag.admin:
         default: op
     laboulangeriecore.houseshop:
+        default: op
+    laboulangeriecore.eeggs.admin:
         default: op
