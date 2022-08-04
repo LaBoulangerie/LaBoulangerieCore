@@ -31,48 +31,40 @@ public class ConversionInv implements Listener {
         merchant = Bukkit.createMerchant(Component.text("§bConvertisseur de monnaie"));
         List<MerchantRecipe> merchantRecipes = new ArrayList<MerchantRecipe>();
 
-        ItemStack brioche = denominations.get(2).getKey().type;
-        brioche.setAmount(1);
-        ItemStack croissant = denominations.get(1).getKey().type;
-        croissant.setAmount(1);
-        ItemStack baguette = denominations.get(0).getKey().type;
-        baguette.setAmount(1);
+        for (int i = denominations.size()-1; i > 0; i--) {
+            int y = i - 1;
 
-        // 100*Brioche = 1*Croissant
-        MerchantRecipe briocheToCroissant = new MerchantRecipe(croissant.clone(), 10000); // no max-uses limit
-        briocheToCroissant.setExperienceReward(false); // no experience rewards
-        brioche.setAmount(64);
-        briocheToCroissant.addIngredient(brioche.clone());
-        brioche.setAmount(36);
-        briocheToCroissant.addIngredient(brioche.clone());
+            ItemStack needed = denominations.get(i).getKey().type.clone();
+            int amount = (int) (denominations.get(y).getValue() / denominations.get(i).getValue());
+            ItemStack result = denominations.get(y).getKey().type.clone();
+            result.setAmount(1);
 
-        // 10*Croissant = 1*Baguette
-        MerchantRecipe croissantToBaguette = new MerchantRecipe(baguette.clone(), 10000); // no max-uses limit
-        croissantToBaguette.setExperienceReward(false); // no experience rewards
-        croissant.setAmount(10);
-        croissantToBaguette.addIngredient(croissant.clone());
+            MerchantRecipe recipe = new MerchantRecipe(result, 10000); // no max-uses limit
+            recipe.setExperienceReward(false); // no experience rewards
+            if (amount > 64) {
+                needed.setAmount(64);
+                recipe.addIngredient(needed.clone());
+                amount -= 64;
+            }
+            needed.setAmount(amount);
+            recipe.addIngredient(needed);
+            merchantRecipes.add(recipe);
+        }
+        for (int i = 0; i < denominations.size()-1; i++) {
+            int y = i + 1;
 
-        // 1*Baguette = 10*Croissant
-        croissant.setAmount(10);
-        MerchantRecipe baguetteToCroissant = new MerchantRecipe(croissant.clone(), 10000); // no max-uses limit
-        baguetteToCroissant.setExperienceReward(false); // no experience rewards
-        baguetteToCroissant.addIngredient(baguette.clone());
+            ItemStack needed = denominations.get(i).getKey().type.clone();
+            needed.setAmount(1);
+            ItemStack result = denominations.get(y).getKey().type.clone();
+            result.setAmount((int) (denominations.get(i).getValue() / denominations.get(y).getValue()));
 
-        // 1*Croissant = 100*Brioche
+            MerchantRecipe recipe = new MerchantRecipe(result, 10000); // no max-uses limit
+            recipe.setExperienceReward(false); // no experience rewards
+            recipe.addIngredient(needed);
+            merchantRecipes.add(recipe);
+        }
 
-        brioche.setAmount(100);
-        MerchantRecipe croissantToBrioche = new MerchantRecipe(brioche.clone(), 10000); // no max-uses limit
-        croissantToBrioche.setExperienceReward(false); // no experience rewards
-        croissant.setAmount(1);
-        croissantToBrioche.addIngredient(croissant.clone());
-
-        merchantRecipes.add(briocheToCroissant);
-        merchantRecipes.add(croissantToBaguette);
-        merchantRecipes.add(baguetteToCroissant);
-        merchantRecipes.add(croissantToBrioche);
         merchant.setRecipes(merchantRecipes);
-
-        // open trading window:
         player.openMerchant(merchant, true);
     }
 
