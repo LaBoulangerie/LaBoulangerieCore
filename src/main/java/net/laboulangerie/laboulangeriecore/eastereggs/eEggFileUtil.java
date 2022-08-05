@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.eastereggs.Utils;
+package net.laboulangerie.laboulangeriecore.eastereggs;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class eEggFileUtil {
     public static YamlConfiguration eggsData;
-    public static File eggsFile = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "/eastereggs/eggs.yml");
+    public static File eggsFile = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "/eggs.yml");
 
     public static void ensureFilesExist() throws IOException {
         File folder = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "/eastereggs");

@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.eastereggs.event;
+package net.laboulangerie.laboulangeriecore.eastereggs;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +18,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
-import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggUtil;
 
 public class eEggHeadClick implements Listener {
     @EventHandler

@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.eastereggs.command;
+package net.laboulangerie.laboulangeriecore.eastereggs;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,8 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
-import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggUtil;
 
 public class eEggCommand implements TabExecutor {
     @Override

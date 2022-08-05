@@ -40,8 +40,6 @@ commands:
         description: Manage nation houses
         permission: laboulangeriecore.house.admin
         usage: /nationhouses [list|create|delete] ([free|occupied] | <id>)
-    reloadnametag:
-        description: Recharge les nametag des joueurs
     houseshop:
         description: Houses of nations shop
         permission: laboulangeriecore.houseshop
@@ -57,6 +55,10 @@ commands:
     easteregg:
         description: Main command for the easteregg part
         aliases: [eegg]
+    core:
+        description: Admin commands for the plugin
+        usage: /core reload|conversion
+        aliases: [lcore]
 permissions:
     laboulangeriecore.*:
         default: op
@@ -64,7 +66,7 @@ permissions:
             - laboulangeriecore.authenticate
             - laboulangeriecore.divinefavors.admin
             - laboulangeriecore.house.admin
-            - laboulangeriecore.nametag.admin
+            - laboulangeriecore.admin
             - laboulangeriecore.houseshop
             - laboulangeriecore.admin
     laboulangeriecore.authenticate:
@@ -73,7 +75,7 @@ permissions:
         default: op
     laboulangeriecore.house.admin:
         default: op
-    laboulangeriecore.nametag.admin:
+    laboulangeriecore.admin:
         default: op
     laboulangeriecore.houseshop:
         default: op

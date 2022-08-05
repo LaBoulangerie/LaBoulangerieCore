@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.commands.chestshop;
+package net.laboulangerie.laboulangeriecore.core;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
