@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
@@ -125,6 +128,16 @@ public class LaBoulangerieCore extends JavaPlugin {
             BetonQuest.getInstance().registerConditions("towny_has_house", HasHouseCondition.class);
             getLogger().info("Hooked in BetonQuest!");
         }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<String> messages = getConfig().getStringList("auto-messages");
+                if (messages.size() == 0) return;
+                Random rand = new Random();
+                getServer().broadcast(MiniMessage.miniMessage().deserialize(messages.get(rand.nextInt(messages.size()))));
+            }
+        }.runTaskTimerAsynchronously(this, 200, getConfig().getInt("auto-messages-interval") * 20);
 
         getLogger().info("Enabled Successfully");
     }
