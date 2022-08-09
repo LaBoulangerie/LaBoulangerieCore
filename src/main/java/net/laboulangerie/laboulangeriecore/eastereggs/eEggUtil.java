@@ -57,15 +57,16 @@ public class eEggUtil {
 
     /**Here I prepare the message "validated"*/
     public static void sendValidation(Player p) {
-        List<String> titles = LaBoulangerieCore.PLUGIN.getConfig().getStringList("eastereggs.messages.validated-titles")
+        List<String> titles = LaBoulangerieCore.PLUGIN.getConfig().getStringList("eastereggs.messages.validated-title")
         .stream().map(str -> str.replace("%max-amount%", getMaxAmount().toString()).replace("%amount%", getPlayerAmount(p).toString()))
         .collect(Collectors.toList());
 
         p.showTitle(Title.title(
             Component.text(titles.get(0)),
             Component.text(titles.get(1)),
-            Title.Times.times(Duration.ofSeconds(2), Duration.ofSeconds(1), Duration.ofSeconds(1))
+            Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(1), Duration.ofMillis(500))
         ));
+        p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1, 1.0f);
     }
 
     /**Here I prepare the message "already validated"*/
