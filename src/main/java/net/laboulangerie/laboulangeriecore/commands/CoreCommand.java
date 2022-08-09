@@ -22,6 +22,7 @@ public class CoreCommand implements TabExecutor {
             sender.sendMessage("§bReloading config...");
             LaBoulangerieCore.PLUGIN.reloadConfig();
             sender.sendMessage("§bReloading name tags...");
+            LaBoulangerieCore.PLUGIN.getNameTagManager().reload();
             sender.sendMessage("§aReload complete");
             return true;
         }
