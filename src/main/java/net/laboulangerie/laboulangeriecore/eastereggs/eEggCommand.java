@@ -42,12 +42,12 @@ public class eEggCommand implements TabExecutor {
                 return true;
             }
 
-            List<String> eggs = eEggFileUtil.eggsData.getStringList("eggs");
+            List<String> eggs = eEggUtil.eggsData.getStringList("eggs");
             eggs.add(eEggUtil.getBlockIdentifier(block));
 
-            eEggFileUtil.eggsData.set("eggs", eggs);
+            eEggUtil.eggsData.set("eggs", eggs);
             try {
-                eEggFileUtil.eggsData.save(eEggFileUtil.eggsFile);
+                eEggUtil.eggsData.save(eEggUtil.eggsFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -68,7 +68,7 @@ public class eEggCommand implements TabExecutor {
             }
 
             String result = eEggUtil.getBlockIdentifier(block);
-            List<String> eggs = eEggFileUtil.eggsData.getStringList("eggs");
+            List<String> eggs = eEggUtil.eggsData.getStringList("eggs");
 
             if (!eggs.contains(result)) {
                 p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-existing"));
@@ -76,9 +76,9 @@ public class eEggCommand implements TabExecutor {
             }
 
             eggs.remove(result);
-            eEggFileUtil.eggsData.set("eggs", eggs);
+            eEggUtil.eggsData.set("eggs", eggs);
             try {
-                eEggFileUtil.eggsData.save(eEggFileUtil.eggsFile);
+                eEggUtil.eggsData.save(eEggUtil.eggsFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }

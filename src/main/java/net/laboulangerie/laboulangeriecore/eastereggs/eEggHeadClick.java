@@ -1,6 +1,5 @@
 package net.laboulangerie.laboulangeriecore.eastereggs;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,50 +17,42 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class eEggHeadClick implements Listener {
     @EventHandler
     public void eastereggClick (PlayerInteractEvent e) throws IOException {
-
-        if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock().getType() == null) return;
+        if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock().getType() == null || e.getHand() != EquipmentSlot.HAND) return;
         if(e.getClickedBlock().getType() == Material.PLAYER_HEAD || e.getClickedBlock().getType() == Material.PLAYER_WALL_HEAD){
             Player p = e.getPlayer();
-            eEggFileUtil.fileExist(p);
 
-            File file = eEggFileUtil.getPlayerFile(p);
-            YamlConfiguration playerData = YamlConfiguration.loadConfiguration(file);
+            YamlConfiguration playerData = UsersData.get(p).orElseGet(() -> {
+                try {
+                    return UsersData.createUserData(p);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    return null;
+                }
+            });
             Block block = e.getClickedBlock();
 
             String result = eEggUtil.getBlockIdentifier(block);
             List<String> foundEggs = new ArrayList<>();
 
-            if(eEggFileUtil.eggsData.getStringList("eggs").contains(result)) {
+            if(eEggUtil.eggsData.getStringList("eggs").contains(result)) {
                 if(playerData.getStringList("eggs") != null || !playerData.getStringList("eggs").isEmpty()){
 
                     foundEggs = playerData.getStringList("eggs");
-                    if(e.getHand() == EquipmentSlot.HAND) {
-                        if (foundEggs.contains(result)) {
-                            eEggUtil.sendAlreadyValidated(p);
-                            return;
-                        }
-                        if (!foundEggs.contains(result)) {
-                            foundEggs.add(eEggUtil.getBlockIdentifier(block));
-                            playerData.set("eggs", foundEggs);
-                            playerData.save(file);
-                            eEggUtil.giveGift(p);
-                            eEggUtil.sendValidation(p);
-                            return;
-                        }
+                    if (foundEggs.contains(result)) {
+                        eEggUtil.sendAlreadyValidated(p);
+                        return;
                     }
-                }else {
-                    eEggUtil.sendValidation(p);
-                    foundEggs.add(result);
-                    playerData.set("eggs", foundEggs);
-                    playerData.save(file);
-                    eEggUtil.giveGift(p);
-                    eEggUtil.sendValidation(p);
-                    return;
                 }
+                foundEggs.add(result);
+                playerData.set("eggs", foundEggs);
+                UsersData.save(p, playerData);
+                eEggUtil.giveGift(p);
+                eEggUtil.sendValidation(p);
             }
         }
     }
