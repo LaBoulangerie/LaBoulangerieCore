@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
@@ -21,7 +22,9 @@ public class CoreCommand implements TabExecutor {
         if (Arrays.asList("reload", "rl").contains(args[0].toString())) {
             sender.sendMessage("§bReloading config...");
             LaBoulangerieCore.PLUGIN.reloadConfig();
+            UsersData.init(); // Clean cache & ensure directory exists
             sender.sendMessage("§bReloading name tags...");
+            LaBoulangerieCore.PLUGIN.getNameTagManager().reload();
             sender.sendMessage("§aReload complete");
             return true;
         }

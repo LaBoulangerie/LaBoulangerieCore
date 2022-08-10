@@ -1,30 +1,22 @@
 package net.laboulangerie.laboulangeriecore.favors;
 
+import java.io.IOException;
+
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class DivineFavorsHolder {
-    /**
-     * @param player
-     * @return the player's divine favors bank id
-     */
-    public static String getOrCreate(OfflinePlayer player) {
-        String bankId = "divinefavors-" + player.getUniqueId();
-
-        if (!LaBoulangerieCore.econ.hasAccount(bankId)) {
-            LaBoulangerieCore.econ.createPlayerAccount(bankId);
-        }
-        return bankId;
-    }
-
     /**
      * Get the value of divine favors of the player
      * @param player
      * @return
      */
     public static double getDivineFavorsAmount(OfflinePlayer player) {
-        return LaBoulangerieCore.econ.getBalance(getOrCreate(player));
+        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        return data.getDouble("divine-favors", 0);
     }
     /**
      * Give {@code amount} of divine favors to the player
@@ -32,7 +24,14 @@ public class DivineFavorsHolder {
      * @param amount
      */
     public static void giveDivineFavors(OfflinePlayer player, double amount) {
-        LaBoulangerieCore.econ.depositPlayer(getOrCreate(player), amount);
+        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        data.set("divine-favors", data.getDouble("divine-favors", 0) + amount);
+        try {
+            UsersData.save(player, data);
+        } catch (IOException e) {
+            LaBoulangerieCore.PLUGIN.getLogger().severe("An error occurred while trying to save " + player.getName() + "'s divine favors");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -42,8 +41,15 @@ public class DivineFavorsHolder {
      * @return false if the player doesn't have enough favors, true otherwise
      */
     public static boolean withdrawDivineFavors(OfflinePlayer player, double amount) {
-        if (LaBoulangerieCore.econ.has(getOrCreate(player), amount)) {
-            LaBoulangerieCore.econ.withdrawPlayer(getOrCreate(player), amount);
+        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        if (data.getDouble("divine-favors", 0) >= amount) {
+            data.set("divine-favors", data.getDouble("divine-favors") - amount);
+            try {
+                UsersData.save(player, data);
+            } catch (IOException e) {
+                LaBoulangerieCore.PLUGIN.getLogger().severe("An error occurred while trying to save " + player.getName() + "'s divine favors");
+                e.printStackTrace();
+            }
             return true;
         }
         return false;

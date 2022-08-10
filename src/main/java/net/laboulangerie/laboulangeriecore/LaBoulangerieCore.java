@@ -19,8 +19,9 @@ import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.core.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
-import net.laboulangerie.laboulangeriecore.eastereggs.eEggFileUtil;
+import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
@@ -69,6 +70,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         }
         LaBoulangerieCore.PLUGIN = this;
         ConfigurationSerialization.registerClass(House.class);
+        UsersData.init();
         housesManager = new HousesManager(new File(getDataFolder(), "houses"));
 
         try {
@@ -94,7 +96,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         nameTagManager = new NameTagManager();
 
         try {
-            eEggFileUtil.ensureFilesExist();
+            eEggUtil.ensureFilesExist();
         } catch (IOException e) {
             e.printStackTrace();
         }

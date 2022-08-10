@@ -38,9 +38,9 @@ eastereggs:
         not-head: "§cYou need to have a head on your front."
         eggs-found: "§aEastereggs:\n§bYou have found §e%amount%§a/§e%total% §beastereggs"
         validated-title:
-            - "§3New Easter Egg!"
-            - "§7(§e%amount%§7/§f%max-amount%§7)"
-        already-validated: "§cYou already found this easteregg.)"
+            - "§2New Easter Egg!"
+            - "§7(§a%amount%§7/§e%max-amount%§7)"
+        already-validated: "§cYou already found this easteregg."
         help:
             - "§e-------------{ §3EasterEggs §e}-------------"
             - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
