@@ -26,14 +26,7 @@ public class eEggHeadClick implements Listener {
         if(e.getClickedBlock().getType() == Material.PLAYER_HEAD || e.getClickedBlock().getType() == Material.PLAYER_WALL_HEAD){
             Player p = e.getPlayer();
 
-            YamlConfiguration playerData = UsersData.get(p).orElseGet(() -> {
-                try {
-                    return UsersData.createUserData(p);
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                    return null;
-                }
-            });
+            YamlConfiguration playerData = UsersData.get(p).orElseGet(() -> UsersData.createUserData(p));
             Block block = e.getClickedBlock();
 
             String result = eEggUtil.getBlockIdentifier(block);

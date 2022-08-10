@@ -42,15 +42,25 @@ public class UsersData {
         return Optional.of(data);
     }
 
-    public static YamlConfiguration createUserData(OfflinePlayer user) throws IOException {
+    /**
+     * If this fails to create the user's save file it will
+     * return an empty YamlConfiguration and the IO error
+     * should be handled whe trying to save this YamlConfiguration
+     * @param user
+     * @return
+     */
+    public static YamlConfiguration createUserData(OfflinePlayer user) {
         File userFile = new File(dataFolder, user.getUniqueId() + ".yml");
         if (userFile.exists()) throw new IllegalArgumentException("This user already has a data file!");
 
-        userFile.createNewFile();
-        YamlConfiguration data = YamlConfiguration.loadConfiguration(userFile);
-        usersData.put(user.getUniqueId(), data);
-
-        return data;
+        try {
+            userFile.createNewFile();
+            YamlConfiguration data = YamlConfiguration.loadConfiguration(userFile);
+            usersData.put(user.getUniqueId(), data);
+            return data;
+        } catch (IOException e) {
+            return new YamlConfiguration();
+        }
     }
 
     public static void save(OfflinePlayer user, YamlConfiguration data) throws IOException {
