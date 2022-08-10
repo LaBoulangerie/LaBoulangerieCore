@@ -8,7 +8,7 @@ tab:
     footer: "<papi:townyadvanced_towny_colour><townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
 
 nametag:
-    above: "<font:bread_dough:icons><papi:luckperms_prefix></font>"
+    above: "<papi:luckperms_prefix>"
     nametag: "<papi:player_name>"
     below: "<papi:player_colored_ping>"
 
