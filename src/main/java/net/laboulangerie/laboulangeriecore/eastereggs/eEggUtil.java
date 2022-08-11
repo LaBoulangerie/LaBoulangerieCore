@@ -49,6 +49,8 @@ public class eEggUtil {
             keys.add(key);
         }
 
+        if (keys.size() == 0) return;
+
         Random rdm = new Random();
         int i = rdm.nextInt(keys.size());
 
