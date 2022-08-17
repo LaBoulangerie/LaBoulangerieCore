@@ -12,9 +12,9 @@ public class AdvancementManager {
     public static boolean tryToCompleteAdvancement(Player player, String name) {
         if (!(AdvancementManager.playerHasAdvancement(player, name)) && AdvancementManager.isAdvancementEnabled(name)) {
             // name should be something like husbandry/break_diamond_hoe
-            Advancement a = Bukkit.getAdvancement(new NamespacedKey("laboulangerie-datapack", name));
+            Advancement a = Bukkit.getAdvancement(new NamespacedKey("lb.general", name));
             if(a == null) return false;
-            NamespacedKey key = new NamespacedKey("laboulangerie-datapack", name);
+            NamespacedKey key = new NamespacedKey("lb.general", name);
             AdvancementProgress progress = player.getAdvancementProgress(Bukkit.getAdvancement(key));
             for(String criteria : progress.getRemainingCriteria())
                 progress.awardCriteria(criteria);
