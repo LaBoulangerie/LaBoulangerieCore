@@ -8,7 +8,7 @@ tab:
     footer: "<papi:townyadvanced_towny_colour><townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
 
 nametag:
-    above: "<font:bread_dough:icons><papi:luckperms_prefix></font>"
+    above: "<papi:luckperms_prefix>"
     nametag: "<papi:player_name>"
     below: "<papi:player_colored_ping>"
 
@@ -106,11 +106,11 @@ eastereggs:
         utilization: "§cError: §e/easteregg help§a."
         not-existing: "§cThis easteregg doesn't existing."
         not-head: "§cYou need to have a head on your front."
-        eggs-found: "§aEastereggs:\n§bYou have found §e%amount% §beastereggs"
+        eggs-found: "§aEastereggs:\n§bYou have found §e%amount%§a/§e%total% §beastereggs"
         validated-title:
-            - "§3New Easter Egg!"
-            - "§7(§e%amount%§7/§f%max-amount%§7)"
-        already-validated: "§cYou already found this easteregg.)"
+            - "§2New Easter Egg!"
+            - "§7(§a%amount%§7/§e%max-amount%§7)"
+        already-validated: "§cYou already found this easteregg."
         help:
             - "§e-------------{ §3EasterEggs §e}-------------"
             - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
@@ -132,3 +132,8 @@ eastereggs:
 
 fist-join-commands:
 
+auto-messages-interval: 120 #Interval in seconds between message broadcast
+auto-messages: #List of messages to broadcast automatically
+    # - Subscribe to Technoblade
+    # - Not even close
+    # - frogs are the best

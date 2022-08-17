@@ -4,22 +4,27 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
+import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
-import net.laboulangerie.laboulangeriecore.commands.chestshop.ChestShopListener;
+import net.laboulangerie.laboulangeriecore.core.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
-import net.laboulangerie.laboulangeriecore.eastereggs.Utils.eEggFileUtil;
-import net.laboulangerie.laboulangeriecore.eastereggs.command.eEggCommand;
-import net.laboulangerie.laboulangeriecore.eastereggs.event.eEggHeadClick;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
+import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
+import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
+import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
+import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 import net.laboulangerie.laboulangeriecore.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.houses.DeleteHouseCmd;
@@ -40,11 +45,10 @@ import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
+import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
-import net.laboulangerie.laboulangeriecore.nametag.ReloadNameTagCmd;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
-import net.laboulangerie.laboulangeriecore.villagers.TradesHook;
 import net.milkbowl.vault.economy.Economy;
 import pl.betoncraft.betonquest.BetonQuest;
 
@@ -67,6 +71,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         }
         LaBoulangerieCore.PLUGIN = this;
         ConfigurationSerialization.registerClass(House.class);
+        UsersData.init();
         housesManager = new HousesManager(new File(getDataFolder(), "houses"));
 
         try {
@@ -91,6 +96,12 @@ public class LaBoulangerieCore extends JavaPlugin {
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
 
+        try {
+            eEggUtil.ensureFilesExist();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         saveDefaultConfig();
         registerListeners();
 
@@ -103,7 +114,8 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("houseflag").setExecutor(new HouseFlagCmd());
         getCommand("housemembers").setExecutor(new HouseMembersCmd());
         getCommand("nationhouses").setExecutor(new NationHousesCmd());
-        getCommand("reloadnametag").setExecutor(new ReloadNameTagCmd());
+        getCommand("core").setExecutor(new CoreCommand());
+        getCommand("easteregg").setExecutor(new eEggCommand());
         getCommand("houseshop").setExecutor(new HouseShopCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
@@ -120,16 +132,15 @@ public class LaBoulangerieCore extends JavaPlugin {
             getLogger().info("Hooked in BetonQuest!");
         }
 
-        getLogger().info("Enabled Successfully");
-
-        /** EasterEggs */
-        try {
-            eEggFileUtil.ensureFilesExist();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Bukkit.getPluginManager().registerEvents(new eEggHeadClick(), this);
-        getCommand("easteregg").setExecutor(new eEggCommand());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<String> messages = getConfig().getStringList("auto-messages");
+                if (messages.size() == 0) return;
+                Random rand = new Random();
+                getServer().broadcast(MiniMessage.miniMessage().deserialize(messages.get(rand.nextInt(messages.size()))));
+            }
+        }.runTaskTimerAsynchronously(this, 200, getConfig().getInt("auto-messages-interval") * 20);
 
         getLogger().info("Enabled Successfully");
     }
@@ -162,9 +173,9 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook(), new HouseShop(), new AdvancementListeners(),
-                new FirstJoinActions(), new HouseWandListener(),
-                new HouseListener()
+                new TradesHook(), new HouseShop(), new AdvancementListeners(), new FirstJoinActions(),
+                new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
+                new ConversionInv()
         );
         if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
 
