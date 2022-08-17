@@ -43,6 +43,7 @@ public class PlayerNameTag {
 
     public void removeViewer(Player viewer) {
         viewers.remove(viewer);
+        NMSEntityDestroy.send(viewer, nameTagEntities.stream().mapToInt(ArmorStandEntity::getID).toArray());
     }
 
     private void createNameTags() {

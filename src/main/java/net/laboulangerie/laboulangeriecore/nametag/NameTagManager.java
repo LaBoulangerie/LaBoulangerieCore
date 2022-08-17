@@ -1,7 +1,9 @@
 package net.laboulangerie.laboulangeriecore.nametag;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,12 +21,18 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class NameTagManager {
     public static List<String> rawNameTags;
+    /**
+     * A cache linking entity id to its corresponding {@link Player}
+     */
+    public static Map<Integer, Player> idToPlayer;
 
     private BukkitTask textUpdateTask;
 
     public void enable() {
         ConfigurationSection configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("nametag");
         rawNameTags = new ArrayList<>();
+        idToPlayer = new HashMap<>();
+
         for (String key : configTabSection.getKeys(false)) rawNameTags.add(configTabSection.getString(key));
 
         textUpdateTask = new BukkitRunnable() {
@@ -41,6 +49,17 @@ public class NameTagManager {
                 if (newPlayer.getUniqueId().version() == 2) return; // UUIDv2 is used for NPCs
 
                 PlayerNameTag.get(event.getPlayer()).addViewer(newPlayer);
+            }
+        });
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(
+            LaBoulangerieCore.PLUGIN, ListenerPriority.MONITOR, PacketType.Play.Server.ENTITY_DESTROY
+        ) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                event.getPacket().getIntLists().getValues().get(0).stream().filter(id ->
+                    idToPlayer.get(id) != null
+                ).map(idToPlayer::get).forEach(p -> PlayerNameTag.get(p).removeViewer(event.getPlayer()));
             }
         });
     }

@@ -20,6 +20,7 @@ public class NameTagListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
         new PlayerNameTag(event.getPlayer());//.addViewer(event.getPlayer());
+        NameTagManager.idToPlayer.put(event.getPlayer().getEntityId(), event.getPlayer());
     }
 
     @EventHandler
@@ -65,6 +66,7 @@ public class NameTagListener implements Listener {
     public void onLeave(PlayerQuitEvent event) {
         PlayerNameTag nameTag = PlayerNameTag.get(event.getPlayer());
         if (nameTag != null) nameTag.destroy();
+        NameTagManager.idToPlayer.remove(event.getPlayer().getEntityId());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
