@@ -3,7 +3,7 @@ version: 1.0-SNAPSHOT
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.19
 authors: [Grooble_, PainOchoco, Blackoutburst]
-depend: [Towny, LuckPerms]
+depend: [Towny, LuckPerms, ProtocolLib]
 softdepend: [PlaceholderAPI, BetonQuest]
 commands:
     authenticate:
