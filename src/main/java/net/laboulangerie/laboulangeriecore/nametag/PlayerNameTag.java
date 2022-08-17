@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nonnull;
-
 import org.bukkit.entity.Player;
 
 import net.kyori.adventure.text.Component;
@@ -25,26 +23,41 @@ public class PlayerNameTag {
     private Player player;
     private ComponentRenderer renderer;
 
-    public PlayerNameTag(@Nonnull Player owner) {
+    public PlayerNameTag(Player owner) {
         this.renderer = LaBoulangerieCore.PLUGIN.getComponentRenderer();
         this.viewers = new ArrayList<>();
         this.player = owner;
         nameTags.add(this);
+        createNameTags();
+        updateText();
     }
 
-    public @Nonnull Player getOwner() { return player; }
-    public @Nonnull List<Player> getViewers() { return viewers; }
+    public Player getOwner() { return player; }
+    public List<Player> getViewers() { return viewers; }
 
-    public void createNameTags() {
+    public void addViewer(Player viewer) {
+        if (viewers.contains(viewer)) return;
+        sendEntities(viewer);
+        viewers.add(viewer);
+    }
+
+    public void removeViewer(Player viewer) {
+        viewers.remove(viewer);
+    }
+
+    private void createNameTags() {
         for (int i = 0; i < NameTagManager.rawNameTags.size(); i++) {
-            byte index = (byte) nameTagEntities.size();
-            nameTagEntities.set(index,
+            nameTagEntities.add(
                 new ArmorStandEntity(player.getWorld(), ArmorStandEntity.EntityType.ARMOR_STAND,
-                    player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.3 * index, player.getLocation().getZ()
+                    player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.3 * i, player.getLocation().getZ()
                 )
             );
-            for (Player viewer : viewers) spawnEntity(viewer, nameTagEntities.get(index));
+            for (Player viewer : viewers) spawnEntity(viewer, nameTagEntities.get(i));
         }        
+    }
+
+    private void sendEntities(Player viewer) {
+        for (ArmorStandEntity armorStandEntity : nameTagEntities) spawnEntity(viewer, armorStandEntity);
     }
 
     public void updatePosition() {
@@ -63,36 +76,19 @@ public class PlayerNameTag {
         for (int i = 0; i < nameTagEntities.size(); i++) {
             ArmorStandEntity entity = nameTagEntities.get(i);
             try {
-                final Method setSneaking = entity.getEntity().getClass().getMethod("f", boolean.class);
+                Method setSneaking = entity.getEntity().getClass().getMethod("f", boolean.class);
                 setSneaking.invoke(entity.getEntity(), player.isSneaking());
             } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
-                final Method setCustomNameVisible = entity.getEntity().getClass().getMethod("n", boolean.class);
-                setCustomNameVisible.invoke(entity.getEntity(), player.isInvisible());
+                Method setCustomNameVisible = entity.getEntity().getClass().getMethod("n", boolean.class);
+                setCustomNameVisible.invoke(entity.getEntity(), !player.isInvisible());
             } catch (Exception e) {
                 e.printStackTrace();
             }
             if (!entity.shouldBeDisplayed()) continue;
             for (Player viewer : viewers) NMSEntityMetadata.send(viewer, entity);
-        }
-    }
-
-    /**
-     * Change the visibility of the name tag, does not send the update to the client,
-     * {@link PlayerNameTag#updateState()} needs to be called for that to append
-     * @param isVisible
-     */
-    public void setVisibility(boolean isVisible) {
-        for (int i = 0; i < nameTagEntities.size(); i++) {
-            ArmorStandEntity entity = nameTagEntities.get(i);
-            try {
-                final Method setCustomNameVisible = entity.getEntity().getClass().getMethod("n", boolean.class);
-                setCustomNameVisible.invoke(entity.getEntity(), isVisible);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -102,39 +98,36 @@ public class PlayerNameTag {
             Component component = renderer.getPapiMiniMessage(player).deserialize(NameTagManager.rawNameTags.get(i));
             entity.setText(component);
             
-            if (!entity.shouldBeDisplayed()) return;
-            
+            if (!entity.shouldBeDisplayed()) continue;
+
             for (Player viewer : viewers) {
                 try {
                     NMSEntityMetadata.send(viewer, entity);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                } catch (Exception e) { e.printStackTrace(); }
             }
         }
-    }
-    
-    public static PlayerNameTag get(Player player) {
-        for (PlayerNameTag p : nameTags)
-        if (p.player.getUniqueId().equals(player.getUniqueId()))
-        return (p);
-        return (null);
     }
 
     public void destroy() {
         for (Player viewer : viewers) {
             NMSEntityDestroy.send(viewer, nameTagEntities.stream().mapToInt(ArmorStandEntity::getID).toArray());
+            PlayerNameTag.get(viewer).removeViewer(player);
         }
-        nameTags.remove(this);
+        PlayerNameTag.nameTags.remove(this);
     }
 
     private void spawnEntity(Player target, ArmorStandEntity entity) {
         if (!entity.shouldBeDisplayed()) return;
         try {
-            NMSSpawnEntityLiving.send(player, entity);
-            NMSEntityMetadata.send(player, entity);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            NMSSpawnEntityLiving.send(target, entity);
+            NMSEntityMetadata.send(target, entity);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public static PlayerNameTag get(Player player) {
+        for (PlayerNameTag p : nameTags)
+            if (p.player.getUniqueId().equals(player.getUniqueId()))
+                return (p);
+        return (null);
     }
 }

@@ -1,9 +1,5 @@
 package net.laboulangerie.laboulangeriecore.nametag;
 
-import java.lang.reflect.Method;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,22 +10,16 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.nms.NMSEntities;
-import net.laboulangerie.laboulangeriecore.nms.NMSEntityDestroy;
-import net.laboulangerie.laboulangeriecore.nms.NMSEntityMetadata;
-import net.laboulangerie.laboulangeriecore.nms.NMSEntityTeleport;
-import net.laboulangerie.laboulangeriecore.nms.NMSSpawnEntityLiving;
 
 public class NameTagListener implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
-        new PlayerNameTag(event.getPlayer());
+        new PlayerNameTag(event.getPlayer());//.addViewer(event.getPlayer());
     }
 
     @EventHandler
@@ -38,17 +28,10 @@ public class NameTagListener implements Listener {
         PlayerNameTag nameTag = PlayerNameTag.get(player);
         if (nameTag == null) return;
 
-        if (event.getAction().equals(EntityPotionEffectEvent.Action.ADDED) && event.getNewEffect() != null &&
-                event.getNewEffect().getType().equals(PotionEffectType.INVISIBILITY)
-            ) {
-            nameTag.setVisibility(false);
-
-        } else if (event.getAction().equals(EntityPotionEffectEvent.Action.REMOVED) && event.getOldEffect() != null &&
-                event.getOldEffect().getType().equals(PotionEffectType.INVISIBILITY)
-            ) {
-            nameTag.setVisibility(true);
-        }
-        nameTag.updateState(); // TODO: Test if this is enough and if setVisibility is really needed
+        new BukkitRunnable() { //Event is fired before the effect is applied
+            @Override          //thus we wait 2 ticks before updating the name tag
+            public void run() { nameTag.updateState(); }
+        }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 
     @EventHandler
@@ -65,47 +48,6 @@ public class NameTagListener implements Listener {
         if (playerNameTag == null) return;
 
         playerNameTag.updatePosition();
-
-        // for (PlayerNameTag tags : PlayerNameTag.nameTags) {
-        //     if (tags == playerNameTag) continue;
-        //     playerNameTag.getTagsVisible().putIfAbsent(tags.getNameTag().getID(), false);
-
-        //     double distance = Math.pow(event.getPlayer().getLocation().getX() - tags.getPlayer().getLocation().getX(), 2) +
-        //                     Math.pow(event.getPlayer().getLocation().getY() - tags.getPlayer().getLocation().getY(), 2) +
-        //                     Math.pow(event.getPlayer().getLocation().getZ() - tags.getPlayer().getLocation().getZ(), 2);
-
-        //     if (distance > 2000 && playerNameTag.getTagsVisible().get(tags.getNameTag().getID())) {
-        //         NMSEntityDestroy.send(playerNameTag.getPlayer(), tags.getAbove().getID());
-        //         NMSEntityDestroy.send(playerNameTag.getPlayer(), tags.getNameTag().getID());
-        //         NMSEntityDestroy.send(playerNameTag.getPlayer(), tags.getBelow().getID());
-        //         playerNameTag.getTagsVisible().put(tags.getNameTag().getID(), false);
-
-        //         NMSEntityDestroy.send(tags.getPlayer(), playerNameTag.getAbove().getID());
-        //         NMSEntityDestroy.send(tags.getPlayer(), playerNameTag.getNameTag().getID());
-        //         NMSEntityDestroy.send(tags.getPlayer(), playerNameTag.getBelow().getID());
-        //         tags.getTagsVisible().put(playerNameTag.getNameTag().getID(), false);
-        //     }
-
-        //     if (distance < 2000 && !playerNameTag.getTagsVisible().get(tags.getNameTag().getID())) {
-        //         NMSSpawnEntityLiving.send(playerNameTag.getPlayer(), tags.getAbove());
-        //         NMSSpawnEntityLiving.send(playerNameTag.getPlayer(), tags.getNameTag());
-        //         NMSSpawnEntityLiving.send(playerNameTag.getPlayer(), tags.getBelow());
-        //         NMSEntityMetadata.send(playerNameTag.getPlayer(), tags.getAbove());
-        //         NMSEntityMetadata.send(playerNameTag.getPlayer(), tags.getNameTag());
-        //         NMSEntityMetadata.send(playerNameTag.getPlayer(), tags.getBelow());
-        //         playerNameTag.getTagsVisible().put(tags.getNameTag().getID(), true);
-
-        //         NMSSpawnEntityLiving.send(tags.getPlayer(), playerNameTag.getAbove());
-        //         NMSSpawnEntityLiving.send(tags.getPlayer(), playerNameTag.getNameTag());
-        //         NMSSpawnEntityLiving.send(tags.getPlayer(), playerNameTag.getBelow());
-        //         NMSEntityMetadata.send(tags.getPlayer(), playerNameTag.getAbove());
-        //         NMSEntityMetadata.send(tags.getPlayer(), playerNameTag.getNameTag());
-        //         NMSEntityMetadata.send(tags.getPlayer(), playerNameTag.getBelow());
-        //         tags.getTagsVisible().put(playerNameTag.getNameTag().getID(), true);
-        //     }
-        // }
-
-        // moveNameTag(event.getPlayer());
     }
 
     @EventHandler
@@ -114,6 +56,7 @@ public class NameTagListener implements Listener {
             @Override          //is still standing, thus we wait 2 ticks before updating the nametag
             public void run() {
                 PlayerNameTag.get(event.getPlayer()).updateState();
+                PlayerNameTag.get(event.getPlayer()).updatePosition();
             }
         }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
