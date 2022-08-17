@@ -129,6 +129,21 @@ public class HouseListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onSetArmorStand(PlayerInteractEvent event) {
+        if (event.useInteractedBlock() == Event.Result.DENY && event.getClickedBlock() != null && (
+            event.getClickedBlock().getType() == Material.LEVER ||
+            event.getClickedBlock().getType().toString().endsWith("_BUTTON") ||
+            event.getClickedBlock().getType().toString().endsWith("PRESSURE_PLATE") ||
+            event.getClickedBlock().getType().toString().endsWith("_DOOR") ||
+            event.getClickedBlock().getType().toString().endsWith("_TRAPDOOR") ||
+            event.getClickedBlock().getType().toString().endsWith("_FENCE_GATE")
+        )) {
+            Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(event.getClickedBlock().getLocation());
+
+            if (!house.isPresent() || !house.get().hasMember(event.getPlayer().getUniqueId()) || !house.get().hasFlag(HouseFlags.CAN_FLICK)) return;
+
+            event.setCancelled(false);
+            return;
+        }
         if (event.useItemInHand() != Event.Result.DENY || event.getMaterial() != Material.ARMOR_STAND) return;
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(event.getInteractionPoint().toBlockLocation());
