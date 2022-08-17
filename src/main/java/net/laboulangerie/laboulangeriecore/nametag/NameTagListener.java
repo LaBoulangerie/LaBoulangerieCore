@@ -40,7 +40,10 @@ public class NameTagListener implements Listener {
         PlayerNameTag nameTag = PlayerNameTag.get(event.getPlayer());
         if (nameTag == null) return;
 
-        nameTag.updatePosition();
+        new BukkitRunnable() { //Event is fired before the player is teleported
+            @Override          //thus we wait 2 ticks before updating the name tag
+            public void run() { nameTag.updatePosition(); }
+        }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 
     @EventHandler
