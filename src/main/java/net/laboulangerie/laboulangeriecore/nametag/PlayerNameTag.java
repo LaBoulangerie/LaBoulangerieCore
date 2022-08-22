@@ -112,9 +112,9 @@ public class PlayerNameTag {
     public void destroy() {
         for (Player viewer : viewers) {
             NMSEntityDestroy.send(viewer, nameTagEntities.stream().mapToInt(ArmorStandEntity::getID).toArray());
+            if (viewer == player) continue;
             PlayerNameTag.get(viewer).removeViewer(player);
-        }
-        PlayerNameTag.nameTags.remove(this);
+        };
     }
 
     private void spawnEntity(Player target, ArmorStandEntity entity) {

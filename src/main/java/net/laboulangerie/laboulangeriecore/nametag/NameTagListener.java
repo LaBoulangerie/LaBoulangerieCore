@@ -68,7 +68,10 @@ public class NameTagListener implements Listener {
     @EventHandler
     public void onLeave(PlayerQuitEvent event) {
         PlayerNameTag nameTag = PlayerNameTag.get(event.getPlayer());
-        if (nameTag != null) nameTag.destroy();
+        if (nameTag != null) {
+            nameTag.destroy();
+            PlayerNameTag.nameTags.remove(nameTag);
+        }
         NameTagManager.idToPlayer.remove(event.getPlayer().getEntityId());
     }
 
