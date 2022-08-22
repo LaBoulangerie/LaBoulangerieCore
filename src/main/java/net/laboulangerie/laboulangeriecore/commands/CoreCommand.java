@@ -24,7 +24,8 @@ public class CoreCommand implements TabExecutor {
             LaBoulangerieCore.PLUGIN.reloadConfig();
             UsersData.init(); // Clean cache & ensure directory exists
             sender.sendMessage("§bReloading name tags...");
-            LaBoulangerieCore.PLUGIN.getNameTagManager().reload();
+            LaBoulangerieCore.PLUGIN.getNameTagManager().disable();
+            LaBoulangerieCore.PLUGIN.getNameTagManager().enable();
             sender.sendMessage("§aReload complete");
             return true;
         }

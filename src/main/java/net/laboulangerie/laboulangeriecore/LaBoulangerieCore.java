@@ -63,6 +63,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
@@ -94,6 +95,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
+        nameTagManager.enable();
 
         try {
             eEggUtil.ensureFilesExist();
@@ -101,7 +103,6 @@ public class LaBoulangerieCore extends JavaPlugin {
             e.printStackTrace();
         }
 
-        saveDefaultConfig();
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
@@ -166,6 +167,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             getLogger().severe("Failed to save nation houses while disabling");
             e.printStackTrace();
         }
+        nameTagManager.disable();
         getLogger().info("Disabled");
     }
 
