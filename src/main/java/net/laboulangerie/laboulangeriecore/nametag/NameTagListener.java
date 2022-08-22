@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -85,6 +86,19 @@ public class NameTagListener implements Listener {
         new BukkitRunnable() { //Event is fired before the player is actually riding,
             @Override          //thus we wait 2 ticks before updating the name tag
             public void run() { nameTag.updatePosition(); }
+        }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR) //We update the state because the player might go in or out spectator mode where he is invisible
+    public void onChangeGamemode(PlayerGameModeChangeEvent event) {
+        if (event.isCancelled()) return;
+
+        PlayerNameTag nameTag = PlayerNameTag.get(event.getPlayer());
+        if (nameTag == null) return;
+
+        new BukkitRunnable() { //Event is fired before the player actually changed gamemode,
+            @Override          //thus we wait 2 ticks before updating the name tag
+            public void run() { nameTag.updateState(); }
         }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 }
