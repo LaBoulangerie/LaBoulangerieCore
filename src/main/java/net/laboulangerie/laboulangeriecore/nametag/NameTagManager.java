@@ -35,6 +35,11 @@ public class NameTagManager {
 
         for (String key : configTabSection.getKeys(false)) rawNameTags.add(configTabSection.getString(key));
 
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            idToPlayer.put(p.getEntityId(), p);
+            new PlayerNameTag(p);
+        });
+
         textUpdateTask = new BukkitRunnable() {
             @Override
             public void run() { PlayerNameTag.nameTags.forEach(PlayerNameTag::updateText); }  

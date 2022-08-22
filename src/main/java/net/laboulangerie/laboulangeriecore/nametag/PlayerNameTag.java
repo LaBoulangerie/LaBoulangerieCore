@@ -4,11 +4,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntityDestroy;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntityMetadata;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntityTeleport;
@@ -30,6 +32,9 @@ public class PlayerNameTag {
         nameTags.add(this);
         createNameTags();
         updateText();
+
+        YamlConfiguration playerData = UsersData.get(owner).orElseGet(() -> UsersData.createUserData(owner));
+        if (playerData.getBoolean("show-own-name-tag", false)) addViewer(owner);
     }
 
     public Player getOwner() { return player; }

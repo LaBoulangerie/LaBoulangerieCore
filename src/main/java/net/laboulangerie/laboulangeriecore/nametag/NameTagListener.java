@@ -19,8 +19,8 @@ public class NameTagListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
-        new PlayerNameTag(event.getPlayer());//.addViewer(event.getPlayer());
         NameTagManager.idToPlayer.put(event.getPlayer().getEntityId(), event.getPlayer());
+        new PlayerNameTag(event.getPlayer());
     }
 
     @EventHandler
