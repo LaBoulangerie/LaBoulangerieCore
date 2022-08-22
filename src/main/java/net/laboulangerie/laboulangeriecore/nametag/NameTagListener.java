@@ -80,6 +80,11 @@ public class NameTagListener implements Listener {
         if (!(event.getEntity() instanceof Player) || event.isCancelled()) return;
 
         PlayerNameTag nameTag = PlayerNameTag.get((Player) event.getEntity());
-        if (nameTag != null) nameTag.updatePosition();
+        if (nameTag == null) return;
+
+        new BukkitRunnable() { //Event is fired before the player is actually riding,
+            @Override          //thus we wait 2 ticks before updating the name tag
+            public void run() { nameTag.updatePosition(); }
+        }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 }

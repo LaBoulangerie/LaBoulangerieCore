@@ -45,8 +45,8 @@ public class NameTagManager {
         ) {
             @Override
             public void onPacketSending(PacketEvent event) {
-                Player newPlayer = Bukkit.getPlayer(event.getPacket().getUUIDs().getValues().get(0));
-                if (newPlayer.getUniqueId().version() == 2) return; // UUIDv2 is used for NPCs
+                Player newPlayer = idToPlayer.get(event.getPacket().getIntegers().getValues().get(0));
+                if (newPlayer == null) return;
 
                 PlayerNameTag.get(event.getPlayer()).addViewer(newPlayer);
             }
