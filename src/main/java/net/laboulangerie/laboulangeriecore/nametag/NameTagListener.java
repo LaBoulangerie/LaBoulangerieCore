@@ -57,7 +57,7 @@ public class NameTagListener implements Listener {
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         new BukkitRunnable() { //Event is fired before the player is actually sneaking, so its bounding box
-            @Override          //is still standing, thus we wait 2 ticks before updating the nametag
+            @Override          //is still standing, thus we wait 2 ticks before updating the name tag
             public void run() {
                 PlayerNameTag.get(event.getPlayer()).updateState();
                 PlayerNameTag.get(event.getPlayer()).updatePosition();
