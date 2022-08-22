@@ -5,7 +5,7 @@ tab:
     # MiniMessage format and PAPI placeholders allowed
     header: "<rainbow>La Boulangerie"
     name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
-    footer: "<papi:townyadvanced_towny_colour><townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
+    footer: "<papi:townyadvanced_towny_colour><papi:townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
 
 nametag:
     below: "<papi:player_colored_ping>"
