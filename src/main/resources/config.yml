@@ -68,4 +68,4 @@ auto-messages: #List of messages to broadcast automatically
     # - Not even close
     # - frogs are the best
 
-emerald-value: 5 #Define what is the value of one emerald
+emerald-value: 2 #Define what is the value of one emerald

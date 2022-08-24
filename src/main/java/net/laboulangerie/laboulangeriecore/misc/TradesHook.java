@@ -28,13 +28,9 @@ public class TradesHook implements Listener {
 
         Merchant merchant = ((MerchantInventory) event.getInventory()).getMerchant();
 
-        List<MerchantRecipe> newRecipes = merchant.getRecipes().stream().map(recipe -> {
+        List<MerchantRecipe> newRecipes = merchant.getRecipes().stream().filter(recipe -> recipe.getResult().getType() != Material.EMERALD).map(recipe -> {
             currency.setAmount(recipe.getResult().getAmount() * EMERALD_VALUE);
-            MerchantRecipe newRecipe = new MerchantRecipe((
-                    recipe.getResult().getType() == Material.EMERALD
-                    ? currency.clone()
-                    : recipe.getResult()
-                ),
+            MerchantRecipe newRecipe = new MerchantRecipe(recipe.getResult(),
                 recipe.getUses(), recipe.getMaxUses(),
                 recipe.hasExperienceReward(), recipe.getVillagerExperience(),
                 recipe.getPriceMultiplier()
