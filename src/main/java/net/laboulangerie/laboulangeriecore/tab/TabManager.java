@@ -33,10 +33,11 @@ public class TabManager {
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
 
         for (final Group g : groups) {
-            final String teamName = g.getWeight()+g.getName();
+            final String teamName = g.getName();
             if (board.getTeam(teamName) != null) continue;
             Team team = board.registerNewTeam(teamName);
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+            team.setCanSeeFriendlyInvisibles(false);
         }
     }
 
@@ -47,9 +48,9 @@ public class TabManager {
         final Group group = lpApi.getGroupManager().getGroup(user.getPrimaryGroup());
         if (group == null) return null;
 
-        final String teamName = group.getWeight()+group.getName();
+        final String teamName = group.getName();
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
-        return (board.getTeam(teamName));
+        return board.getTeam(teamName);
     }
 
     private void updateTab() {
