@@ -5,17 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -23,8 +19,14 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.palmergames.bukkit.towny.TownyUniverse;
+import com.palmergames.bukkit.towny.object.Nation;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
+
 import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class AuthenticateCommand implements @Nullable CommandExecutor, TabCompleter {
 
@@ -106,6 +108,9 @@ public class AuthenticateCommand implements @Nullable CommandExecutor, TabComple
         item.setItemMeta(meta);
 
         item.lore(lore);
+
+        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        data.set("authentications-count", data.get("authentications-count", 0));
         return true;
     }
 
