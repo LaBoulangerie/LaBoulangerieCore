@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,8 +34,11 @@ public class CoreCommand implements TabExecutor {
         if (args[0].equalsIgnoreCase("conversion")) {
             if (!(sender instanceof Player))
                 sender.sendMessage("§4Only players can use that");
-            else
+            else {
                 ConversionInv.displayConversionInv((Player) sender);
+                YamlConfiguration data = UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+                data.set("conversions-count", data.get("conversions-count", 0));
+            }
             return true;
         }
         return false;
