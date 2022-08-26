@@ -14,8 +14,7 @@ public class ScoreBoardManager {
         final Scoreboard board = manager.getMainScoreboard();
         if (board.getObjective("ability_used_count") != null) {
             objective = board.getObjective("ability_used_count");
-        }
-        else {
+        } else {
             objective = board.registerNewObjective("ability_used_count", "dummy");
         }
         useObjectives(objective, player, board);

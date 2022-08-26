@@ -3,8 +3,7 @@ target/
 build.bat
 .project
 .classpath
-update eclipse.bat
-src/main/java/net/laboulangerie/laboulangeriecore/commands/CountdownCommand.java
 .settings/org.eclipse.m2e.core.prefs
 .settings/org.eclipse.jdt.core.prefs
 .settings/org.eclipse.core.resources.prefs
+bin/

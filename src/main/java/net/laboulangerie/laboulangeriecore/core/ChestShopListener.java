@@ -1,34 +1,13 @@
 package net.laboulangerie.laboulangeriecore.core;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Chest;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.gestern.gringotts.currency.Denomination;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
-
-import static org.gestern.gringotts.Configuration.CONF;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
-import org.maxgamer.quickshop.api.shop.Shop;
-
-import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class ChestShopListener implements Listener {
 
     // In time
     // ShopPurchaseEvent -> EconomyCommitEvent -> ShopSuccessPurchaseEvent
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    /*@EventHandler(priority = EventPriority.MONITOR)
     private void onShopPurchase(ShopPurchaseEvent event) {
         Shop shop = event.getShop();
         OfflinePlayer owner = Bukkit.getPlayer(shop.getOwner());
@@ -132,5 +111,5 @@ public class ChestShopListener implements Listener {
         }
 
         return similars;
-    }
+    }*/
 }
