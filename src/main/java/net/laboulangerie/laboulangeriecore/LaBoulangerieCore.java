@@ -44,6 +44,7 @@ import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
+import net.laboulangerie.laboulangeriecore.misc.SpawnCmd;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
@@ -118,6 +119,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("core").setExecutor(new CoreCommand());
         getCommand("easteregg").setExecutor(new eEggCommand());
         getCommand("houseshop").setExecutor(new HouseShopCmd());
+        getCommand("spawn").setExecutor(new SpawnCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
