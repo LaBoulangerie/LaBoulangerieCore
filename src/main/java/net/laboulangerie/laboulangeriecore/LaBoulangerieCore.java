@@ -44,6 +44,7 @@ import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
+import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
@@ -131,6 +132,8 @@ public class LaBoulangerieCore extends JavaPlugin {
             BetonQuest.getInstance().registerConditions("towny_has_house", HasHouseCondition.class);
             getLogger().info("Hooked in BetonQuest!");
         }
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) { new LaBoulangerieExpansion().register(); }
 
         new BukkitRunnable() {
             @Override
