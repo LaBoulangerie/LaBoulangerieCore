@@ -7,7 +7,7 @@ public class ChestShopListener implements Listener {
     // In time
     // ShopPurchaseEvent -> EconomyCommitEvent -> ShopSuccessPurchaseEvent
 
-    /*@EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR)
     private void onShopPurchase(ShopPurchaseEvent event) {
         Shop shop = event.getShop();
         OfflinePlayer owner = Bukkit.getPlayer(shop.getOwner());
@@ -111,5 +111,5 @@ public class ChestShopListener implements Listener {
         }
 
         return similars;
-    }*/
+    }
 }
