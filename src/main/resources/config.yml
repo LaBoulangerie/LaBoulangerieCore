@@ -5,12 +5,12 @@ tab:
     # MiniMessage format and PAPI placeholders allowed
     header: "<rainbow>La Boulangerie"
     name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
-    footer: "<papi:townyadvanced_towny_colour><townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
+    footer: "<papi:townyadvanced_towny_colour><papi:townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
 
 nametag:
-    above: "<papi:luckperms_prefix>"
-    nametag: "<papi:player_name>"
     below: "<papi:player_colored_ping>"
+    nametag: "<rainbow><papi:player_name>"
+    above: "<papi:luckperms_prefix>"
 
 links:
     discord: "https://laboulangerie.net/discord"
@@ -137,3 +137,5 @@ auto-messages: #List of messages to broadcast automatically
     # - Subscribe to Technoblade
     # - Not even close
     # - frogs are the best
+
+emerald-value: 2 #Define what is the value of one emerald

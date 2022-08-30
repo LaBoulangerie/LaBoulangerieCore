@@ -86,9 +86,6 @@ public class eEggUtil {
     }
 
     public static void ensureFilesExist() throws IOException {
-        File folder = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "/eastereggs");
-        if (!folder.exists()) folder.mkdir();
-
         if (!eggsFile.exists()) eggsFile.createNewFile();
         eggsData = YamlConfiguration.loadConfiguration(eggsFile);
         if (!eggsData.isSet("eggs")) eggsData.set("eggs", new ArrayList<String>());

@@ -3,7 +3,7 @@ version: 1.0-SNAPSHOT
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.19
 authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3]
-depend: [Towny, LuckPerms]
+depend: [Towny, LuckPerms, ProtocolLib]
 softdepend: [PlaceholderAPI, BetonQuest]
 commands:
     authenticate:
@@ -59,6 +59,9 @@ commands:
         description: Admin commands for the plugin
         usage: /core reload|conversion
         aliases: [lcore]
+    spawn:
+        description: Go to spawn
+        usage: /spawn
 permissions:
     laboulangeriecore.*:
         default: op

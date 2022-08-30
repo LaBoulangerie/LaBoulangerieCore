@@ -3,6 +3,7 @@ package net.laboulangerie.laboulangeriecore.houses.nationhouse;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,6 +13,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.houses.House;
 
 public class HouseShopCmd implements CommandExecutor {
@@ -25,6 +27,8 @@ public class HouseShopCmd implements CommandExecutor {
         Player player = (Player) sender;
         if (args.length == 0) {
             HouseShop.displayShop(player, (short) 0);
+            YamlConfiguration data = UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+            data.set("houseshop-uses", data.get("houseshop-uses", 0));
             return true;
         }
         if (args[0].equalsIgnoreCase("sell")) {
@@ -53,6 +57,8 @@ public class HouseShopCmd implements CommandExecutor {
 
             player.sendMessage("§aVotre maison de nation a été vendue.");
             house.getMembers().clear();
+            YamlConfiguration data = UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+            data.set("houses-sold", data.get("houses-sold", 0));
             return true;
         }
         return true;

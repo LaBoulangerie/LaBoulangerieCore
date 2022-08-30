@@ -1,62 +1,77 @@
 package net.laboulangerie.laboulangeriecore.nametag;
 
-import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
-import net.kyori.adventure.text.Component;
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
+
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 
 public class NameTagManager {
+    public static List<String> rawNameTags;
+    /**
+     * A cache linking entity id to its corresponding {@link Player}
+     */
+    public static Map<Integer, Player> idToPlayer;
 
+    private BukkitTask textUpdateTask;
 
-    private ConfigurationSection configTabSection;
-    private final ComponentRenderer renderer;
+    public void enable() {
+        ConfigurationSection configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("nametag");
+        rawNameTags = new ArrayList<>();
+        idToPlayer = new HashMap<>();
 
-    public NameTagManager() {
+        for (String key : configTabSection.getKeys(false)) rawNameTags.add(configTabSection.getString(key));
 
-        this.configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("nametag");
-        this.renderer = LaBoulangerieCore.PLUGIN.getComponentRenderer();
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            idToPlayer.put(p.getEntityId(), p);
+            new PlayerNameTag(p);
+        });
+
+        textUpdateTask = new BukkitRunnable() {
+            @Override
+            public void run() { PlayerNameTag.nameTags.forEach(PlayerNameTag::updateText); }  
+        }.runTaskTimer(LaBoulangerieCore.PLUGIN, 20, 20);
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(
+            LaBoulangerieCore.PLUGIN, ListenerPriority.MONITOR, PacketType.Play.Server.NAMED_ENTITY_SPAWN
+        ) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                Player newPlayer = idToPlayer.get(event.getPacket().getIntegers().getValues().get(0));
+                if (newPlayer == null) return;
+
+                PlayerNameTag.get(event.getPlayer()).addViewer(newPlayer);
+            }
+        });
+
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(
+            LaBoulangerieCore.PLUGIN, ListenerPriority.MONITOR, PacketType.Play.Server.ENTITY_DESTROY
+        ) {
+            @Override
+            public void onPacketSending(PacketEvent event) {
+                event.getPacket().getIntLists().getValues().get(0).stream().filter(id ->
+                    idToPlayer.get(id) != null
+                ).map(idToPlayer::get).forEach(p -> PlayerNameTag.get(p).removeViewer(event.getPlayer()));
+            }
+        });
     }
 
-    public void reload() {
-        configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("nametag");
-        Bukkit.getOnlinePlayers().forEach(this::updateNameTag);
-    }
-
-    private void setAbove(@Nonnull Player player) {
-        final String section = configTabSection.getString("above");
-        final Component component = renderer.getPapiMiniMessage(player).deserialize(section);
-        final PlayerNameTag playerNameTag = PlayerNameTag.get(player);
-        if (playerNameTag == null) return;
-
-        Bukkit.getOnlinePlayers().forEach(p -> playerNameTag.spawnNameTag(p, playerNameTag.getAbove(), component));
-    }
-
-    private void setNameTag(@Nonnull Player player) {
-        final String section = configTabSection.getString("nametag");
-        final Component component = renderer.getPapiMiniMessage(player).deserialize(section);
-        final PlayerNameTag playerNameTag = PlayerNameTag.get(player);
-        if (playerNameTag == null) return;
-
-        Bukkit.getOnlinePlayers().forEach(p -> playerNameTag.spawnNameTag(p, playerNameTag.getNameTag(), component));
-    }
-
-    private void setBelow(@Nonnull Player player) {
-        final String section = configTabSection.getString("below");
-        final Component component = renderer.getPapiMiniMessage(player).deserialize(section);
-        final PlayerNameTag playerNameTag = PlayerNameTag.get(player);
-        if (playerNameTag == null) return;
-
-        Bukkit.getOnlinePlayers().forEach(p -> playerNameTag.spawnNameTag(p, playerNameTag.getBelow(), component));
-    }
-
-    public void updateNameTag(@Nonnull Player player) {
-        setAbove(player);
-        setNameTag(player);
-        setBelow(player);
+    public void disable() {
+        textUpdateTask.cancel();
+        PlayerNameTag.nameTags.forEach(PlayerNameTag::destroy);
+        PlayerNameTag.nameTags.clear();
     }
 }

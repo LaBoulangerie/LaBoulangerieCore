@@ -45,6 +45,8 @@ import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
+import net.laboulangerie.laboulangeriecore.misc.SpawnCmd;
+import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.nametag.NameTagManager;
@@ -64,6 +66,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         if (!setupEconomy()) {
             getLogger().severe("Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
@@ -95,6 +98,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
+        nameTagManager.enable();
 
         try {
             eEggUtil.ensureFilesExist();
@@ -102,7 +106,6 @@ public class LaBoulangerieCore extends JavaPlugin {
             e.printStackTrace();
         }
 
-        saveDefaultConfig();
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
@@ -117,6 +120,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("core").setExecutor(new CoreCommand());
         getCommand("easteregg").setExecutor(new eEggCommand());
         getCommand("houseshop").setExecutor(new HouseShopCmd());
+        getCommand("spawn").setExecutor(new SpawnCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -131,6 +135,8 @@ public class LaBoulangerieCore extends JavaPlugin {
             BetonQuest.getInstance().registerConditions("towny_has_house", HasHouseCondition.class);
             getLogger().info("Hooked in BetonQuest!");
         }
+
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) { new LaBoulangerieExpansion().register(); }
 
         new BukkitRunnable() {
             @Override
@@ -167,6 +173,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             getLogger().severe("Failed to save nation houses while disabling");
             e.printStackTrace();
         }
+        nameTagManager.disable();
         getLogger().info("Disabled");
     }
 
