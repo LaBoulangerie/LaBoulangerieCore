@@ -12,9 +12,7 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntityDestroy;
-import net.laboulangerie.laboulangeriecore.nms.NMSEntityMetadata;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntityTeleport;
-import net.laboulangerie.laboulangeriecore.nms.NMSSpawnEntityLiving;
 
 public class PlayerNameTag {
 
@@ -58,12 +56,12 @@ public class PlayerNameTag {
                     player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.3 * i, player.getLocation().getZ()
                 )
             );
-            for (Player viewer : viewers) spawnEntity(viewer, nameTagEntities.get(i));
+            for (Player viewer : viewers) nameTagEntities.get(i).spawn(viewer);
         }        
     }
 
     private void sendEntities(Player viewer) {
-        for (ArmorStandEntity armorStandEntity : nameTagEntities) spawnEntity(viewer, armorStandEntity);
+        for (ArmorStandEntity armorStandEntity : nameTagEntities) armorStandEntity.spawn(viewer);
     }
 
     public void updatePosition() {
@@ -94,7 +92,7 @@ public class PlayerNameTag {
                 e.printStackTrace();
             }
             if (!entity.shouldBeDisplayed()) continue;
-            for (Player viewer : viewers) NMSEntityMetadata.send(viewer, entity);
+            for (Player viewer : viewers) entity.sendMetadata(viewer);
         }
     }
 
@@ -107,9 +105,7 @@ public class PlayerNameTag {
             if (!entity.shouldBeDisplayed()) continue;
 
             for (Player viewer : viewers) {
-                try {
-                    NMSEntityMetadata.send(viewer, entity);
-                } catch (Exception e) { e.printStackTrace(); }
+                entity.sendMetadata(viewer);
             }
         }
     }
@@ -121,14 +117,6 @@ public class PlayerNameTag {
             PlayerNameTag viewerNameTag = PlayerNameTag.get(viewer);
             if (viewerNameTag != null) viewerNameTag.removeViewer(player);
         };
-    }
-
-    private void spawnEntity(Player target, ArmorStandEntity entity) {
-        if (!entity.shouldBeDisplayed()) return;
-        try {
-            NMSSpawnEntityLiving.send(target, entity);
-            NMSEntityMetadata.send(target, entity);
-        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public static PlayerNameTag get(Player player) {
