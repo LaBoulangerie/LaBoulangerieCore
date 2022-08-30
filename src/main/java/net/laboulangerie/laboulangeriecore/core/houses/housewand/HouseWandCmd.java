@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.houses.housewand;
+package net.laboulangerie.laboulangeriecore.core.houses.housewand;
 
 import org.bukkit.Material;
 import org.bukkit.command.Command;

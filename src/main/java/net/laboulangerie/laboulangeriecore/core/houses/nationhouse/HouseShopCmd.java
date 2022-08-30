@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.houses.nationhouse;
+package net.laboulangerie.laboulangeriecore.core.houses.nationhouse;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +14,7 @@ import com.palmergames.bukkit.towny.object.Resident;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
-import net.laboulangerie.laboulangeriecore.houses.House;
+import net.laboulangerie.laboulangeriecore.core.houses.House;
 
 public class HouseShopCmd implements CommandExecutor {
 

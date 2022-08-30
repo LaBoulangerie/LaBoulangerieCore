@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.favors;
+package net.laboulangerie.laboulangeriecore.core.favors;
 
 import java.io.IOException;
 

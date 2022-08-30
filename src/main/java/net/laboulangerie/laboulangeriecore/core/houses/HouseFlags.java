@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.houses;
+package net.laboulangerie.laboulangeriecore.core.houses;
 
 public enum HouseFlags {
     CAN_BUILD,

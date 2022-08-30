@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.nametag;
+package net.laboulangerie.laboulangeriecore.core.nametag;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
