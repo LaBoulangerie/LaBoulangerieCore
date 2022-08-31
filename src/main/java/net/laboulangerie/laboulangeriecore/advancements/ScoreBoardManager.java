@@ -7,6 +7,8 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import net.kyori.adventure.text.Component;
+
 public class ScoreBoardManager {
     public static void setPlayerScore(OfflinePlayer player) {
         Objective objective;
@@ -15,7 +17,7 @@ public class ScoreBoardManager {
         if (board.getObjective("ability_used_count") != null) {
             objective = board.getObjective("ability_used_count");
         } else {
-            objective = board.registerNewObjective("ability_used_count", "dummy");
+            objective = board.registerNewObjective("ability_used_count", "dummy", Component.text("Ability used coint"));
         }
         useObjectives(objective, player, board);
     }
@@ -23,7 +25,7 @@ public class ScoreBoardManager {
     public static void useObjectives(Objective objective, OfflinePlayer player, Scoreboard board) {
         player.getPlayer().setScoreboard(board);
         Score score = objective.getScore(player);
-        score.setScore(score.getScore()+1);
+        score.setScore(score.getScore() + 1);
         if (score.getScore() >= 100) {
             AdvancementManager.tryToCompleteAdvancement(player.getPlayer(), "mmo/farmer/grow_100_potatoes");
         }
