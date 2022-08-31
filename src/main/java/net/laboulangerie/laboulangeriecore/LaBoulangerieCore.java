@@ -18,7 +18,6 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
-import net.laboulangerie.laboulangeriecore.core.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
@@ -40,6 +39,7 @@ import net.laboulangerie.laboulangeriecore.houses.nationhouse.HouseShop;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHouseHolder;
 import net.laboulangerie.laboulangeriecore.houses.nationhouse.NationHousesCmd;
+import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
@@ -136,15 +136,19 @@ public class LaBoulangerieCore extends JavaPlugin {
             getLogger().info("Hooked in BetonQuest!");
         }
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) { new LaBoulangerieExpansion().register(); }
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new LaBoulangerieExpansion().register();
+        }
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 List<String> messages = getConfig().getStringList("auto-messages");
-                if (messages.size() == 0) return;
+                if (messages.size() == 0)
+                    return;
                 Random rand = new Random();
-                getServer().broadcast(MiniMessage.miniMessage().deserialize(messages.get(rand.nextInt(messages.size()))));
+                getServer()
+                        .broadcast(MiniMessage.miniMessage().deserialize(messages.get(rand.nextInt(messages.size()))));
             }
         }.runTaskTimerAsynchronously(this, 200, getConfig().getInt("auto-messages-interval") * 20);
 
@@ -182,9 +186,9 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(), new AdvancementListeners(), new FirstJoinActions(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv()
-        );
-        if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
+                new ConversionInv());
+        if (getServer().getPluginManager().getPlugin("ChestShop") != null)
+            listeners.add(new ChestShopListener());
 
         listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
