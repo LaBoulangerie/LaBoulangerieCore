@@ -19,76 +19,78 @@ links:
     twitter: "https://twitter.com/BoulangerieMc"
     github: "https://github.com/LaBoulangerie"
     map: "https://laboulangerie.net/map"
- 
+
+misc:
+    declined-pack-kick-msg: "<red>Veuillez accepter le pack de ressources pour jouer s'il vous plaît !"
+
 avancements:
     miner:
         brossage_minutieux:
             enabled: true
         pioche_aiguisee:
-             enabled: true
+            enabled: true
         champ_magnetique:
-             enabled: true
+            enabled: true
         cuisson_instantanee:
-             enabled: true
+            enabled: true
         gain_25_exp_with_ore:
-             enabled: true
+            enabled: true
         pioche_aiguisee_on_obsidian:
-             enabled: true
+            enabled: true
         ores_300_with_champ_magnetique:
-             enabled: true
-             
+            enabled: true
+
     hunter:
         camouflage:
-             enabled: true
+            enabled: true
         esquive:
-             enabled: true
+            enabled: true
         fleche_enflammee:
-             enabled: true
+            enabled: true
         mise_en_bouteille:
-             enabled: true
+            enabled: true
         fire_arrow_in_claim:
-             enabled: true
+            enabled: true
         terrorism:
-             enabled: true
+            enabled: true
         kill_with_camouflage:
-             enabled: true
+            enabled: true
         kill_yourself_with_explosive_arrow:
-             enabled: true
+            enabled: true
         dodge_life:
-             enabled: true
-        
+            enabled: true
+
     lumberjack:
         timber:
-             enabled: true
+            enabled: true
         chance_du_bucheron:
-             enabled: true
+            enabled: true
         haricot_magique:
-             enabled: true
+            enabled: true
         strip_tease:
-             enabled: true
+            enabled: true
         strip_a_player:
-             enabled: true
+            enabled: true
         tree_in_player:
-             enabled: true
-        
+            enabled: true
+
     farmer:
         jeune_pousse:
-             enabled: true
+            enabled: true
         engrais_naturel:
-             enabled: true
+            enabled: true
         jumeaux:
-             enabled: true
+            enabled: true
         pain_odorant:
-             enabled: true
+            enabled: true
         engrais_a_player:
-             enabled: true
+            enabled: true
         jumeaux_a_player:
-             enabled: true
+            enabled: true
         kill_player_with_bread:
-             enabled: true
+            enabled: true
         grow_100_potatoes:
-             enabled: true
-
+            enabled: true
 
 bundle:
     item-name: "&a>> &e&lBourse &a<<"
@@ -133,7 +135,7 @@ eastereggs:
 fist-join-commands:
 
 auto-messages-interval: 120 #Interval in seconds between message broadcast
-auto-messages: #List of messages to broadcast automatically
+auto-messages:#List of messages to broadcast automatically
     # - Subscribe to Technoblade
     # - Not even close
     # - frogs are the best
