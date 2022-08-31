@@ -20,6 +20,9 @@ links:
     github: "https://github.com/LaBoulangerie"
     map: "https://laboulangerie.net/map"
 
+misc:
+    declined-pack-kick-msg: "<red>Veuillez accepter le pack de ressources pour jouer s'il vous plaît !"
+
 bundle:
     item-name: "&a>> &e&lBourse &a<<"
     item-lore:
@@ -63,7 +66,7 @@ eastereggs:
 fist-join-commands:
 
 auto-messages-interval: 120 #Interval in seconds between message broadcast
-auto-messages: #List of messages to broadcast automatically
+auto-messages:#List of messages to broadcast automatically
     # - Subscribe to Technoblade
     # - Not even close
     # - frogs are the best
