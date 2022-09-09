@@ -1,18 +1,22 @@
-package net.laboulangerie.laboulangeriecore.nametag;
+package net.laboulangerie.laboulangeriecore.core.nametag;
 
 import java.lang.reflect.Method;
 
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.nms.NMS;
 import net.laboulangerie.laboulangeriecore.nms.NMSEntities;
+import net.laboulangerie.laboulangeriecore.nms.NMSEntityMetadata;
+import net.laboulangerie.laboulangeriecore.nms.NMSSpawnEntityLiving;
 
 public class ArmorStandEntity extends NMSEntities {
 
     private boolean shouldBeDisplayed = true;
+    private boolean wasHidden = true;
 
     public ArmorStandEntity(World world, EntityType type, Object... parameters) {
         super(world, type, parameters);
@@ -53,6 +57,21 @@ public class ArmorStandEntity extends NMSEntities {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void spawn(Player target) {
+        if (!shouldBeDisplayed) return;
+        try {
+            NMSSpawnEntityLiving.send(target, this);
+            NMSEntityMetadata.send(target, this);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public void sendMetadata(Player target) {
+        if (wasHidden) spawn(target);
+        try {
+            NMSEntityMetadata.send(target, this);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     public boolean shouldBeDisplayed() { return shouldBeDisplayed; }

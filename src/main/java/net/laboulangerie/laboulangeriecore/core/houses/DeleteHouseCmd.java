@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.houses;
+package net.laboulangerie.laboulangeriecore.core.houses;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import org.bukkit.command.Command;

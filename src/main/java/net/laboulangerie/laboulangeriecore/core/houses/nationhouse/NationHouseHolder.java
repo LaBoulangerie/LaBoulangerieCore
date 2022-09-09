@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.houses.nationhouse;
+package net.laboulangerie.laboulangeriecore.core.houses.nationhouse;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.houses.House;
+import net.laboulangerie.laboulangeriecore.core.houses.House;
 
 public class NationHouseHolder {
     private File dataFile = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "nationshouses.yml");

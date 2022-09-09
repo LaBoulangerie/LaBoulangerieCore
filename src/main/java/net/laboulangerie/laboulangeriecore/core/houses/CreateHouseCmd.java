@@ -1,7 +1,7 @@
-package net.laboulangerie.laboulangeriecore.houses;
+package net.laboulangerie.laboulangeriecore.core.houses;
 
-import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.firstPos;
-import static net.laboulangerie.laboulangeriecore.houses.housewand.HouseWandListener.secondPos;
+import static net.laboulangerie.laboulangeriecore.core.houses.housewand.HouseWandListener.firstPos;
+import static net.laboulangerie.laboulangeriecore.core.houses.housewand.HouseWandListener.secondPos;
 
 import java.util.ArrayList;
 

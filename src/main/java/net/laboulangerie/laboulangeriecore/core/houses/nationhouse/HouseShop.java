@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.houses.nationhouse;
+package net.laboulangerie.laboulangeriecore.core.houses.nationhouse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +29,7 @@ import com.palmergames.bukkit.towny.object.Nation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.houses.House;
+import net.laboulangerie.laboulangeriecore.core.houses.House;
 
 public class HouseShop implements Listener {
     public static void displayShop(Player player, short page) {

@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.houses.nationhouse;
+package net.laboulangerie.laboulangeriecore.core.houses.nationhouse;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import net.laboulangerie.laboulangeriecore.houses.House;
-import net.laboulangerie.laboulangeriecore.houses.HouseFlags;
+import net.laboulangerie.laboulangeriecore.core.houses.House;
+import net.laboulangerie.laboulangeriecore.core.houses.HouseFlags;
 
 public class NationHousesCmd implements CommandExecutor, TabCompleter {
     public NationHousesCmd() {}

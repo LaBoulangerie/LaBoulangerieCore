@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.nametag;
+package net.laboulangerie.laboulangeriecore.core.nametag;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

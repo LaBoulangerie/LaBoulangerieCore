@@ -1,5 +1,5 @@
 
-package net.laboulangerie.laboulangeriecore.houses;
+package net.laboulangerie.laboulangeriecore.core.houses;
 
 import java.util.Optional;
 
