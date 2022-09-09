@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.core;
+package net.laboulangerie.laboulangeriecore.misc;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
