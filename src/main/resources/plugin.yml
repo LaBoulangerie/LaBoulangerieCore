@@ -55,6 +55,7 @@ commands:
     easteregg:
         description: Main command for the easteregg part
         aliases: [eegg]
+        permission: laboulangeriecore.admin
     core:
         description: Admin commands for the plugin
         usage: /core reload|conversion
@@ -71,7 +72,6 @@ permissions:
             - laboulangeriecore.house.admin
             - laboulangeriecore.admin
             - laboulangeriecore.houseshop
-            - laboulangeriecore.admin
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
