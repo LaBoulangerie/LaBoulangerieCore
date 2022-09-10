@@ -9,32 +9,32 @@ import org.bukkit.entity.Player;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class AdvancementManager {
-    public static boolean tryToCompleteAdvancement(Player player, String name) {
-        if (!(AdvancementManager.playerHasAdvancement(player, name)) && AdvancementManager.isAdvancementEnabled(name)) {
-            // name should be something like husbandry/break_diamond_hoe
-            Advancement a = Bukkit.getAdvancement(new NamespacedKey("lb.general", name));
-            if(a == null) return false;
-            NamespacedKey key = new NamespacedKey("lb.general", name);
-            AdvancementProgress progress = player.getAdvancementProgress(Bukkit.getAdvancement(key));
-            for(String criteria : progress.getRemainingCriteria())
-                progress.awardCriteria(criteria);
-            return true;
-        }
-        return false;
-    }
+	public static boolean tryToCompleteAdvancement(Player player, String name) {
+		if (!(AdvancementManager.playerHasAdvancement(player, name)) && AdvancementManager.isAdvancementEnabled(name)) {
+			// name should be something like husbandry/break_diamond_hoe
+			Advancement a = Bukkit.getAdvancement(new NamespacedKey("lb.general", name));
+			if(a == null) return false;
+			NamespacedKey key = new NamespacedKey("lb.general", name);
+			AdvancementProgress progress = player.getAdvancementProgress(Bukkit.getAdvancement(key));
+			for(String criteria : progress.getRemainingCriteria())
+				progress.awardCriteria(criteria);
+			return true;
+		}
+		return false;
+	}
 
-    public static boolean playerHasAdvancement(Player player, String name) {
-        // name should be something like husbandry/break_diamond_hoe
-        Advancement a = Bukkit.getAdvancement(new NamespacedKey("lb.genral", name));
-        if(a == null) return false;
-        AdvancementProgress progress = player.getAdvancementProgress(a);
-        return progress.isDone();
-    }
+	public static boolean playerHasAdvancement(Player player, String name) {
+		// name should be something like husbandry/break_diamond_hoe
+		Advancement a = Bukkit.getAdvancement(new NamespacedKey("lb.general", name));
+		if(a == null) return false;
+		AdvancementProgress progress = player.getAdvancementProgress(a);
+		return progress.isDone();
+	}
 
-    public static boolean isAdvancementEnabled(String name) {
-        // name should be something like husbandry/break_diamond_hoe
-        name = name.replace("/", ".");
-        name = name.substring(4);
-        return LaBoulangerieCore.PLUGIN.getConfig().getBoolean("avancements." + name + ".enabled");
-    }
+	public static boolean isAdvancementEnabled(String name) {
+		// name should be something like husbandry/break_diamond_hoe
+		name = name.replace("/", ".");
+		name = name.substring(4);
+		return LaBoulangerieCore.PLUGIN.getConfig().getBoolean("avancements." + name + ".enabled");
+	}
 }
