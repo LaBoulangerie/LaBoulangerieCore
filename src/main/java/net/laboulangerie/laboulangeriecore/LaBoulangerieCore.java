@@ -48,6 +48,7 @@ import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
+import net.laboulangerie.laboulangeriecore.misc.ResourcePackListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.milkbowl.vault.economy.Economy;
@@ -181,7 +182,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(), new FirstJoinActions(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv()
+                new ConversionInv(), new ResourcePackListener()
         );
         if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
 
