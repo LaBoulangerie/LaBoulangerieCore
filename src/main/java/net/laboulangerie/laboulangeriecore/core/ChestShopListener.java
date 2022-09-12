@@ -75,7 +75,7 @@ public class ChestShopListener implements Listener {
             if (count == 0)
                 continue;
 
-            ItemStack stack = new ItemStack(denomination.getKey().type);
+            ItemStack stack = denomination.getKey().type.clone();
             stack.setAmount(count);
             items.add(stack);
         }
