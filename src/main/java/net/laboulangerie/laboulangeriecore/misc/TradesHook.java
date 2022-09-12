@@ -20,7 +20,7 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class TradesHook implements Listener {
     private final int EMERALD_VALUE = LaBoulangerieCore.PLUGIN.getConfig().getInt("emerald-value");
-    private ItemStack currency = CONF.getCurrency().getDenominations().get(CONF.getCurrency().getDenominations().size()-1).getKey().type; //Currencies are stocked by descending value
+    private ItemStack currency = CONF.getCurrency().getDenominations().get(CONF.getCurrency().getDenominations().size()-1).getKey().type.clone(); //Currencies are stocked by descending value
 
     @EventHandler
     public void onOpenInventory(InventoryOpenEvent event) {
