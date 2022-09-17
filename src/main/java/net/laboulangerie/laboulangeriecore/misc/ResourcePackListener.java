@@ -1,6 +1,9 @@
 package net.laboulangerie.laboulangeriecore.misc;
 
+import java.io.IOException;
+
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +13,7 @@ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class ResourcePackListener implements Listener {
     ConfigurationSection miscSection;
@@ -39,9 +43,19 @@ public class ResourcePackListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        data.set("last-ip-address", player.getAddress().getHostString());
+        try {
+            UsersData.save(player, data);
+        } catch (IOException e) {
+            LaBoulangerieCore.PLUGIN.getLogger().severe("Unable to save " + player.getName() + " data:");
+            e.printStackTrace();
+        }
+
         if (!LaBoulangerieCore.PLUGIN.getConfig().isSet("resource-pack-sha1")) return;
 
-        event.getPlayer().setResourcePack("https://laboulangerie.net/share/BreadDough.zip", LaBoulangerieCore.PLUGIN.getConfig().getString("resource-pack-sha1"), true);
-        event.getPlayer().setInvulnerable(true);
+        player.setResourcePack("https://laboulangerie.net/share/BreadDough.zip", LaBoulangerieCore.PLUGIN.getConfig().getString("resource-pack-sha1"), true);
+        player.setInvulnerable(true);
     }
 }

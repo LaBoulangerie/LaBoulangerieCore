@@ -63,6 +63,10 @@ commands:
     spawn:
         description: Go to spawn
         usage: /spawn
+    seen:
+        description: Details on players' connection
+        usage: /seen [Player]
+        permission: laboulangeriecore.seen
 permissions:
     laboulangeriecore.*:
         default: op
@@ -72,6 +76,7 @@ permissions:
             - laboulangeriecore.house.admin
             - laboulangeriecore.admin
             - laboulangeriecore.houseshop
+            - laboulangeriecore.seen
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
@@ -83,4 +88,6 @@ permissions:
     laboulangeriecore.houseshop:
         default: op
     laboulangeriecore.eeggs.admin:
+        default: op
+    laboulangeriecore.seen:
         default: op
