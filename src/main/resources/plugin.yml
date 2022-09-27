@@ -60,6 +60,7 @@ commands:
         description: Admin commands for the plugin
         usage: /core reload|conversion
         aliases: [lcore]
+        permission: laboulangeriecore.admin
     spawn:
         description: Go to spawn
         usage: /spawn
