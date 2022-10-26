@@ -1,5 +1,11 @@
 package net.laboulangerie.laboulangeriecore.core;
 
+import static org.gestern.gringotts.Configuration.CONF;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Chest;
@@ -12,13 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import org.gestern.gringotts.currency.Denomination;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
-
-import static org.gestern.gringotts.Configuration.CONF;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
 import org.maxgamer.quickshop.api.shop.Shop;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
@@ -31,10 +30,10 @@ public class ChestShopListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     private void onShopPurchase(ShopPurchaseEvent event) {
         Shop shop = event.getShop();
-        OfflinePlayer owner = Bukkit.getPlayer(shop.getOwner());
+        OfflinePlayer owner = Bukkit.getOfflinePlayer(shop.getOwner());
         Player purchaser = Bukkit.getPlayer(event.getPurchaser());
         Chest chest = (Chest) shop.getLocation().getBlock().getState();
-        int total = (int) event.getTotal();
+        final int total = (int) event.getTotal();
 
         List<ItemStack> stacks = getItemsForPrice(total);
 
@@ -55,7 +54,6 @@ public class ChestShopListener implements Listener {
         // ""Cancel"" the transaction to the owner's inventory by setting total to 0
         // ! Must remove the price in QuickShop's messages in the config
         event.setTotal(0);
-
     }
 
     // Greedy algorithm to convert price to a list of items
@@ -106,7 +104,7 @@ public class ChestShopListener implements Listener {
 
                 // If you can't squeeze the new stack in existing stacks of the same type
                 if (amountLeft > 0)
-                    // Then increase the count, new slot(s) will necesarily be taken
+                    // Then increase the count, new slot(s) will necessarily be taken
                     newSlotsCount += Math.ceil((double) amountLeft / inventory.getMaxStackSize());
             } else {
                 newSlotsCount += Math.ceil((double) stack.getAmount() / inventory.getMaxStackSize());
@@ -123,14 +121,14 @@ public class ChestShopListener implements Listener {
     }
 
     private List<ItemStack> similarItems(Inventory inventory, ItemStack item) {
-        List<ItemStack> similars = new ArrayList<ItemStack>();
+        List<ItemStack> similar = new ArrayList<ItemStack>();
 
         for (ItemStack i : inventory.getContents()) {
             if (item.isSimilar(i)) {
-                similars.add(i);
+                similar.add(i);
             }
         }
 
-        return similars;
+        return similar;
     }
 }

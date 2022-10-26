@@ -186,7 +186,8 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), new ResourcePackListener()
         );
-        if (getServer().getPluginManager().getPlugin("ChestShop") != null) listeners.add(new ChestShopListener());
+        if (getServer().getPluginManager().getPlugin("QuickShop") != null)
+            getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
         listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
