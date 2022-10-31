@@ -1,11 +1,5 @@
 package net.laboulangerie.laboulangeriecore.core;
 
-import static org.gestern.gringotts.Configuration.CONF;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Stream;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Chest;
@@ -17,23 +11,34 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.gestern.gringotts.currency.Denomination;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.event.EconomyCommitEvent;
 import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
+
+import static org.gestern.gringotts.Configuration.CONF;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.maxgamer.quickshop.api.shop.Shop;
 
+import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 public class ChestShopListener implements Listener {
 
     // In time
     // ShopPurchaseEvent -> EconomyCommitEvent -> ShopSuccessPurchaseEvent
-
     @EventHandler(priority = EventPriority.MONITOR)
     private void onShopPurchase(ShopPurchaseEvent event) {
+        event.setCancelled(true);
+
         Shop shop = event.getShop();
-        OfflinePlayer owner = Bukkit.getOfflinePlayer(shop.getOwner());
+        OfflinePlayer owner = Bukkit.getPlayer(shop.getOwner());
         Player purchaser = Bukkit.getPlayer(event.getPurchaser());
         Chest chest = (Chest) shop.getLocation().getBlock().getState();
-        final int total = (int) event.getTotal();
+        int total = (int) event.getTotal();
 
         List<ItemStack> stacks = getItemsForPrice(total);
 
@@ -44,7 +49,13 @@ public class ChestShopListener implements Listener {
             return;
         }
         // Withdraw purchaser
-        LaBoulangerieCore.econ.withdrawPlayer(purchaser, total);
+        EconomyResponse response = LaBoulangerieCore.econ.withdrawPlayer(purchaser, total);
+
+        if (!response.transactionSuccess()) {
+            String errorMessage = response.errorMessage;
+            purchaser.sendMessage(Component.text(errorMessage));
+            return;
+        }
 
         // Add the corresponding items to the chest
         for (ItemStack stack : stacks) {
@@ -104,7 +115,7 @@ public class ChestShopListener implements Listener {
 
                 // If you can't squeeze the new stack in existing stacks of the same type
                 if (amountLeft > 0)
-                    // Then increase the count, new slot(s) will necessarily be taken
+                    // Then increase the count, new slot(s) will necesarily be taken
                     newSlotsCount += Math.ceil((double) amountLeft / inventory.getMaxStackSize());
             } else {
                 newSlotsCount += Math.ceil((double) stack.getAmount() / inventory.getMaxStackSize());
@@ -121,14 +132,14 @@ public class ChestShopListener implements Listener {
     }
 
     private List<ItemStack> similarItems(Inventory inventory, ItemStack item) {
-        List<ItemStack> similar = new ArrayList<ItemStack>();
+        List<ItemStack> similars = new ArrayList<ItemStack>();
 
         for (ItemStack i : inventory.getContents()) {
             if (item.isSimilar(i)) {
-                similar.add(i);
+                similars.add(i);
             }
         }
 
-        return similar;
+        return similars;
     }
 }
