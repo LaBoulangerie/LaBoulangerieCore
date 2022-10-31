@@ -20,6 +20,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 
+import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class ChestShopListener implements Listener {
@@ -44,7 +45,13 @@ public class ChestShopListener implements Listener {
             return;
         }
         // Withdraw purchaser
-        LaBoulangerieCore.econ.withdrawPlayer(purchaser, total);
+        EconomyResponse response = LaBoulangerieCore.econ.withdrawPlayer(purchaser, total);
+
+        if (!response.transactionSuccess()) {
+            String errorMessage = response.errorMessage;
+            purchaser.sendMessage(Component.text(errorMessage));
+            return;
+        }
 
         // Add the corresponding items to the chest
         for (ItemStack stack : stacks) {
