@@ -22,6 +22,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 
 import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 public class ChestShopListener implements Listener {
 
