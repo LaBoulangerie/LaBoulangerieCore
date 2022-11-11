@@ -3,6 +3,8 @@ package net.laboulangerie.laboulangeriecore.commands;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -13,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
+import net.laboulangerie.laboulangeriecore.core.end.Dragon;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
@@ -40,6 +43,12 @@ public class CoreCommand implements TabExecutor {
                 data.set("conversions-count", data.get("conversions-count", 0));
             }
             return true;
+        }
+
+        if (args[0].equalsIgnoreCase("dragon")) {
+            Dragon dragon = new Dragon(new Location(Bukkit.getWorld("world_the_end"), 0, 70, 0), new Location[]{new Location(Bukkit.getWorld("world_the_end"), 0, 60, 6)});
+            dragon.spawn();
+            dragon.spawnCrystals();
         }
         return false;
     }
