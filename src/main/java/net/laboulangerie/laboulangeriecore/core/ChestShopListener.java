@@ -35,9 +35,14 @@ public class ChestShopListener implements Listener {
         OfflinePlayer owner = Bukkit.getOfflinePlayer(shop.getOwner());
         Player purchaser = Bukkit.getPlayer(event.getPurchaser());
         Chest chest = (Chest) shop.getLocation().getBlock().getState();
-        final int total = (int) event.getTotal();
+        final double total = event.getTotal();
 
-        List<ItemStack> stacks = getItemsForPrice(total);
+        if ((int) total == 0) {
+            event.setCancelled(true);
+            return;
+        }
+
+        List<ItemStack> stacks = getItemsForPrice((int) total);
 
         // If out of space
         if (isGoingToOverflow(chest.getInventory(), stacks)) {
