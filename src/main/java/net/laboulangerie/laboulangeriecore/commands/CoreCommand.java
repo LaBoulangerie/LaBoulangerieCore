@@ -1,5 +1,6 @@
 package net.laboulangerie.laboulangeriecore.commands;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +43,11 @@ public class CoreCommand implements TabExecutor {
                 ConversionInv.displayConversionInv((Player) sender);
                 YamlConfiguration data = UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
                 data.set("conversions-count", data.getInt("conversions-count", 0)+1);
+                try {
+                    UsersData.save((Player) sender, data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             return true;
         }
@@ -56,6 +62,11 @@ public class CoreCommand implements TabExecutor {
 
             String name = List.of(args).subList(2, args.length).stream().reduce((a, b) -> a+" "+b).get();
             data.set("nick", data.get("nick", name));
+            try {
+                UsersData.save(target, data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             if (target.isOnline()) {
                 ((Player) target).displayName(Component.text(name));
