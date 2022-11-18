@@ -28,6 +28,12 @@ public class MiscListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
+        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+
+        if (data.getString("nick") != null) {
+            player.displayName(Component.text(data.getString("nick")));
+        }
+
         if (player.hasPlayedBefore()) return;
 
         List<String> commands = LaBoulangerieCore.PLUGIN.getConfig().getStringList("first-join-commands");
