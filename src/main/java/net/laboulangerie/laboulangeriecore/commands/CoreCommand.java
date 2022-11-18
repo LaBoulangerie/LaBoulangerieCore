@@ -61,7 +61,7 @@ public class CoreCommand implements TabExecutor {
             YamlConfiguration data = UsersData.get(target).orElseGet(() -> UsersData.createUserData(target));
 
             String name = List.of(args).subList(2, args.length).stream().reduce((a, b) -> a+" "+b).get();
-            data.set("nick", data.get("nick", name));
+            data.set("nick", name);
             try {
                 UsersData.save(target, data);
             } catch (IOException e) {
