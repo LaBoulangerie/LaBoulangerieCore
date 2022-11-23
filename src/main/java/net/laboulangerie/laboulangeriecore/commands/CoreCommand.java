@@ -46,7 +46,7 @@ public class CoreCommand implements TabExecutor {
         }
 
         if (args[0].equalsIgnoreCase("dragon")) {
-            Dragon dragon = new Dragon(new Location(Bukkit.getWorld("world_the_end"), 0, 70, 0), new Location[]{new Location(Bukkit.getWorld("world_the_end"), 0, 60, 6)});
+            Dragon dragon = new Dragon(new Location(Bukkit.getWorld("world_the_end"), 0, 63, 0), new Location[]{new Location(Bukkit.getWorld("world_the_end"), 0, 60, 6)});
             dragon.spawn();
             dragon.spawnCrystals();
         }

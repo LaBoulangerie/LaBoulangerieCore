@@ -1,8 +1,14 @@
 package net.laboulangerie.laboulangeriecore.core.end;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EnderDragon;
@@ -18,10 +24,13 @@ import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class Dragon {
-    EnderDragon dragon;
-    Location spawnLocation;
-    Location[] crystalsLocation;
-    ArrayList<EnderCrystal> crystals = new ArrayList<>();
+    public static HashMap<UUID, Dragon> DRAGONS = new HashMap<>();
+
+    private EnderDragon dragon;
+    private Location spawnLocation;
+    private Location[] crystalsLocation;
+    private ArrayList<EnderCrystal> crystals = new ArrayList<>();
+    private HashMap<UUID, Double> damagers = new HashMap<>();
 
     public Dragon(Location spawnLocation, Location[] crystalsLocation) {
         this.spawnLocation = spawnLocation;
@@ -47,7 +56,9 @@ public class Dragon {
                     cancel();
                 }
             }
-        }.runTaskTimer(LaBoulangerieCore.PLUGIN, 0, 5); 
+        }.runTaskTimer(LaBoulangerieCore.PLUGIN, 0, 5);
+
+        DRAGONS.put(dragon.getUniqueId(), this);
     }
 
     public void spawnCrystals() {
@@ -56,5 +67,22 @@ public class Dragon {
             crystal.setShowingBottom(true);
             crystals.add(crystal);
         }
+    }
+
+    public void dealDamage(Player player, double damage) {
+        damagers.put(player.getUniqueId(), (damagers.get(player.getUniqueId()) != null ? damagers.get(player.getUniqueId()) : 0) + damage);
+    }
+
+    public List<Player> getImplicatedPlayers() {
+        return damagers.keySet().stream().map(uuid -> Bukkit.getPlayer(uuid)).collect(Collectors.toList());
+    }
+
+    public Map<Player, Double> sortDamagers() {
+        return  damagers.entrySet().stream().map(entry -> new AbstractMap.SimpleEntry<>(Bukkit.getPlayer(entry.getKey()), entry.getValue()))
+           .sorted((e1, e2) -> (int) (e1.getValue() - e2.getValue())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public void destroy() {
+        DRAGONS.remove(dragon.getUniqueId());
     }
 }
