@@ -1,5 +1,7 @@
 package net.laboulangerie.laboulangeriecore.core.end;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Map.Entry;
 
 import org.bukkit.entity.EntityType;
@@ -16,6 +18,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class DragonsListener implements Listener {
+    private DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance();
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager().getType() != EntityType.PLAYER
@@ -33,6 +36,7 @@ public class DragonsListener implements Listener {
 
         Dragon dragon = Dragon.DRAGONS.get(event.getEntity().getUniqueId());
         Audience implicatedPlayers = Audience.audience(dragon.getImplicatedPlayers());
+        formatter.applyPattern("#.##");
 
         new BukkitRunnable() {
             @Override
@@ -40,8 +44,14 @@ public class DragonsListener implements Listener {
                 int i = 1;
                 implicatedPlayers.sendMessage(Component.text("§5-----------L'ender dragon a été vaincu !-----------"));
                 for (Entry<Player, Double> entry : dragon.sortDamagers().entrySet()) {
-                    implicatedPlayers.sendMessage(Component.text(i +". ").append(entry.getKey().displayName().color(TextColor.fromHexString("#AAAAAA"))).append(Component.text(" - §f" + entry.getValue())));
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    implicatedPlayers.sendMessage(Component.text(i +". ").append(entry.getKey().displayName().color(TextColor.fromHexString("#555555"))).append(Component.text("§0 - §f" + formatter.format(entry.getValue()))));
                     i++;
+                    if (i > 5) break;
                 }
             }
         }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN);
