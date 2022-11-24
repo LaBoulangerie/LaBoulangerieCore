@@ -74,6 +74,6 @@ auto-messages: #List of messages to broadcast automatically
 emerald-value: 2 #Define what is the value of one emerald
 killing-dragon-reward: 500 # Number of divine favors to distribute between the killers of the ender dragon
 crystals:
-    - x: 45
-      y: 64
-      z: 10
+    - x: 10.0
+      y: 64.0
+      z: 10.0

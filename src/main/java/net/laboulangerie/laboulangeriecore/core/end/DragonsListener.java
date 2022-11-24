@@ -14,6 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.favors.DivineFavorsHolder;
@@ -46,27 +47,28 @@ public class DragonsListener implements Listener {
                 implicatedPlayers.sendMessage(Component.text("§5-----------L'ender dragon a été vaincu !-----------"));
                 for (Entry<Player, Double> entry : dragon.sortDamagers().entrySet()) {
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(700);
                     } catch (InterruptedException e) { e.printStackTrace(); }
 
                     implicatedPlayers.sendMessage(Component.text(i +". ")
                         .append(entry.getKey().displayName().color(TextColor.fromHexString("#555555")))
-                        .append(Component.text("§0 - §f" + formatter.format(entry.getValue()
-                            + " §0[§f" + formatter.format(entry.getValue()/dragon.getTotalDamages()*100)
-                            + "§0]"
-                        )))
+                        .append(Component.text("§0 - §f" + formatter.format(entry.getValue()))
+                            .hoverEvent(HoverEvent.showText(Component.text("Dégats causés"))))
+                        .append(Component.text(" [", TextColor.fromHexString("#4d4848")))
+                        .append(Component.text(formatter.format(entry.getValue()/dragon.getTotalDamages()*100) + "%"))
+                        .append(Component.text("]", TextColor.fromHexString("#4d4848")))
                     );
                     i++;
-                    if (i > 5) break;
+                    if (i > 10) break;
                 }
-                implicatedPlayers.sendMessage(Component.text("§5--------------------------------------------------"));
+                implicatedPlayers.sendMessage(Component.text("§5-----------------------------------------------"));
                 try {
                     Thread.sleep(1500);
                 } catch (InterruptedException e) { e.printStackTrace(); }
 
                 for (Player player : dragon.getImplicatedPlayers()) {
-                    double multiplier = Math.round(dragon.getDamageDealt(player) / dragon.getTotalDamages());
-                    double divineFavors = LaBoulangerieCore.PLUGIN.getConfig().getInt("killing-dragon-reward") * multiplier;
+                    double multiplier = dragon.getDamageDealt(player) / dragon.getTotalDamages();
+                    double divineFavors = Math.round(LaBoulangerieCore.PLUGIN.getConfig().getInt("killing-dragon-reward") * multiplier);
                     player.sendMessage("Vous recevez §5" + divineFavors + "§f points divins.");
                     DivineFavorsHolder.giveDivineFavors(player, divineFavors);
                 }

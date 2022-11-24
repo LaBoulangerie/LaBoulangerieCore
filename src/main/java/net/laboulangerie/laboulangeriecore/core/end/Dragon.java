@@ -29,11 +29,11 @@ public class Dragon {
 
     private EnderDragon dragon;
     private Location spawnLocation;
-    private Location[] crystalsLocation;
+    private ArrayList<Location> crystalsLocation;
     private ArrayList<EnderCrystal> crystals = new ArrayList<>();
     private HashMap<UUID, Double> damagers = new HashMap<>();
 
-    public Dragon(Location spawnLocation, Location[] crystalsLocation) {
+    public Dragon(Location spawnLocation, ArrayList<Location> crystalsLocation) {
         this.spawnLocation = spawnLocation;
         this.crystalsLocation = crystalsLocation;
     }
