@@ -1,7 +1,9 @@
 package net.laboulangerie.laboulangeriecore.commands;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -45,8 +47,15 @@ public class CoreCommand implements TabExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("dragon")) {
-            Dragon dragon = new Dragon(new Location(Bukkit.getWorld("world_the_end"), 0, 63, 0), new Location[]{new Location(Bukkit.getWorld("world_the_end"), 0, 60, 6)});
+        if (args[0].equalsIgnoreCase("spawndragon")) {
+            List<Location> crystalLocs = new ArrayList<>();
+            List<Map<?, ?>> confCrystals = LaBoulangerieCore.PLUGIN.getConfig().getMapList("crystals");
+
+            for (Map<?, ?> map : confCrystals) {
+                Map<String, Double> crystal = (Map<String, Double>) map;
+                crystalLocs.add(new Location(Bukkit.getWorld("world_the_end"), crystal.get("x"), crystal.get("y"), crystal.get("z")));
+            }
+            Dragon dragon = new Dragon(new Location(Bukkit.getWorld("world_the_end"), 0, 63, 0),(Location[]) crystalLocs.toArray());
             dragon.spawn();
             dragon.spawnCrystals();
         }
