@@ -41,16 +41,15 @@ import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHousesC
 import net.laboulangerie.laboulangeriecore.core.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.core.nametag.NameTagManager;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
-import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
+import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
-import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
-import net.laboulangerie.laboulangeriecore.misc.ResourcePackListener;
+import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.milkbowl.vault.economy.Economy;
@@ -183,9 +182,9 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook(), new HouseShop(), new FirstJoinActions(),
+                new TradesHook(), new HouseShop(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv(), new ResourcePackListener(), new DragonsListener()
+                new ConversionInv(), new MiscListener(), new DragonsListener()
         );
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);

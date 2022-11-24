@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ElytraGenRemover implements Listener {
 
@@ -43,8 +44,11 @@ public class ElytraGenRemover implements Listener {
 
             ItemFrame frame = (ItemFrame) entity;
             if (frame.getItem().getType().equals(Material.ELYTRA)) {
-                // TODO: make a more special item
-                frame.setItem(new ItemStack(Material.BREAD, 1));
+                ItemStack specialBread = new ItemStack(Material.BREAD, 1);
+                ItemMeta meta = specialBread.getItemMeta();
+                meta.setCustomModelData(1);
+                specialBread.setItemMeta(meta);
+                frame.setItem(specialBread);
                 break;
             }
         }

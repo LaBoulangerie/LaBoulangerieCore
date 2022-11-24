@@ -20,7 +20,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 
+import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 public class ChestShopListener implements Listener {
 
@@ -33,9 +35,14 @@ public class ChestShopListener implements Listener {
         OfflinePlayer owner = Bukkit.getOfflinePlayer(shop.getOwner());
         Player purchaser = Bukkit.getPlayer(event.getPurchaser());
         Chest chest = (Chest) shop.getLocation().getBlock().getState();
-        final int total = (int) event.getTotal();
+        final double total = event.getTotal();
 
-        List<ItemStack> stacks = getItemsForPrice(total);
+        if ((int) total == 0) {
+            event.setCancelled(true);
+            return;
+        }
+
+        List<ItemStack> stacks = getItemsForPrice((int) total);
 
         // If out of space
         if (isGoingToOverflow(chest.getInventory(), stacks)) {
@@ -44,7 +51,13 @@ public class ChestShopListener implements Listener {
             return;
         }
         // Withdraw purchaser
-        LaBoulangerieCore.econ.withdrawPlayer(purchaser, total);
+        EconomyResponse response = LaBoulangerieCore.econ.withdrawPlayer(purchaser, total);
+
+        if (!response.transactionSuccess()) {
+            String errorMessage = response.errorMessage;
+            purchaser.sendMessage(Component.text(errorMessage));
+            return;
+        }
 
         // Add the corresponding items to the chest
         for (ItemStack stack : stacks) {

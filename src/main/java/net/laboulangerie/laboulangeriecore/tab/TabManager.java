@@ -36,7 +36,7 @@ public class TabManager {
             final String teamName = g.getName();
             if (board.getTeam(teamName) != null) continue;
             Team team = board.registerNewTeam(teamName);
-            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
             team.setCanSeeFriendlyInvisibles(false);
         }
     }
