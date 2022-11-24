@@ -45,11 +45,16 @@ public class DragonsListener implements Listener {
                 implicatedPlayers.sendMessage(Component.text("§5-----------L'ender dragon a été vaincu !-----------"));
                 for (Entry<Player, Double> entry : dragon.sortDamagers().entrySet()) {
                     try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    implicatedPlayers.sendMessage(Component.text(i +". ").append(entry.getKey().displayName().color(TextColor.fromHexString("#555555"))).append(Component.text("§0 - §f" + formatter.format(entry.getValue()))));
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) { e.printStackTrace(); }
+
+                    implicatedPlayers.sendMessage(Component.text(i +". ")
+                        .append(entry.getKey().displayName().color(TextColor.fromHexString("#555555")))
+                        .append(Component.text("§0 - §f" + formatter.format(entry.getValue()
+                            + " §0[§f" + formatter.format(entry.getValue()/dragon.getTotalDamages()*100)
+                            + "§0]"
+                        )))
+                    );
                     i++;
                     if (i > 5) break;
                 }

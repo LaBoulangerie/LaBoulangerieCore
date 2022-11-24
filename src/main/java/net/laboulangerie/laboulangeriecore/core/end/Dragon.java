@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EnderDragon.Phase;
@@ -49,7 +50,7 @@ public class Dragon {
             @Override
             public void run() {
                 if (!dragon.isDead()) {
-                    bossBar.progress((float) (dragon.getHealth() / dragon.getMaxHealth()));
+                    bossBar.progress((float) (dragon.getHealth() / dragon.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
                 } else {
                     List<Player> players = dragon.getWorld().getPlayers();
                     for (Player player : players) player.hideBossBar(bossBar);
@@ -78,8 +79,12 @@ public class Dragon {
     }
 
     public Map<Player, Double> sortDamagers() {
-        return  damagers.entrySet().stream().map(entry -> new AbstractMap.SimpleEntry<>(Bukkit.getPlayer(entry.getKey()), entry.getValue()))
+        return damagers.entrySet().stream().map(entry -> new AbstractMap.SimpleEntry<>(Bukkit.getPlayer(entry.getKey()), entry.getValue()))
            .sorted((e1, e2) -> (int) (e1.getValue() - e2.getValue())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Double getTotalDamages() {
+        return damagers.values().stream().reduce((a, b) -> a+b).orElse(0D);
     }
 
     public void destroy() {
