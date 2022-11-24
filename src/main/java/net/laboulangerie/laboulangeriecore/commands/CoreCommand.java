@@ -64,9 +64,17 @@ public class CoreCommand implements TabExecutor {
                 Map<String, Double> crystal = (Map<String, Double>) map;
                 crystalLocs.add(new Location(Bukkit.getWorld("world_the_end"), crystal.get("x"), crystal.get("y"), crystal.get("z")));
             }
-            Dragon dragon = new Dragon(new Location(Bukkit.getWorld("world_the_end"), 0, 63, 0), crystalLocs);
+            Dragon dragon = new Dragon(new Location(
+                Bukkit.getWorld("world_the_end"),
+                0,
+                LaBoulangerieCore.PLUGIN.getConfig().getDouble("dragon-podium-y"),
+                0
+            ), crystalLocs);
+
             dragon.spawn();
             dragon.spawnCrystals();
+
+            if (args.length > 1 && args[1].equalsIgnoreCase("withEgg")) dragon.setShouldSpawnEgg(true);
             return true;
         }
 
@@ -98,7 +106,7 @@ public class CoreCommand implements TabExecutor {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
         List<String> suggestions = Arrays.asList("");
-        if (args.length == 1) suggestions = Arrays.asList("reload", "rl", "conversion", "nick");
+        if (args.length == 1) suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "spawnDragon");
         if (args.length == 2 && args[0].equalsIgnoreCase("nick")) return null;
         
         return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))

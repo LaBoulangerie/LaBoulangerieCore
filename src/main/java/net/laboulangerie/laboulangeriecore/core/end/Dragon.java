@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.EnderDragon;
@@ -17,6 +18,7 @@ import org.bukkit.entity.EnderDragon.Phase;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.bossbar.BossBar.Color;
@@ -32,6 +34,7 @@ public class Dragon {
     private ArrayList<Location> crystalsLocation;
     private ArrayList<EnderCrystal> crystals = new ArrayList<>();
     private HashMap<UUID, Double> damagers = new HashMap<>();
+    private boolean shouldSpawnEgg = false;
 
     public Dragon(Location spawnLocation, ArrayList<Location> crystalsLocation) {
         this.spawnLocation = spawnLocation;
@@ -93,5 +96,12 @@ public class Dragon {
 
     public void destroy() {
         DRAGONS.remove(dragon.getUniqueId());
+        if (shouldSpawnEgg) {
+            spawnLocation.add(new Vector(0, 1, 0)).getBlock().setType(Material.DRAGON_EGG);
+        }
+        spawnLocation.getWorld().getEnderDragonBattle().generateEndPortal(false);
     }
+
+    public void setShouldSpawnEgg(boolean shouldSpawnEgg) { this.shouldSpawnEgg = shouldSpawnEgg; }
+    public boolean shouldSpawnEgg() { return shouldSpawnEgg; }
 }

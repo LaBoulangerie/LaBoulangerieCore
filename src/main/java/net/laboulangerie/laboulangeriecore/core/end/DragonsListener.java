@@ -52,7 +52,7 @@ public class DragonsListener implements Listener {
 
                     implicatedPlayers.sendMessage(Component.text(i +". ")
                         .append(entry.getKey().displayName().color(TextColor.fromHexString("#555555")))
-                        .append(Component.text("§0 - §f" + formatter.format(entry.getValue()))
+                        .append(Component.text("§0 - §f" + formatter.format(entry.getValue()) + "🗡")
                             .hoverEvent(HoverEvent.showText(Component.text("Dégats causés"))))
                         .append(Component.text(" [", TextColor.fromHexString("#4d4848")))
                         .append(Component.text(formatter.format(entry.getValue()/dragon.getTotalDamages()*100) + "%"))
