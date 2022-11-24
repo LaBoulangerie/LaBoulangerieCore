@@ -72,3 +72,4 @@ auto-messages: #List of messages to broadcast automatically
     # - frogs are the best
 
 emerald-value: 2 #Define what is the value of one emerald
+killing-dragon-reward: 500 # Number of divine favors to distribute between the killers of the ender dragon

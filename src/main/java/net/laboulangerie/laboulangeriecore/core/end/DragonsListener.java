@@ -16,6 +16,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.favors.DivineFavorsHolder;
 
 public class DragonsListener implements Listener {
     private DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance();
@@ -57,6 +58,17 @@ public class DragonsListener implements Listener {
                     );
                     i++;
                     if (i > 5) break;
+                }
+                implicatedPlayers.sendMessage(Component.text("§5--------------------------------------------------"));
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) { e.printStackTrace(); }
+
+                for (Player player : dragon.getImplicatedPlayers()) {
+                    double multiplier = Math.round(dragon.getDamageDealt(player) / dragon.getTotalDamages());
+                    double divineFavors = LaBoulangerieCore.PLUGIN.getConfig().getInt("killing-dragon-reward") * multiplier;
+                    player.sendMessage("Vous recevez §5" + divineFavors + "§f points divins.");
+                    DivineFavorsHolder.giveDivineFavors(player, divineFavors);
                 }
             }
         }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN);

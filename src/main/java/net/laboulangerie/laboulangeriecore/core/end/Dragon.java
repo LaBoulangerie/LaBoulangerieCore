@@ -87,6 +87,10 @@ public class Dragon {
         return damagers.values().stream().reduce((a, b) -> a+b).orElse(0D);
     }
 
+    public Double getDamageDealt(Player player) {
+        return damagers.get(player.getUniqueId());
+    }
+
     public void destroy() {
         DRAGONS.remove(dragon.getUniqueId());
     }
