@@ -4,12 +4,15 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Map.Entry;
 
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.kyori.adventure.audience.Audience;
@@ -76,5 +79,18 @@ public class DragonsListener implements Listener {
         }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN);
 
         dragon.destroy();
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK || event.getClickedBlock().getType() != Material.DRAGON_EGG) return;
+
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+            EggManager.eggTeleported(event.getClickedBlock().getLocation());
+            return;
+        }
+
+        EggManager.click(event.getPlayer(), event.getClickedBlock().getLocation());
+        event.setCancelled(true);
     }
 }
