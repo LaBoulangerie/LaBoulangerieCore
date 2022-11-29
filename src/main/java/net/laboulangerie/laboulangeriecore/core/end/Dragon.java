@@ -83,7 +83,7 @@ public class Dragon {
 
     public Map<Player, Double> sortDamagers() {
         return damagers.entrySet().stream().map(entry -> new AbstractMap.SimpleEntry<>(Bukkit.getPlayer(entry.getKey()), entry.getValue()))
-           .sorted((e1, e2) -> (int) (e1.getValue() - e2.getValue())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+           .sorted((e1, e2) -> e1.getValue().compareTo(e2.getValue())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public Double getTotalDamages() {
