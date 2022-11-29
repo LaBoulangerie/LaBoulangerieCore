@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -26,11 +27,16 @@ public class DragonsListener implements Listener {
     private DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance();
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager().getType() != EntityType.PLAYER
-            || event.getEntityType() != EntityType.ENDER_DRAGON
+        if (event.getEntityType() != EntityType.ENDER_DRAGON
             || !Dragon.DRAGONS.containsKey(event.getEntity().getUniqueId())) return;
-
+        
         Dragon dragon = Dragon.DRAGONS.get(event.getEntity().getUniqueId());
+
+        if (event.getDamager() instanceof Projectile && ((Projectile) event.getDamager()).getShooter() instanceof Player)
+            dragon.dealDamage((Player) ((Projectile) event.getDamager()).getShooter(), event.getDamage());
+
+        if (event.getDamager().getType() != EntityType.PLAYER) return;
+
         dragon.dealDamage((Player) event.getDamager(), event.getDamage());
     }
 
