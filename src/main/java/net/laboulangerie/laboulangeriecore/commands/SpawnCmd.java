@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.misc;
+package net.laboulangerie.laboulangeriecore.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -29,6 +29,7 @@ public class SpawnCmd implements CommandExecutor {
         }
 
         LaBoulangerieCore.PLUGIN.getConfig().set("spawn", player.getLocation());
+        LaBoulangerieCore.PLUGIN.saveConfig();
         player.sendMessage("§aSpawn set!");
         return true;
     }

@@ -19,16 +19,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class ConversionInv implements Listener {
-    private static Merchant merchant = null;
-
     public static void displayConversionInv(Player player) {
-        if (merchant != null) {
-            player.openMerchant(merchant, true);
-            return;
-        }
         List<Denomination> denominations =  CONF.getCurrency().getDenominations();
 
-        merchant = Bukkit.createMerchant(Component.text("§bConvertisseur de monnaie"));
+        Merchant merchant = Bukkit.createMerchant(Component.text("§bConvertisseur de monnaie"));
         List<MerchantRecipe> merchantRecipes = new ArrayList<MerchantRecipe>();
 
         for (int i = denominations.size()-1; i > 0; i--) {

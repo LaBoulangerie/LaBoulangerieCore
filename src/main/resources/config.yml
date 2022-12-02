@@ -23,6 +23,56 @@ links:
 misc:
     declined-pack-kick-msg: "<red>Veuillez accepter le pack de ressources pour jouer s'il vous plaît !"
 
+bundle:
+    item-name: "&a>> &e&lBourse &a<<"
+    item-lore:
+        - "&fArgent stocké:"
+        - "  • &e%money%&f฿"
+
+eastereggs:
+    #You can edit all the message of the plugin here.
+    messages:
+        console: "§4The command only can be used by a player."
+        added: "§aEasterEgg successfully added."
+        deleted: "§cEasterEgg successfully deleted."
+        permission: "§cYou don't have permission to execute this command."
+        utilization: "§cError: §e/easteregg help§a."
+        not-existing: "§cThis easteregg doesn't existing."
+        not-head: "§cYou need to have a head on your front."
+        eggs-found: "§aEastereggs:\n§bYou have found §e%amount%§a/§e%total% §beastereggs"
+        validated-title:
+            - "§2New Easter Egg!"
+            - "§7(§a%amount%§7/§e%max-amount%§7)"
+        already-validated: "§cYou already found this easteregg."
+        help:
+            - "§e-------------{ §3EasterEggs §e}-------------"
+            - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
+            - "§f/eegg remove|delete§7: §aCommmand to remove an easteregg."
+            - "§f/eegg help§7: §aCommmand to show this page."
+
+    settings:
+        #List of all the gift the player can get.
+        #If "command" is set to true in gift you must write a command without the "/",
+        #else, write an item identifier in uppercase followed by the amount separated by :
+        #(exemple: IRON_INGOT:2).
+        gifts:
+            1:
+                command: false
+                gift: IRON_INGOT:2
+            2:
+                command: true
+                gift: "say something..."
+
+fist-join-commands:
+
+auto-messages-interval: 120 #Interval in seconds between message broadcast
+auto-messages: #List of messages to broadcast automatically
+    # - Subscribe to Technoblade
+    # - Not even close
+    # - frogs are the best
+
+emerald-value: 2 #Define what is the value of one emerald
+
 avancements:
     miner:
         brossage_minutieux:
@@ -91,53 +141,4 @@ avancements:
             enabled: true
         grow_100_potatoes:
             enabled: true
-
-bundle:
-    item-name: "&a>> &e&lBourse &a<<"
-    item-lore:
-        - "&fArgent stocké:"
-        - "  • &e%money%&f฿"
-
-eastereggs:
-    #You can edit all the message of the plugin here.
-    messages:
-        console: "§4The command only can be used by a player."
-        added: "§aEasterEgg successfully added."
-        deleted: "§cEasterEgg successfully deleted."
-        permission: "§cYou don't have permission to execute this command."
-        utilization: "§cError: §e/easteregg help§a."
-        not-existing: "§cThis easteregg doesn't existing."
-        not-head: "§cYou need to have a head on your front."
-        eggs-found: "§aEastereggs:\n§bYou have found §e%amount%§a/§e%total% §beastereggs"
-        validated-title:
-            - "§2New Easter Egg!"
-            - "§7(§a%amount%§7/§e%max-amount%§7)"
-        already-validated: "§cYou already found this easteregg."
-        help:
-            - "§e-------------{ §3EasterEggs §e}-------------"
-            - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
-            - "§f/eegg remove|delete§7: §aCommmand to remove an easteregg."
-            - "§f/eegg help§7: §aCommmand to show this page."
-
-    settings:
-        #List of all the gift the player can get.
-        #If "command" is set to true in gift you must write a command without the "/",
-        #else, write an item identifier in uppercase followed by the amount separated by :
-        #(exemple: IRON_INGOT:2).
-        gifts:
-            1:
-                command: false
-                gift: IRON_INGOT:2
-            2:
-                command: true
-                gift: "say something..."
-
-fist-join-commands:
-
-auto-messages-interval: 120 #Interval in seconds between message broadcast
-auto-messages: #List of messages to broadcast automatically
-    # - Subscribe to Technoblade
-    # - Not even close
-    # - frogs are the best
-
-emerald-value: 2 #Define what is the value of one emerald
+ 

@@ -18,6 +18,8 @@ import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
+import net.laboulangerie.laboulangeriecore.commands.SeenCmd;
+import net.laboulangerie.laboulangeriecore.commands.SpawnCmd;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.core.favors.DivineFavorsCmd;
@@ -43,12 +45,11 @@ import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
-import net.laboulangerie.laboulangeriecore.misc.FirstJoinActions;
 import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.misc.KingCondition;
-import net.laboulangerie.laboulangeriecore.misc.SpawnCmd;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
+import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.milkbowl.vault.economy.Economy;
@@ -121,6 +122,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("easteregg").setExecutor(new eEggCommand());
         getCommand("houseshop").setExecutor(new HouseShopCmd());
         getCommand("spawn").setExecutor(new SpawnCmd());
+        getCommand("seen").setExecutor(new SeenCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -184,11 +186,12 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook(), new HouseShop(), new AdvancementListeners(), new FirstJoinActions(),
+                new TradesHook(), new HouseShop(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv());
-        if (getServer().getPluginManager().getPlugin("ChestShop") != null)
-            listeners.add(new ChestShopListener());
+                new ConversionInv(), new MiscListener(), new AdvancementListeners()
+        );
+        if (getServer().getPluginManager().getPlugin("QuickShop") != null)
+            getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
         listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
     }
