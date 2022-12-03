@@ -35,15 +35,19 @@ public class Dragon {
     private ArrayList<EnderCrystal> crystals = new ArrayList<>();
     private HashMap<UUID, Double> damagers = new HashMap<>();
     private boolean shouldSpawnEgg = false;
+    private int health = 0;
 
-    public Dragon(Location spawnLocation, ArrayList<Location> crystalsLocation) {
+    public Dragon(Location spawnLocation, ArrayList<Location> crystalsLocation, int health) {
         this.spawnLocation = spawnLocation;
         this.crystalsLocation = crystalsLocation;
+        this.health = health;
     }
 
     public void spawn() {
         dragon = (EnderDragon) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.ENDER_DRAGON);
         dragon.setPodium(spawnLocation);
+        dragon.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+        dragon.setHealth(health);
 
         dragon.setPhase(Phase.CIRCLING);
         BossBar bossBar = BossBar.bossBar(Component.text("Ender Dragon"), 1, Color.PURPLE, Overlay.PROGRESS);

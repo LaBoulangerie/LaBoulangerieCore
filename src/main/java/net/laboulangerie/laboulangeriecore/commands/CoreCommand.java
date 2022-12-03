@@ -71,7 +71,7 @@ public class CoreCommand implements TabExecutor {
                 0,
                 LaBoulangerieCore.PLUGIN.getConfig().getDouble("dragon-podium-y"),
                 0
-            ), crystalLocs);
+            ), crystalLocs, LaBoulangerieCore.PLUGIN.getConfig().getInt("dragon-health"));
 
             dragon.spawn();
             dragon.spawnCrystals();
