@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -38,11 +39,7 @@ public class EventsManager {
         }
     }
 
-    public static boolean hasEvent(String name) {
-        return events.containsKey(name);
-    }
-
-    public static EventState getEvent(String name) {
-        return events.get(name);
-    }
+    public static boolean hasEvent(String name) { return events.containsKey(name); }
+    public static EventState getEvent(String name) { return events.get(name); }
+    public static List<String> getEvents() { return List.copyOf(events.keySet()); }
 }

@@ -14,7 +14,14 @@ public class EventCmd implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
         if (args.length < 2) return false;
-        if (!EventsManager.hasEvent(args[0])) return false;
+        if (!EventsManager.hasEvent(args[0])) {
+            sender.sendMessage("§4No event named: "+args[0]);
+            return true;
+        };
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("§4You need to be in-game to use this command.");
+            return true;
+        }
 
         EventState event = EventsManager.getEvent(args[0]);
         switch (args[1]) {
@@ -40,6 +47,7 @@ public class EventCmd implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> suggestions = null;
         if (args.length == 2) suggestions = Arrays.asList("start", "stop", "nextStep", "reset");
+        if (args.length == 1) suggestions = EventsManager.getEvents();
         return suggestions == null ? null : suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
             .collect(Collectors.toList());
     }
