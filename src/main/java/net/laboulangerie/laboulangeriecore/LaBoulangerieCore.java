@@ -22,6 +22,8 @@ import net.laboulangerie.laboulangeriecore.commands.SpawnCmd;
 import net.laboulangerie.laboulangeriecore.core.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
+import net.laboulangerie.laboulangeriecore.core.event.EventCmd;
+import net.laboulangerie.laboulangeriecore.core.event.EventsManager;
 import net.laboulangerie.laboulangeriecore.core.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.DeleteHouseCmd;
@@ -106,6 +108,8 @@ public class LaBoulangerieCore extends JavaPlugin {
             e.printStackTrace();
         }
 
+        EventsManager.innit();
+
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
@@ -122,6 +126,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("houseshop").setExecutor(new HouseShopCmd());
         getCommand("spawn").setExecutor(new SpawnCmd());
         getCommand("seen").setExecutor(new SeenCmd());
+        getCommand("event").setExecutor(new EventCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
