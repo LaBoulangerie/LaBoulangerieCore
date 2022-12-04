@@ -36,11 +36,14 @@ public class EventState {
         steps.get(stage).executeActions(executor);
 
         stage++;
-        if (stage == steps.size()) ended = true;
+        if (stage == steps.size()) stop();
         return true;
     }
 
     public void addStep(EventStep step) {
         this.steps.add(step);
     }
+
+    public boolean hasStarted() { return started; }
+    public boolean hasEnded() { return ended; }
 }

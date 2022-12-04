@@ -10,9 +10,18 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 public class EventCmd implements TabExecutor {
-    // TODO check sender, error messages
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
+        if (args.length == 0) {
+            sender.sendMessage("§bList of registered events:");
+            List<String> names = EventsManager.getEvents();
+            for (String name : names) {
+                EventState event = EventsManager.getEvent(name);
+                String status = event.hasStarted() ? "§astarted" : event.hasEnded() ? "§4ended" : "§7off";
+                sender.sendMessage("§l├§8" + name + " §6- " + status);
+            }
+            return true;
+        }
         if (args.length < 2) return false;
         if (!EventsManager.hasEvent(args[0])) {
             sender.sendMessage("§4No event named: "+args[0]);
