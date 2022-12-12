@@ -46,8 +46,16 @@ public class EventCmd implements TabExecutor {
             case "nextStep":
                 event.nextStep((Player) sender);
                 break;
-            default:
+            case "goto":
+                if (args.length < 3) return false;
+                if (event.goTo(args[2].replace("_", " "))) {
+                    sender.sendMessage("§aJumped to step : " + args[2].replace("_", " "));
+                }else {
+                    sender.sendMessage("§cCouldn't jump to step: " + args[2].replace("_", " ") + ", either it doesn't exist or the event isn't running.");
+                }
                 break;
+            default:
+                return false;
         }
 
         return true;
@@ -55,8 +63,12 @@ public class EventCmd implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> suggestions = null;
-        if (args.length == 2) suggestions = Arrays.asList("start", "stop", "nextStep", "reset");
+        if (args.length == 2) suggestions = Arrays.asList("start", "stop", "nextStep", "reset", "goto");
         if (args.length == 1) suggestions = EventsManager.getEvents();
+        if (args.length == 3 && args[1].equalsIgnoreCase("goto")) {
+            EventState state = EventsManager.getEvent(args[0]);
+            suggestions = state.getSteps().stream().map(EventStep::getName).collect(Collectors.toList());
+        }
         return suggestions == null ? null : suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
             .collect(Collectors.toList());
     }

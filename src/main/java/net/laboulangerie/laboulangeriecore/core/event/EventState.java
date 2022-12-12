@@ -40,10 +40,33 @@ public class EventState {
         return true;
     }
 
+    /**
+     * Go to the specified step without executing it
+     * @return false if the step couldn't run because the event wasn't started or had already ended or if the step doesn't exist
+     */
+    public boolean goTo(String name) {
+        if (!started || ended) return false;
+
+        EventStep step = null;
+        int index = 0;
+        for (; index < steps.size(); index++) {
+            EventStep potentialStep = steps.get(index);
+            if (potentialStep.getName().equals(name)) {
+                step = potentialStep;
+                break;
+            }
+        }
+
+        if (step == null) return false;
+        stage = ++index;
+        return true;
+    }
+
     public void addStep(EventStep step) {
         this.steps.add(step);
     }
 
+    public ArrayList<EventStep> getSteps() { return steps; }
     public boolean hasStarted() { return started; }
     public boolean hasEnded() { return ended; }
 }

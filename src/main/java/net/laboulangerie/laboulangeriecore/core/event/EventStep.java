@@ -55,4 +55,6 @@ public class EventStep {
             
         }
     }
+
+    public String getName() { return name; }
 }
