@@ -22,6 +22,7 @@ import net.laboulangerie.laboulangeriecore.commands.SpawnCmd;
 import net.laboulangerie.laboulangeriecore.core.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
+import net.laboulangerie.laboulangeriecore.core.end.DragonsListener;
 import net.laboulangerie.laboulangeriecore.core.event.EventCmd;
 import net.laboulangerie.laboulangeriecore.core.event.EventsManager;
 import net.laboulangerie.laboulangeriecore.core.favors.DivineFavorsCmd;
@@ -188,7 +189,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv(), new MiscListener()
+                new ConversionInv(), new MiscListener(), new DragonsListener()
         );
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
