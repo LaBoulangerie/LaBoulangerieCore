@@ -71,7 +71,7 @@ commands:
     event:
         description: Main command for the event assistant
         permission: laboulangeriecore.eventassistant
-        usage: /event [name] <start|stop|nextStep>
+        usage: /event [name] <start|stop|nextStep|run|goTo>
 permissions:
     laboulangeriecore.*:
         default: op

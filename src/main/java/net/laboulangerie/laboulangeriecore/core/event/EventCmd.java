@@ -33,7 +33,7 @@ public class EventCmd implements TabExecutor {
         }
 
         EventState event = EventsManager.getEvent(args[0]);
-        switch (args[1]) {
+        switch (args[1].toLowerCase()) {
             case "start":
                 event.start();
                 break;
@@ -43,17 +43,24 @@ public class EventCmd implements TabExecutor {
             case "reset":
                 event.reset();
                 break;
-            case "nextStep":
+            case "nextstep":
                 event.nextStep((Player) sender);
                 break;
             case "goto":
                 if (args.length < 3) return false;
-                if (event.goTo(args[2].replace("_", " "))) {
-                    sender.sendMessage("§aJumped to step : " + args[2].replace("_", " "));
+                if (event.goTo(args[2].replaceAll("_", " "))) {
+                    sender.sendMessage("§aJumped to step : " + args[2].replaceAll("_", " "));
                 }else {
-                    sender.sendMessage("§cCouldn't jump to step: " + args[2].replace("_", " ") + ", either it doesn't exist or the event isn't running.");
+                    sender.sendMessage("§cCouldn't jump to step: " + args[2].replaceAll("_", " ") + ", either it doesn't exist or the event isn't running.");
                 }
                 break;
+            case "run":
+                if (args.length < 3) return false;
+                if (event.run((Player) sender, args[2].replaceAll("_", " "))) {
+                    sender.sendMessage("§aRan step : " + args[2].replaceAll("_", " "));
+                }else {
+                    sender.sendMessage("§cCouldn't run step: " + args[2].replaceAll("_", " ") + ", either it doesn't exist or the event isn't running.");
+                }
             default:
                 return false;
         }
@@ -63,11 +70,12 @@ public class EventCmd implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> suggestions = null;
-        if (args.length == 2) suggestions = Arrays.asList("start", "stop", "nextStep", "reset", "goto");
+        if (args.length == 2) suggestions = Arrays.asList("start", "stop", "nextStep", "reset", "goto", "run");
         if (args.length == 1) suggestions = EventsManager.getEvents();
-        if (args.length == 3 && args[1].equalsIgnoreCase("goto")) {
+        if (args.length == 3 && (args[1].equalsIgnoreCase("goto") || args[1].equalsIgnoreCase("run"))) {
             EventState state = EventsManager.getEvent(args[0]);
-            suggestions = state.getSteps().stream().map(EventStep::getName).collect(Collectors.toList());
+            if (state == null) return null;
+            suggestions = state.getSteps().stream().map(step -> step.getName().replaceAll(" ", "_")).collect(Collectors.toList());
         }
         return suggestions == null ? null : suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
             .collect(Collectors.toList());

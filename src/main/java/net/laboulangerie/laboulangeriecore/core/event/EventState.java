@@ -1,6 +1,7 @@
 package net.laboulangerie.laboulangeriecore.core.event;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.bukkit.entity.Player;
 
@@ -42,7 +43,7 @@ public class EventState {
 
     /**
      * Go to the specified step without executing it
-     * @return false if the step couldn't run because the event wasn't started or had already ended or if the step doesn't exist
+     * @return false if the step couldn't be reached because the event wasn't started or had already ended or if the step didn't exist
      */
     public boolean goTo(String name) {
         if (!started || ended) return false;
@@ -59,6 +60,19 @@ public class EventState {
 
         if (step == null) return false;
         stage = ++index;
+        return true;
+    }
+
+    /**
+     * Run the specified step without altering the event's progression
+     * @return false if the step couldn't run because the event wasn't started or had already ended or if the step didn't exist
+     */
+    public boolean run(Player executor, String stepName) {
+        if (!started || ended) return false;
+        Optional<EventStep> step = steps.stream().filter(x -> x.getName().equals(stepName)).findFirst();
+        if (step.isEmpty()) return false;
+
+        step.get().executeActions(executor);
         return true;
     }
 
