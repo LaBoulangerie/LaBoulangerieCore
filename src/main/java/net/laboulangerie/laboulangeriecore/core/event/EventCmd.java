@@ -27,7 +27,7 @@ public class EventCmd implements TabExecutor {
         if (!EventsManager.hasEvent(args[0])) {
             sender.sendMessage("§4No event named: "+args[0]);
             return true;
-        };
+        }
         if (!(sender instanceof Player)) {
             sender.sendMessage("§4You need to be in-game to use this command.");
             return true;
