@@ -81,6 +81,8 @@ public class EventState {
     }
 
     public ArrayList<EventStep> getSteps() { return steps; }
+    public int getStage() { return stage; }
+    public int getTotalStages() { return steps.size(); }
     public boolean hasStarted() { return started; }
     public boolean hasEnded() { return ended; }
 }

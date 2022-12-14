@@ -46,6 +46,20 @@ public class EventCmd implements TabExecutor {
             case "nextstep":
                 event.nextStep((Player) sender);
                 break;
+            case "status":
+                sender.sendMessage(
+                    "The event §e"
+                    + event.getName()
+                    + " §b is currently "
+                    + (event.hasStarted()
+                        ? "§arunning §7(" + event.getStage() + "/" + event.getTotalStages()
+                        : event.hasEnded() ? "§4ended" : "§7off"
+                    )
+                );
+                for (int i = 0; i <= event.getSteps().size(); i++) {
+                    sender.sendMessage((i <= event.getStage() ? "§a├ " : "§7├ ") + event.getSteps().get(i));
+                }
+                break;
             case "goto":
                 if (args.length < 3) return false;
                 if (event.goTo(args[2].replaceAll("_", " "))) {
@@ -61,6 +75,7 @@ public class EventCmd implements TabExecutor {
                 }else {
                     sender.sendMessage("§cCouldn't run step: " + args[2].replaceAll("_", " ") + ", either it doesn't exist or the event isn't running.");
                 }
+                break;
             default:
                 return false;
         }
