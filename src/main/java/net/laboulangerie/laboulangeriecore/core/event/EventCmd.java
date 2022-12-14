@@ -1,5 +1,6 @@
 package net.laboulangerie.laboulangeriecore.core.event;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,15 +37,19 @@ public class EventCmd implements TabExecutor {
         switch (args[1].toLowerCase()) {
             case "start":
                 event.start();
+                sender.sendMessage("§aEvent started!");
                 break;
             case "stop":
                 event.stop();
+                sender.sendMessage("§aEvent stopped!");
                 break;
             case "reset":
                 event.reset();
+                sender.sendMessage("§aEvent reset!");
                 break;
             case "nextstep":
                 event.nextStep((Player) sender);
+                sender.sendMessage("§aExecuted next step!");
                 break;
             case "status":
                 sender.sendMessage(
@@ -85,14 +90,14 @@ public class EventCmd implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> suggestions = null;
-        if (args.length == 2) suggestions = Arrays.asList("start", "stop", "nextStep", "reset", "goto", "run");
+        if (args.length == 2) suggestions = Arrays.asList("start", "stop", "nextStep", "reset", "goto", "run", "status");
         if (args.length == 1) suggestions = EventsManager.getEvents();
         if (args.length == 3 && (args[1].equalsIgnoreCase("goto") || args[1].equalsIgnoreCase("run"))) {
             EventState state = EventsManager.getEvent(args[0]);
-            if (state == null) return null;
-            suggestions = state.getSteps().stream().map(step -> step.getName().replaceAll(" ", "_")).collect(Collectors.toList());
+            if (state != null)
+                suggestions = state.getSteps().stream().map(step -> step.getName().replaceAll(" ", "_")).collect(Collectors.toList());
         }
-        return suggestions == null ? null : suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
+        return suggestions == null ? new ArrayList<>() : suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
             .collect(Collectors.toList());
     }
 }
