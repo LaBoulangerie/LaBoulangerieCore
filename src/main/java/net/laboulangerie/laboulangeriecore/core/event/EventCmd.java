@@ -53,16 +53,16 @@ public class EventCmd implements TabExecutor {
                 break;
             case "status":
                 sender.sendMessage(
-                    "The event §e"
+                    "§bThe event §e"
                     + event.getName()
                     + " §b is currently "
                     + (event.hasStarted()
-                        ? "§arunning §7(" + event.getStage() + "/" + event.getTotalStages()
+                        ? "§arunning §7(" + event.getStage() + "/" + event.getTotalStages() +")"
                         : event.hasEnded() ? "§4ended" : "§7off"
                     )
                 );
-                for (int i = 0; i <= event.getSteps().size(); i++) {
-                    sender.sendMessage((i <= event.getStage() ? "§a├ " : "§7├ ") + event.getSteps().get(i));
+                for (int i = 0; i < event.getSteps().size(); i++) {
+                    sender.sendMessage((i <= event.getStage()-1 ? "§a├ " : "§7├ ") + event.getSteps().get(i).getName());
                 }
                 break;
             case "goto":
