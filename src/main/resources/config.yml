@@ -81,3 +81,6 @@ dragon-podium-y: 59.0
 clicks-to-break-egg: 200
 dragon-world: "world_the_end"
 dragon-health: 2000
+
+#resource-pack-url: https://example.com/ResourcePack.zip
+#resource-pack-sha1: dummy

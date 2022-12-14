@@ -76,9 +76,9 @@ public class MiscListener implements Listener {
             e.printStackTrace();
         }
 
-        if (!LaBoulangerieCore.PLUGIN.getConfig().isSet("resource-pack-sha1")) return;
+        if (!LaBoulangerieCore.PLUGIN.getConfig().isSet("resource-pack-sha1") || !LaBoulangerieCore.PLUGIN.getConfig().isSet("resource-pack-url")) return;
 
-        player.setResourcePack("https://laboulangerie.net/share/BreadDough.zip", LaBoulangerieCore.PLUGIN.getConfig().getString("resource-pack-sha1"), true);
+        player.setResourcePack(LaBoulangerieCore.PLUGIN.getConfig().getString("resource-pack-url"), LaBoulangerieCore.PLUGIN.getConfig().getString("resource-pack-sha1"), true);
         player.setInvulnerable(true);
     }
 }
