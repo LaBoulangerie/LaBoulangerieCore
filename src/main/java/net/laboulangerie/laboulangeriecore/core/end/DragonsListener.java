@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
@@ -79,6 +80,7 @@ public class DragonsListener implements Listener {
                     double multiplier = dragon.getDamageDealt(player) / dragon.getTotalDamages();
                     double divineFavors = Math.round(LaBoulangerieCore.PLUGIN.getConfig().getInt("killing-dragon-reward") * multiplier);
                     player.sendMessage("Vous recevez §5" + divineFavors + "§f points divins.");
+                    Component.text("Vous recevez §5" + divineFavors).append(Component.text("?").font(Key.key("bread_dough", "icons"))).append(Component.text(" §f points divins."));
                     DivineFavorsHolder.giveDivineFavors(player, divineFavors);
                 }
             }
