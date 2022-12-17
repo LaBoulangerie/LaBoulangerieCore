@@ -47,7 +47,7 @@ public class DragonsListener implements Listener {
 
         Dragon dragon = Dragon.DRAGONS.get(event.getEntity().getUniqueId());
         Audience implicatedPlayers = Audience.audience(dragon.getImplicatedPlayers());
-        formatter.applyPattern("#.##");
+        formatter.applyPattern("#");
 
         new BukkitRunnable() {
             @Override

@@ -103,7 +103,7 @@ public class Dragon {
         if (!shouldSpawnEgg) return;
 
         spawnLocation.add(new Vector(0, 1, 0)).getBlock().setType(Material.DRAGON_EGG);
-        Location startCorner = spawnLocation.add(-2, -3, -2);
+        Location startCorner = spawnLocation.add(-2, -4, -2);
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 if ((x == 0 && y == 0) || (x == 4 && y == 4) || (x == 0 && y == 4) || (x == 4 && y == 0) || (x == 2 && y == 2)) continue;
