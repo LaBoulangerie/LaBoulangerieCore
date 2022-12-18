@@ -79,8 +79,7 @@ public class DragonsListener implements Listener {
                 for (Player player : dragon.getImplicatedPlayers()) {
                     double multiplier = dragon.getDamageDealt(player) / dragon.getTotalDamages();
                     double divineFavors = Math.round(LaBoulangerieCore.PLUGIN.getConfig().getInt("killing-dragon-reward") * multiplier);
-                    player.sendMessage("Vous recevez §5" + divineFavors + "§f points divins.");
-                    Component.text("Vous recevez §5" + divineFavors).append(Component.text("?").font(Key.key("bread_dough", "icons"))).append(Component.text(" §f points divins."));
+                    player.sendMessage(Component.text("Vous recevez §5" + divineFavors).append(Component.text("?").font(Key.key("bread_dough", "icons"))).append(Component.text(" §f points divins.")));
                     DivineFavorsHolder.giveDivineFavors(player, divineFavors);
                 }
             }
