@@ -37,7 +37,7 @@ public class LoreUpdater implements Listener {
                 break;
         }
 
-        if (newName.equals(authenticable.getAuthorityName())) return;
+        if (newName == null || newName.equals(authenticable.getAuthorityName())) return;
 
         authenticable.updateAuthorityName(newName);
     }

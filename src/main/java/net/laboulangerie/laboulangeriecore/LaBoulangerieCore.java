@@ -22,6 +22,9 @@ import net.laboulangerie.laboulangeriecore.commands.SeenCmd;
 import net.laboulangerie.laboulangeriecore.commands.SpawnCmd;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
+import net.laboulangerie.laboulangeriecore.core.end.DragonsListener;
+import net.laboulangerie.laboulangeriecore.core.event.EventCmd;
+import net.laboulangerie.laboulangeriecore.core.event.EventsManager;
 import net.laboulangerie.laboulangeriecore.core.favors.DivineFavorsCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.CreateHouseCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.DeleteHouseCmd;
@@ -107,6 +110,8 @@ public class LaBoulangerieCore extends JavaPlugin {
             e.printStackTrace();
         }
 
+        EventsManager.innit();
+
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
@@ -123,6 +128,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("houseshop").setExecutor(new HouseShopCmd());
         getCommand("spawn").setExecutor(new SpawnCmd());
         getCommand("seen").setExecutor(new SeenCmd());
+        getCommand("event").setExecutor(new EventCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("discord").setExecutor(new LinkCommands());
@@ -188,7 +194,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv(), new MiscListener(), new AdvancementListeners()
+                new ConversionInv(), new MiscListener(), new AdvancementListeners(), new DragonsListener()
         );
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);

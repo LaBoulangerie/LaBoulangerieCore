@@ -72,6 +72,15 @@ auto-messages: #List of messages to broadcast automatically
     # - frogs are the best
 
 emerald-value: 2 #Define what is the value of one emerald
+killing-dragon-reward: 500 # Number of divine favors to distribute between the killers of the ender dragon
+crystals:
+    - x: 10.0
+      y: 64.0
+      z: 10.0
+dragon-podium-y: 59.0
+clicks-to-break-egg: 200
+dragon-world: "world_the_end"
+dragon-health: 2000
 
 avancements:
     miner:
@@ -142,3 +151,5 @@ avancements:
         grow_100_potatoes:
             enabled: true
  
+#resource-pack-url: https://example.com/ResourcePack.zip
+#resource-pack-sha1: dummy

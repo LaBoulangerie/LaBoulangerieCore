@@ -68,6 +68,10 @@ commands:
         description: Details on players' connection
         usage: /seen [Player]
         permission: laboulangeriecore.seen
+    event:
+        description: Main command for the event assistant
+        permission: laboulangeriecore.eventassistant
+        usage: /event [name] <start|stop|nextStep|run|goTo|status> ([stepName])
 permissions:
     laboulangeriecore.*:
         default: op
@@ -78,6 +82,7 @@ permissions:
             - laboulangeriecore.admin
             - laboulangeriecore.houseshop
             - laboulangeriecore.seen
+            - laboulangeriecore.eventassistant
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
@@ -91,4 +96,6 @@ permissions:
     laboulangeriecore.eeggs.admin:
         default: op
     laboulangeriecore.seen:
+        default: op
+    laboulangeriecore.eventassistant:
         default: op
