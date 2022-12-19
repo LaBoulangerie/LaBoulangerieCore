@@ -16,8 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -34,6 +34,7 @@ public class AdvancementListeners implements Listener {
 
 	public HashMap<String, Long> cooldowns_firebow = new HashMap<String, Long>();
 	public HashMap<String, Long> cooldowns_dodge = new HashMap<String, Long>();
+	public HashMap<String, Long> cooldowns_arrow_in_claims = new HashMap<String, Long>();
 
 	@EventHandler
 	public void onPlayerUseAbility(MmoPlayerUseAbilityEvent event) {
@@ -68,6 +69,7 @@ public class AdvancementListeners implements Listener {
 			case "fire-bow":
 				AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/fleche_enflammee");
 				cooldowns_firebow.put(player.getUniqueId().toString(), System.currentTimeMillis() + (8*1000));
+				cooldowns_arrow_in_claims.put(player.getUniqueId().toString(), System.currentTimeMillis() + (10*1000));
 				break;
 			case "hiding":
 				AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/camouflage");
@@ -117,8 +119,9 @@ public class AdvancementListeners implements Listener {
 					if (killer.getInventory().getItemInMainHand().getType() == Material.BREAD && mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("tasty-bread"), "farmer")){
 						AdvancementManager.tryToCompleteAdvancement(killer, "mmo/farmer/kill_player_with_bread");
 					}
-					if (mmoPlayer.getTalent("thehunter").getLevel(LaBoulangerieMmo.XP_MULTIPLIER) >= LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("hiding").requiredLevel) {
+					if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("hiding"), "hunter")) {
 						if (killer.getActivePotionEffects().contains(killer.getPotionEffect(PotionEffectType.INVISIBILITY))) {
+							killer.sendMessage(killer.getName() + " have killed " + victim.getName());
 							AdvancementManager.tryToCompleteAdvancement(killer, "mmo/hunter/kill_with_camouflage");
 						}
 					}
@@ -211,21 +214,23 @@ public class AdvancementListeners implements Listener {
 		}
 	}
 
+
 	@EventHandler
-	public void whenEntityShootsBow(EntityShootBowEvent event) {
-		if (event.getEntity() instanceof Player) {
-			Player player = (Player) event.getEntity();
+    public void whenArrowIsShot(ProjectileHitEvent event) {
+		if (event.getEntity().getShooter() instanceof Player) {
+			Player player = (Player) event.getEntity().getShooter();
 			MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
-			if(event.getProjectile() instanceof Arrow) {
-				Arrow arrow = (Arrow) event.getProjectile();
+			if(event.getEntity() instanceof Arrow) {
 				if(cooldowns_firebow.containsKey(player.getUniqueId().toString())) {
 					if(TownyAPI.getInstance().getResident(player).getTownOrNull() != null) {
-						if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("fire-bow"), "hunter") && cooldowns_firebow.get(player.getUniqueId().toString()) > System.currentTimeMillis() && TownyAPI.getInstance().getTown(arrow.getLocation()) == TownyAPI.getInstance().getResident(player).getTownOrNull()) {
+						if (mmoPlayer.canUseAbility(LaBoulangerieMmo.talentsRegistry.getTalent("hunter").abilitiesArchetypes.get("fire-bow"), "hunter") && TownyAPI.getInstance().getTown(event.getHitBlock().getLocation()) == TownyAPI.getInstance().getResident(player).getTownOrNull() && cooldowns_arrow_in_claims.get(player.getUniqueId().toString()) > System.currentTimeMillis()) {
 							AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/fire_arrow_in_claim");
 						}
+
 					}
 				}
 			}
+
 		}
 	}
 
