@@ -6,5 +6,6 @@ public enum HouseFlags {
     CAN_OPEN_CONTAINERS,
     CAN_SET_HANGINGS,
     CAN_SET_ARMOR_STANDS,
-    CAN_FLICK
+    CAN_FLICK,
+    SHOPS_ALLOWED
 }

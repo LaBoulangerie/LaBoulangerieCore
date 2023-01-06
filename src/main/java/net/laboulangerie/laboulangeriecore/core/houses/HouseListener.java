@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -21,10 +22,14 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.QuickShopAPI;
+import org.maxgamer.quickshop.util.Util;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class HouseListener implements Listener {
+    private Optional<QuickShopAPI> quickShop = QuickShop.getInstance().isEnabled() ? Optional.of(QuickShop.getInstance()) : Optional.empty();
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBreakBlock(BlockBreakEvent event) {
         if (!event.isCancelled()) return;
@@ -127,21 +132,40 @@ public class HouseListener implements Listener {
         event.setCancelled(false);
     }
 
+    /**
+     * CAN_FLICK
+     * CAN_SET_FLICK
+     */
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onSetArmorStand(PlayerInteractEvent event) {
-        if (event.useInteractedBlock() == Event.Result.DENY && event.getClickedBlock() != null && (
-            event.getClickedBlock().getType() == Material.LEVER ||
-            event.getClickedBlock().getType().toString().endsWith("_BUTTON") ||
-            event.getClickedBlock().getType().toString().endsWith("PRESSURE_PLATE") ||
-            event.getClickedBlock().getType().toString().endsWith("_DOOR") ||
-            event.getClickedBlock().getType().toString().endsWith("_TRAPDOOR") ||
-            event.getClickedBlock().getType().toString().endsWith("_FENCE_GATE")
+    public void onInteraction(PlayerInteractEvent event) {
+        Block block = event.getClickedBlock();
+        if (event.useInteractedBlock() == Event.Result.DENY && block != null && (
+            block.getType() == Material.LEVER ||
+            block.getType().toString().endsWith("_BUTTON") ||
+            block.getType().toString().endsWith("PRESSURE_PLATE") ||
+            block.getType().toString().endsWith("_DOOR") ||
+            block.getType().toString().endsWith("_TRAPDOOR") ||
+            block.getType().toString().endsWith("_FENCE_GATE") ||
+            (quickShop.isPresent() && Util.canBeShop(block))
         )) {
-            Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(event.getClickedBlock().getLocation());
+            Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(block.getLocation());
 
-            if (!house.isPresent() || !house.get().hasMember(event.getPlayer().getUniqueId()) || !house.get().hasFlag(HouseFlags.CAN_FLICK)) return;
+            if (!house.isPresent() || !house.get().hasMember(event.getPlayer().getUniqueId())) return;
 
-            event.setCancelled(false);
+            if ((block.getType() == Material.LEVER ||
+                block.getType().toString().endsWith("_BUTTON") ||
+                block.getType().toString().endsWith("PRESSURE_PLATE") ||
+                block.getType().toString().endsWith("_DOOR") ||
+                block.getType().toString().endsWith("_TRAPDOOR") ||
+                block.getType().toString().endsWith("_FENCE_GATE")
+                && house.get().hasFlag(HouseFlags.CAN_FLICK))
+            ) {
+                event.setCancelled(false);
+            }
+            else if (quickShop.isPresent() &&
+                    quickShop.get().getShopManager().getShop(block.getLocation()) != null &&
+                    house.get().hasFlag(HouseFlags.SHOPS_ALLOWED)
+            ) event.setCancelled(false);
             return;
         }
         if (event.useItemInHand() != Event.Result.DENY || event.getMaterial() != Material.ARMOR_STAND) return;
