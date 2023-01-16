@@ -4,7 +4,7 @@ main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.19
 authors: [Grooble_, PainOchoco, Blackoutburst]
 depend: [Towny, LuckPerms, ProtocolLib]
-softdepend: [PlaceholderAPI, BetonQuest]
+softdepend: [PlaceholderAPI, BetonQuest, QuickShop]
 commands:
     authenticate:
         permission: laboulangerie.authenticate
