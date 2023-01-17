@@ -82,5 +82,6 @@ clicks-to-break-egg: 200
 dragon-world: "world_the_end"
 dragon-health: 2000
 
+crystal-nerf-percentage: 30.0
 #resource-pack-url: https://example.com/ResourcePack.zip
 #resource-pack-sha1: dummy
