@@ -10,13 +10,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EnderCrystal;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
@@ -28,7 +30,7 @@ import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class MiscListener implements Listener {
     ConfigurationSection miscSection;
-    HashMap<UUID, Date> crystalDelay;
+    HashMap<UUID, Date> crystalDelay = new HashMap<>();
 
     public MiscListener() {
         this.miscSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("misc");
@@ -94,30 +96,30 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onCrystalExplode(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof EnderCrystal)) return;
+        if (event.getDamager().getType() != EntityType.ENDER_CRYSTAL) return;
 
         event.setDamage(event.getDamage() * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage")/100));
     }
 
     @EventHandler
     public void onBlockExplode(EntityDamageByBlockEvent event) {
-        if (event.getDamager().getType() != Material.RESPAWN_ANCHOR) return;
+        if (!event.getCause().equals(DamageCause.BLOCK_EXPLOSION)) return;
 
         event.setDamage(event.getDamage() * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage")/100));
     }
 
     @EventHandler
     public void onPlaceCrystal(PlayerInteractEvent event) {
-        if (event.useItemInHand() == Result.DENY || event.getClickedBlock().getType() != Material.OBSIDIAN || event.getItem().getType() != Material.END_CRYSTAL) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.useItemInHand() == Result.DENY || event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.OBSIDIAN || event.getItem() == null || event.getItem().getType() != Material.END_CRYSTAL) return;
 
         if (!crystalDelay.containsKey(event.getPlayer().getUniqueId())) {
             crystalDelay.put(event.getPlayer().getUniqueId(), new Date());
             return;
         }
         Date latestCrystal = crystalDelay.get(event.getPlayer().getUniqueId());
-        if (latestCrystal.compareTo(new Date()) <= 3000) {
-            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + latestCrystal.compareTo(new Date())/1000 + " secondes"));
-            event.setUseItemInHand(Result.DENY);
+        if (new Date().getTime() - latestCrystal.getTime() <= 2000) {
+            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + (2000 - (new Date().getTime() - latestCrystal.getTime()))/1000 + " secondes"));
+            event.setCancelled(true);
         } else {
             crystalDelay.replace(event.getPlayer().getUniqueId(), new Date());
         }
