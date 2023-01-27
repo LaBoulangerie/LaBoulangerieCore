@@ -1,6 +1,7 @@
 package net.laboulangerie.laboulangeriecore.misc;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -116,9 +117,11 @@ public class MiscListener implements Listener {
             crystalDelay.put(event.getPlayer().getUniqueId(), new Date());
             return;
         }
+
         Date latestCrystal = crystalDelay.get(event.getPlayer().getUniqueId());
-        if (new Date().getTime() - latestCrystal.getTime() <= 2000) {
-            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + (2000 - (new Date().getTime() - latestCrystal.getTime()))/1000 + " secondes"));
+        if (new Date().getTime() - latestCrystal.getTime() <= LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown")) {
+            DecimalFormat formatter = new DecimalFormat("0.00");
+            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + formatter.format((LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown") - (new Date().getTime() - latestCrystal.getTime()))/1000) + " secondes"));
             event.setCancelled(true);
         } else {
             crystalDelay.replace(event.getPlayer().getUniqueId(), new Date());
