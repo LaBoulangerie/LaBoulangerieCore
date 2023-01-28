@@ -19,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -110,8 +111,8 @@ public class MiscListener implements Listener {
     }
 
     @EventHandler
-    public void onPlaceCrystal(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.useItemInHand() == Result.DENY || event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.OBSIDIAN || event.getItem() == null || event.getItem().getType() != Material.END_CRYSTAL) return;
+    public void onPlaceCrystal(EntityPlaceEvent event) {
+        if (event.getEntityType() != EntityType.ENDER_CRYSTAL) return;
 
         if (!crystalDelay.containsKey(event.getPlayer().getUniqueId())) {
             crystalDelay.put(event.getPlayer().getUniqueId(), new Date());
