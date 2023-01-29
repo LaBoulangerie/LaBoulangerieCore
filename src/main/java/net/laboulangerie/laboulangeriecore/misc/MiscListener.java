@@ -1,6 +1,7 @@
 package net.laboulangerie.laboulangeriecore.misc;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -109,16 +111,18 @@ public class MiscListener implements Listener {
     }
 
     @EventHandler
-    public void onPlaceCrystal(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.useItemInHand() == Result.DENY || event.getClickedBlock() == null || event.getClickedBlock().getType() != Material.OBSIDIAN || event.getItem() == null || event.getItem().getType() != Material.END_CRYSTAL) return;
+    public void onPlaceCrystal(EntityPlaceEvent event) {
+        if (event.getEntityType() != EntityType.ENDER_CRYSTAL) return;
 
         if (!crystalDelay.containsKey(event.getPlayer().getUniqueId())) {
             crystalDelay.put(event.getPlayer().getUniqueId(), new Date());
             return;
         }
+
         Date latestCrystal = crystalDelay.get(event.getPlayer().getUniqueId());
-        if (new Date().getTime() - latestCrystal.getTime() <= 2000) {
-            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + (2000 - (new Date().getTime() - latestCrystal.getTime()))/1000 + " secondes"));
+        if (new Date().getTime() - latestCrystal.getTime() <= LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown")) {
+            DecimalFormat formatter = new DecimalFormat("0.00");
+            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + formatter.format((LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown") - (new Date().getTime() - latestCrystal.getTime()))/1000) + " secondes"));
             event.setCancelled(true);
         } else {
             crystalDelay.replace(event.getPlayer().getUniqueId(), new Date());

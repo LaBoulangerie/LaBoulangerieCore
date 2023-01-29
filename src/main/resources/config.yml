@@ -82,6 +82,7 @@ clicks-to-break-egg: 200
 dragon-world: "world_the_end"
 dragon-health: 2000
 
-crystal-nerf-percentage: 30.0
+crystal-nerf-percentage: 65.0 #Damage diminution percentage
+crystal-cooldown: 3000 #Cooldown in milliseconds : 1000ms = 1s
 #resource-pack-url: https://example.com/ResourcePack.zip
 #resource-pack-sha1: dummy
