@@ -19,6 +19,7 @@ import org.gestern.gringotts.currency.Denomination;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.ShopType;
 
 import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
@@ -32,6 +33,11 @@ public class ChestShopListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     private void onShopPurchase(ShopPurchaseEvent event) {
         Shop shop = event.getShop();
+
+        if (shop.getShopType() == ShopType.BUYING) {
+            event.setCancelled(true);
+            return;
+        }
         OfflinePlayer owner = Bukkit.getOfflinePlayer(shop.getOwner());
         Player purchaser = Bukkit.getPlayer(event.getPurchaser());
         Chest chest = (Chest) shop.getLocation().getBlock().getState();
