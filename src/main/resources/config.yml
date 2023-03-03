@@ -19,6 +19,7 @@ links:
     twitter: "https://twitter.com/BoulangerieMc"
     github: "https://github.com/LaBoulangerie"
     map: "https://laboulangerie.net/map"
+    librahost: "https://librahost.fr"
 
 misc:
     declined-pack-kick-msg: "<red>Veuillez accepter le pack de ressources pour jouer s'il vous plaît !"
@@ -66,7 +67,7 @@ eastereggs:
 fist-join-commands:
 
 auto-messages-interval: 120 #Interval in seconds between message broadcast
-auto-messages: #List of messages to broadcast automatically
+auto-messages:#List of messages to broadcast automatically
     # - Subscribe to Technoblade
     # - Not even close
     # - frogs are the best

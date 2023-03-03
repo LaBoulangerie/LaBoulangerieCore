@@ -22,6 +22,8 @@ commands:
         description: Sends the github link
     map:
         description: Sends the map link
+    librahost:
+        description: Our beloved LibraHost
     faveursdivines:
         description: Voir ses faveurs divines
     housewand:

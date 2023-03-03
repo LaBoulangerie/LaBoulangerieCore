@@ -135,6 +135,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("twitter").setExecutor(new LinkCommands());
         getCommand("map").setExecutor(new LinkCommands());
         getCommand("github").setExecutor(new LinkCommands());
+        getCommand("librahost").setExecutor(new LinkCommands());
 
         if (getServer().getPluginManager().getPlugin("BetonQuest") != null) {
             BetonQuest.getInstance().registerConditions("towny_is_king", KingCondition.class);
