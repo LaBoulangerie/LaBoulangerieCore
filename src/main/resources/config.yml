@@ -135,8 +135,6 @@ avancements:
             enabled: true
         strip_a_player:
             enabled: true
-        tree_in_player:
-            enabled: true
 
     farmer:
         jeune_pousse:
