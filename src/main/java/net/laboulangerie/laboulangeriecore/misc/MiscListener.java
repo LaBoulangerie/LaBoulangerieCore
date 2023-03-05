@@ -1,23 +1,31 @@
 package net.laboulangerie.laboulangeriecore.misc;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent.Status;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -26,12 +34,14 @@ import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class MiscListener implements Listener {
 
-    private List<UUID> invulnerablePlayers = new ArrayList<>();
-    private PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 255, true);
+    private Map<UUID, Location> invulnerablePlayers = new HashMap<>();
+    private PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 255, true, false, false);
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        vegetableizePlayer(player); // Invulnerability at connection and portal travel
 
         YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
 
@@ -85,25 +95,10 @@ public class MiscListener implements Listener {
                 LaBoulangerieCore.PLUGIN.getConfig().getString("resource-pack-sha1"), true);
     }
 
-    // Invulnerability at connexion and portal travel
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        vegetableizePlayer(event.getPlayer());
-    }
-
+    // Invulnerability at connection and portal travel
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent event) {
         vegetableizePlayer(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (!invulnerablePlayers.contains(player.getUniqueId()))
-            return;
-        player.setInvulnerable(false);
-        player.removePotionEffect(PotionEffectType.BLINDNESS);
-        invulnerablePlayers.remove(player.getUniqueId());
     }
 
     private void vegetableizePlayer(Player player) {
@@ -111,6 +106,55 @@ public class MiscListener implements Listener {
             return;
         player.setInvulnerable(true);
         player.addPotionEffect(blindnessEffect);
-        invulnerablePlayers.add(player.getUniqueId());
+        invulnerablePlayers.put(player.getUniqueId(), player.getEyeLocation());
+    }
+
+    public void registerProtocolLibListeners() {
+        ProtocolLibrary.getProtocolManager().addPacketListener(
+            new PacketAdapter(LaBoulangerieCore.PLUGIN, PacketType.Play.Client.POSITION) {
+                public void onPacketReceiving(PacketEvent event) {
+                    performAfkCheck(event.getPlayer());
+                }
+            }
+        );
+        ProtocolLibrary.getProtocolManager().addPacketListener(
+            new PacketAdapter(LaBoulangerieCore.PLUGIN, PacketType.Play.Client.POSITION_LOOK) {
+                public void onPacketReceiving(PacketEvent event) {
+                    performAfkCheck(event.getPlayer());   
+                }
+            }
+        );
+    }
+
+    private boolean orientationEquals(Vector vec1, Vector vec2) {
+        return vec1.getX() == vec2.getX() && vec1.getY() == vec2.getY() && vec1.getZ() == vec2.getZ();
+    }
+
+    private void performAfkCheck(Player player) {
+        if (invulnerablePlayers.containsKey(player.getUniqueId())) {
+            if (invulnerablePlayers.get(player.getUniqueId()).getWorld() != player.getWorld()) {
+                invulnerablePlayers.replace(player.getUniqueId(), player.getEyeLocation());
+                return;
+            }
+            if (
+                !orientationEquals(invulnerablePlayers.get(player.getUniqueId()).getDirection(), player.getEyeLocation().getDirection()) ||
+                !isCardinalMove(invulnerablePlayers.get(player.getUniqueId()), player.getEyeLocation())
+            ) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.setInvulnerable(false);
+                        player.removePotionEffect(PotionEffectType.BLINDNESS);
+                        invulnerablePlayers.remove(player.getUniqueId());
+                    }
+                }.runTask(LaBoulangerieCore.PLUGIN);
+            }
+        }
+    }
+
+    private boolean isCardinalMove(Location loc1, Location loc2) {
+        Vector vec = loc1.toVector().subtract(loc2.toVector());
+        if (vec.equals(new Vector(0, 0, 0))) return true;
+        return (vec.getX() != 0 && vec.getY() == 0 && vec.getZ() == 0) || (vec.getX() == 0 && vec.getY() != 0 && vec.getZ() == 0) || (vec.getX() == 0 && vec.getY() == 0 && vec.getZ() != 0);
     }
 }

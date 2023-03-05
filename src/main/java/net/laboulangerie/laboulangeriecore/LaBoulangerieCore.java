@@ -64,8 +64,8 @@ public class LaBoulangerieCore extends JavaPlugin {
     public static NationHouseHolder nationHouseHolder;
 
     private ComponentRenderer componentRenderer;
-
     private NameTagManager nameTagManager;
+    private MiscListener miscListener = new MiscListener();
 
     @Override
     public void onEnable() {
@@ -189,12 +189,13 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv(), new MiscListener(), new DragonsListener()
+                new ConversionInv(), miscListener, new DragonsListener()
         );
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
         listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
+        miscListener.registerProtocolLibListeners();
     }
 
     private boolean setupEconomy() {
