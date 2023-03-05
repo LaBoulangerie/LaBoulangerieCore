@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.core;
+package net.laboulangerie.laboulangeriecore.misc;
 
 import static org.gestern.gringotts.Configuration.CONF;
 
