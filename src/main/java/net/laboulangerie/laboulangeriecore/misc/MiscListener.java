@@ -1,6 +1,8 @@
 package net.laboulangerie.laboulangeriecore.misc;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +11,16 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityPlaceEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
@@ -33,6 +41,8 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class MiscListener implements Listener {
+    ConfigurationSection miscSection;
+    HashMap<UUID, Date> crystalDelay = new HashMap<>();
 
     private Map<UUID, Location> invulnerablePlayers = new HashMap<>();
     private PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 255, true, false, false);
@@ -158,5 +168,38 @@ public class MiscListener implements Listener {
         Vector vec = loc1.toVector().subtract(loc2.toVector());
         if (vec.equals(new Vector(0, 0, 0))) return true;
         return (vec.getX() != 0 && vec.getY() == 0 && vec.getZ() == 0) || (vec.getX() == 0 && vec.getY() != 0 && vec.getZ() == 0) || (vec.getX() == 0 && vec.getY() == 0 && vec.getZ() != 0);
+    }
+
+    @EventHandler
+    public void onCrystalExplode(EntityDamageByEntityEvent event) {
+        if (event.getDamager().getType() != EntityType.ENDER_CRYSTAL) return;
+
+        event.setDamage(event.getDamage() * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage")/100));
+    }
+
+    @EventHandler
+    public void onBlockExplode(EntityDamageByBlockEvent event) {
+        if (!event.getCause().equals(DamageCause.BLOCK_EXPLOSION)) return;
+
+        event.setDamage(event.getDamage() * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage")/100));
+    }
+
+    @EventHandler
+    public void onPlaceCrystal(EntityPlaceEvent event) {
+        if (event.getEntityType() != EntityType.ENDER_CRYSTAL) return;
+
+        if (!crystalDelay.containsKey(event.getPlayer().getUniqueId())) {
+            crystalDelay.put(event.getPlayer().getUniqueId(), new Date());
+            return;
+        }
+
+        Date latestCrystal = crystalDelay.get(event.getPlayer().getUniqueId());
+        if (new Date().getTime() - latestCrystal.getTime() <= LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown")) {
+            DecimalFormat formatter = new DecimalFormat("0.00");
+            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + formatter.format((LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown") - (new Date().getTime() - latestCrystal.getTime()))/1000) + " secondes"));
+            event.setCancelled(true);
+        } else {
+            crystalDelay.replace(event.getPlayer().getUniqueId(), new Date());
+        }
     }
 }

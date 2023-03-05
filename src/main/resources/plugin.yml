@@ -1,8 +1,8 @@
 name: LaBoulangerieCore
-version: 1.0-SNAPSHOT
+version: ${project.version}
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.19
-authors: [Grooble_, PainOchoco, Blackoutburst]
+authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3]
 depend: [Towny, LuckPerms, ProtocolLib]
 softdepend: [PlaceholderAPI, BetonQuest, QuickShop]
 commands:
@@ -22,6 +22,8 @@ commands:
         description: Sends the github link
     map:
         description: Sends the map link
+    librahost:
+        description: Our beloved LibraHost
     faveursdivines:
         description: Voir ses faveurs divines
     housewand:
