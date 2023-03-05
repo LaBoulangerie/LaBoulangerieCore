@@ -105,6 +105,7 @@ public class MiscListener implements Listener {
         if (player.getGameMode() != GameMode.SURVIVAL)
             return;
         player.setInvulnerable(true);
+        player.setCollidable(false);
         player.addPotionEffect(blindnessEffect);
         invulnerablePlayers.put(player.getUniqueId(), player.getEyeLocation());
     }
@@ -144,6 +145,7 @@ public class MiscListener implements Listener {
                     @Override
                     public void run() {
                         player.setInvulnerable(false);
+                        player.setCollidable(true);
                         player.removePotionEffect(PotionEffectType.BLINDNESS);
                         invulnerablePlayers.remove(player.getUniqueId());
                     }
