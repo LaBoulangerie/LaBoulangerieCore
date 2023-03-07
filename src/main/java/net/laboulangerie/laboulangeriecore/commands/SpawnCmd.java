@@ -24,7 +24,7 @@ public class SpawnCmd implements CommandExecutor {
         if (!args[0].equalsIgnoreCase("set")) return false;
 
         if (!player.hasPermission("laboulangeriecore.admin")) {
-            player.sendMessage("!4You don't have permission to use this command!");
+            player.sendMessage("§4You don't have permission to use this command!");
             return true;
         }
 
