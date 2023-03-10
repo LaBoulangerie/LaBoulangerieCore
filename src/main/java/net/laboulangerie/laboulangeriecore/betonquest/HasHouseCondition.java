@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.misc;
+package net.laboulangerie.laboulangeriecore.betonquest;
 
 import java.util.UUID;
 
@@ -12,7 +12,6 @@ import pl.betoncraft.betonquest.api.Condition;
 import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
 public class HasHouseCondition extends Condition {
-
     @SuppressWarnings("deprecation")
     public HasHouseCondition(Instruction instruction) {
         super(instruction);
@@ -26,5 +25,4 @@ public class HasHouseCondition extends Condition {
         if (nation == null) return false;
         return LaBoulangerieCore.nationHouseHolder.hasHouse(nation.getUUID());
     }
-    
 }

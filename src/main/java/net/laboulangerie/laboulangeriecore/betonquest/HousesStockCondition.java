@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.misc;
+package net.laboulangerie.laboulangeriecore.betonquest;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import pl.betoncraft.betonquest.Instruction;

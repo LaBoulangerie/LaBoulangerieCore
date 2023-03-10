@@ -16,6 +16,10 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
+import net.laboulangerie.laboulangeriecore.betonquest.HasHouseCondition;
+import net.laboulangerie.laboulangeriecore.betonquest.HousesStockCondition;
+import net.laboulangerie.laboulangeriecore.betonquest.KingCondition;
+import net.laboulangerie.laboulangeriecore.betonquest.RankCondition;
 import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.commands.SeenCmd;
@@ -48,9 +52,6 @@ import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
-import net.laboulangerie.laboulangeriecore.misc.HasHouseCondition;
-import net.laboulangerie.laboulangeriecore.misc.HousesStockCondition;
-import net.laboulangerie.laboulangeriecore.misc.KingCondition;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
@@ -142,6 +143,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             BetonQuest.getInstance().registerConditions("towny_is_king", KingCondition.class);
             BetonQuest.getInstance().registerConditions("nation_houses_has_stocks", HousesStockCondition.class);
             BetonQuest.getInstance().registerConditions("towny_has_house", HasHouseCondition.class);
+            BetonQuest.getInstance().registerConditions("towny_has_rank", RankCondition.class);
             getLogger().info("Hooked in BetonQuest!");
         }
 

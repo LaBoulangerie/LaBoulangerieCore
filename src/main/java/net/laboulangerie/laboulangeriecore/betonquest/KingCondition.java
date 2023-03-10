@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.misc;
+package net.laboulangerie.laboulangeriecore.betonquest;
 
 import java.util.UUID;
 
