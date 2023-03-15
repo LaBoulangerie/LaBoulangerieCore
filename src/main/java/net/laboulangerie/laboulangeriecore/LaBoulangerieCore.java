@@ -19,6 +19,7 @@ import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.betonquest.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.KingCondition;
+import net.laboulangerie.laboulangeriecore.betonquest.MayorCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.RankCondition;
 import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
@@ -141,6 +142,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         if (getServer().getPluginManager().getPlugin("BetonQuest") != null) {
             BetonQuest.getInstance().registerConditions("towny_is_king", KingCondition.class);
+            BetonQuest.getInstance().registerConditions("towny_is_mayor", MayorCondition.class);
             BetonQuest.getInstance().registerConditions("nation_houses_has_stocks", HousesStockCondition.class);
             BetonQuest.getInstance().registerConditions("towny_has_house", HasHouseCondition.class);
             BetonQuest.getInstance().registerConditions("towny_has_rank", RankCondition.class);
