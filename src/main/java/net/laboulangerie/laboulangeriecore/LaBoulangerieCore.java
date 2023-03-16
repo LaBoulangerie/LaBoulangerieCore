@@ -15,7 +15,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
-import net.laboulangerie.laboulangeriecore.authenticate.LoreUpdater;
 import net.laboulangerie.laboulangeriecore.betonquest.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.KingCondition;
@@ -196,7 +195,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
-                new LoreUpdater(), new TabListener(), new NameTagListener(), new ElytraGenRemover(),
+                new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(),
                 new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener()
