@@ -1,5 +1,5 @@
 authenticate:
-    lore:
+    lore: "§6Authentifié par %authority% (%type%)"
 
 tab:
     # MiniMessage format and PAPI placeholders allowed

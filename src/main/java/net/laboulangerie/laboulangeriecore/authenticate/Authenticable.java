@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
@@ -53,8 +52,11 @@ public class Authenticable {
     public void updateAuthorityName(String newName) {
         if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't update authority name");
         List<Component> lore = item.lore();
-        Component newComp = lore.get(item.lore().size()-1).replaceText(TextReplacementConfig.builder().match(getAuthorityName()).replacement(newName).build());
-        lore.set(item.lore().size()-1, newComp);
+        lore.set(item.lore().size()-1, Component.text(newName));
         item.lore(lore);
+    }
+
+    public static String parseLore(String authority, AuthorityType type) {
+        return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore").replaceAll("%authority%", authority).replaceAll("%type%", type.getSuffix());
     }
 }
