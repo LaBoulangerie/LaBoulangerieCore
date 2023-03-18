@@ -46,8 +46,8 @@ jobs:
           git config --global user.email "${{ secrets.GH_EMAIL }}"
           git config --global user.name "${{ secrets.GH_USER }}"
           git clone https://${{ secrets.GH_USER }}:${{ secrets.GH_TOKEN }}@git.laboulangerie.net/ci/plugins.git
-          cp [!original-]**.jar Plugins/
-          cd Plugins/
+          cp [!original-]**.jar plugins/
+          cd plugins/
           git add .
           git commit -m "workflow $GITHUB_RUN_ID from $GITHUB_REPOSITORY"
           git push https://${{ secrets.GH_USER }}:${{ secrets.GH_TOKEN }}@git.laboulangerie.net/ci/plugins.git HEAD:master
