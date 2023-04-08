@@ -52,15 +52,18 @@ public class Dragon {
         dragon.setPhase(Phase.CIRCLING);
         BossBar bossBar = BossBar.bossBar(Component.text("Ender Dragon"), 1, Color.PURPLE, Overlay.PROGRESS);
 
-        for (Player player : dragon.getWorld().getPlayers()) player.showBossBar(bossBar);
+        for (Player player : dragon.getWorld().getPlayers())
+            player.showBossBar(bossBar);
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (!dragon.isDead()) {
-                    bossBar.progress((float) (dragon.getHealth() / dragon.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+                    bossBar.progress((float) (dragon.getHealth()
+                            / dragon.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
                 } else {
                     List<Player> players = dragon.getWorld().getPlayers();
-                    for (Player player : players) player.hideBossBar(bossBar);
+                    for (Player player : players)
+                        player.hideBossBar(bossBar);
                     cancel();
                 }
             }
@@ -71,14 +74,16 @@ public class Dragon {
 
     public void spawnCrystals() {
         for (Location location : crystalsLocation) {
-            EnderCrystal crystal = (EnderCrystal) spawnLocation.getWorld().spawnEntity(location, EntityType.ENDER_CRYSTAL);
+            EnderCrystal crystal =
+                    (EnderCrystal) spawnLocation.getWorld().spawnEntity(location, EntityType.ENDER_CRYSTAL);
             crystal.setShowingBottom(true);
             crystals.add(crystal);
         }
     }
 
     public void dealDamage(Player player, double damage) {
-        damagers.put(player.getUniqueId(), (damagers.get(player.getUniqueId()) != null ? damagers.get(player.getUniqueId()) : 0) + damage);
+        damagers.put(player.getUniqueId(),
+                (damagers.get(player.getUniqueId()) != null ? damagers.get(player.getUniqueId()) : 0) + damage);
     }
 
     public List<Player> getImplicatedPlayers() {
@@ -86,12 +91,14 @@ public class Dragon {
     }
 
     public Map<Player, Double> sortDamagers() {
-        return damagers.entrySet().stream().map(entry -> new AbstractMap.SimpleEntry<>(Bukkit.getPlayer(entry.getKey()), entry.getValue()))
-           .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue())).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return damagers.entrySet().stream()
+                .map(entry -> new AbstractMap.SimpleEntry<>(Bukkit.getPlayer(entry.getKey()), entry.getValue()))
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     public Double getTotalDamages() {
-        return damagers.values().stream().reduce((a, b) -> a+b).orElse(0D);
+        return damagers.values().stream().reduce((a, b) -> a + b).orElse(0D);
     }
 
     public Double getDamageDealt(Player player) {
@@ -106,12 +113,19 @@ public class Dragon {
         Location startCorner = spawnLocation.add(-2, -4, -2);
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
-                if ((x == 0 && y == 0) || (x == 4 && y == 4) || (x == 0 && y == 4) || (x == 4 && y == 0) || (x == 2 && y == 2)) continue;
+                if ((x == 0 && y == 0) || (x == 4 && y == 4) || (x == 0 && y == 4) || (x == 4 && y == 0)
+                        || (x == 2 && y == 2))
+                    continue;
                 startCorner.clone().add(x, 0, y).getBlock().setType(Material.END_PORTAL);
             }
         }
     }
 
-    public void setShouldSpawnEgg(boolean shouldSpawnEgg) { this.shouldSpawnEgg = shouldSpawnEgg; }
-    public boolean shouldSpawnEgg() { return shouldSpawnEgg; }
+    public void setShouldSpawnEgg(boolean shouldSpawnEgg) {
+        this.shouldSpawnEgg = shouldSpawnEgg;
+    }
+
+    public boolean shouldSpawnEgg() {
+        return shouldSpawnEgg;
+    }
 }

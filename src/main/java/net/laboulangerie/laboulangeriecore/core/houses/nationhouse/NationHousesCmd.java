@@ -22,7 +22,8 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
     public NationHousesCmd() {}
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
+            @NotNull String[] args) {
         if (args.length == 0) return false;
         if (args.length < 2) return false;
         if (args[0].equalsIgnoreCase("list") && Arrays.asList("free", "occupied").contains(args[1])) {
@@ -35,24 +36,29 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
                     return true;
                 }
             }
-            if (pageToDisplay * 8 > (args[1].equals("free") ? LaBoulangerieCore.nationHouseHolder.getFreeHouses().size() : LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().size())) {
+            if (pageToDisplay * 8 > (args[1].equals("free") ? LaBoulangerieCore.nationHouseHolder.getFreeHouses().size()
+                    : LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().size())) {
                 sender.sendMessage("§4There is no page " + pageToDisplay + " to display!");
                 return true;
             }
             sender.sendMessage("§2-----§a[§epage " + (pageToDisplay) + "§a]§2-----");
             if (args[1].equals("free")) {
-                for (int i = pageToDisplay*8; i < LaBoulangerieCore.nationHouseHolder.getFreeHouses().size() && i < (pageToDisplay+1)*8; i++) {
+                for (int i = pageToDisplay * 8; i < LaBoulangerieCore.nationHouseHolder.getFreeHouses().size()
+                        && i < (pageToDisplay + 1) * 8; i++) {
                     UUID id = LaBoulangerieCore.nationHouseHolder.getFreeHouses().get(i);
                     House house = LaBoulangerieCore.housesManager.getHouse(id);
-                    sender.sendMessage("§2" + house.getName() + " §r--- §3" + LaBoulangerieCore.nationHouseHolder.getHousePrice(id) + "$");
+                    sender.sendMessage("§2" + house.getName() + " §r--- §3"
+                            + LaBoulangerieCore.nationHouseHolder.getHousePrice(id) + "$");
                 }
             } else {
-                for (int i = pageToDisplay*8; i < LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().size() && i < (pageToDisplay+1)*8; i++) {
+                for (int i = pageToDisplay * 8; i < LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().size()
+                        && i < (pageToDisplay + 1) * 8; i++) {
                     UUID id = (UUID) LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().toArray()[i];
                     House house = LaBoulangerieCore.housesManager.getHouse(id);
                     UUID nationId = LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().get(id);
 
-                    sender.sendMessage("§5" + house.getName() + " §r--- §3" + TownyUniverse.getInstance().getNation(nationId));
+                    sender.sendMessage(
+                            "§5" + house.getName() + " §r--- §3" + TownyUniverse.getInstance().getNation(nationId));
                 }
             }
             return true;
@@ -98,28 +104,29 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
+            @NotNull String alias, @NotNull String[] args) {
         List<String> suggestions = Arrays.asList("");
         if (args.length == 1) suggestions = Arrays.asList("list", "create", "delete");
         else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("list")) suggestions = Arrays.asList("free", "occupied");
             else if (args[0].equalsIgnoreCase("delete")) {
                 suggestions = LaBoulangerieCore.nationHouseHolder.getFreeHouses().stream()
-                    .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName().replaceAll(" ", "_"))
-                    .collect(Collectors.toList());
-
-                suggestions.addAll(
-                    LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().stream()
                         .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName().replaceAll(" ", "_"))
-                        .collect(Collectors.toList())
-                );
-            } else if (args[0].equalsIgnoreCase("create")) {
-                suggestions = LaBoulangerieCore.housesManager.getHouses().values()
-                    .stream().filter(house -> !LaBoulangerieCore.nationHouseHolder.exists(house)).map(house -> house.getName().replaceAll(" ", "_")).collect(Collectors.toList());
-            }
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("create")) suggestions = Arrays.asList("100", "500", "1000", "5000");
+                        .collect(Collectors.toList());
 
-        return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
-            .collect(Collectors.toList());
+                suggestions.addAll(LaBoulangerieCore.nationHouseHolder.getOccupiedHouses().keySet().stream()
+                        .map(id -> LaBoulangerieCore.housesManager.getHouse(id).getName().replaceAll(" ", "_"))
+                        .collect(Collectors.toList()));
+            } else if (args[0].equalsIgnoreCase("create")) {
+                suggestions = LaBoulangerieCore.housesManager.getHouses().values().stream()
+                        .filter(house -> !LaBoulangerieCore.nationHouseHolder.exists(house))
+                        .map(house -> house.getName().replaceAll(" ", "_")).collect(Collectors.toList());
+            }
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("create"))
+            suggestions = Arrays.asList("100", "500", "1000", "5000");
+
+        return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length - 1]))
+                .collect(Collectors.toList());
     }
 }

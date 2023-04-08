@@ -12,7 +12,7 @@ public class EggBreakingProgress {
      * @return whether or not the progression has reached its maximum
      */
     public boolean registerClick() {
-        if (timesClicked <= REQUIRED_CLICKS-1) {
+        if (timesClicked <= REQUIRED_CLICKS - 1) {
             timesClicked++;
             clickedRecently = true;
             return false;
@@ -20,9 +20,15 @@ public class EggBreakingProgress {
             return true;
     }
 
-    public boolean wasClickedRecently() { return clickedRecently; }
-    public void setClickedRecently(boolean clickedRecently) { this.clickedRecently = clickedRecently; }
+    public boolean wasClickedRecently() {
+        return clickedRecently;
+    }
+
+    public void setClickedRecently(boolean clickedRecently) {
+        this.clickedRecently = clickedRecently;
+    }
+
     public double getProgression() {
-        return (double)timesClicked/(double)REQUIRED_CLICKS; 
+        return (double) timesClicked / (double) REQUIRED_CLICKS;
     }
 }

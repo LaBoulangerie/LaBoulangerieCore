@@ -20,12 +20,12 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class ConversionInv implements Listener {
     public static void displayConversionInv(Player player) {
-        List<Denomination> denominations =  CONF.getCurrency().getDenominations();
+        List<Denomination> denominations = CONF.getCurrency().getDenominations();
 
         Merchant merchant = Bukkit.createMerchant(Component.text("§bConvertisseur de monnaie"));
         List<MerchantRecipe> merchantRecipes = new ArrayList<MerchantRecipe>();
 
-        for (int i = denominations.size()-1; i > 0; i--) {
+        for (int i = denominations.size() - 1; i > 0; i--) {
             int y = i - 1;
 
             ItemStack needed = denominations.get(i).getKey().type.clone();
@@ -44,7 +44,7 @@ public class ConversionInv implements Listener {
             recipe.addIngredient(needed);
             merchantRecipes.add(recipe);
         }
-        for (int i = 0; i < denominations.size()-1; i++) {
+        for (int i = 0; i < denominations.size() - 1; i++) {
             int y = i + 1;
 
             ItemStack needed = denominations.get(i).getKey().type.clone();
@@ -64,7 +64,8 @@ public class ConversionInv implements Listener {
 
     @EventHandler
     public void onTrade(TradeSelectEvent event) {
-        if (PlainTextComponentSerializer.plainText().serialize(event.getWhoClicked().getOpenInventory().title()).contains("Convertisseur de monnaie"))
+        if (PlainTextComponentSerializer.plainText().serialize(event.getWhoClicked().getOpenInventory().title())
+                .contains("Convertisseur de monnaie"))
             event.getInventory().setMaxStackSize(127);
     }
 }

@@ -27,7 +27,8 @@ import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
+            @NotNull String[] args) {
         if (args.length < 1) return false;
 
         if (Arrays.asList("reload", "rl").contains(args[0].toString())) {
@@ -42,12 +43,12 @@ public class CoreCommand implements TabExecutor {
         }
 
         if (args[0].equalsIgnoreCase("conversion")) {
-            if (!(sender instanceof Player))
-                sender.sendMessage("§4Only players can use that");
+            if (!(sender instanceof Player)) sender.sendMessage("§4Only players can use that");
             else {
                 ConversionInv.displayConversionInv((Player) sender);
-                YamlConfiguration data = UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
-                data.set("conversions-count", data.getInt("conversions-count", 0)+1);
+                YamlConfiguration data =
+                        UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+                data.set("conversions-count", data.getInt("conversions-count", 0) + 1);
                 try {
                     UsersData.save((Player) sender, data);
                 } catch (IOException e) {
@@ -66,12 +67,9 @@ public class CoreCommand implements TabExecutor {
                 Map<String, Double> crystal = (Map<String, Double>) map;
                 crystalLocs.add(new Location(world, crystal.get("x"), crystal.get("y"), crystal.get("z")));
             }
-            Dragon dragon = new Dragon(new Location(
-                world,
-                0,
-                LaBoulangerieCore.PLUGIN.getConfig().getDouble("dragon-podium-y"),
-                0
-            ), crystalLocs, LaBoulangerieCore.PLUGIN.getConfig().getInt("dragon-health"));
+            Dragon dragon = new Dragon(
+                    new Location(world, 0, LaBoulangerieCore.PLUGIN.getConfig().getDouble("dragon-podium-y"), 0),
+                    crystalLocs, LaBoulangerieCore.PLUGIN.getConfig().getInt("dragon-health"));
 
             dragon.spawn();
             dragon.spawnCrystals();
@@ -88,7 +86,7 @@ public class CoreCommand implements TabExecutor {
             }
             YamlConfiguration data = UsersData.get(target).orElseGet(() -> UsersData.createUserData(target));
 
-            String name = List.of(args).subList(2, args.length).stream().reduce((a, b) -> a+" "+b).get();
+            String name = List.of(args).subList(2, args.length).stream().reduce((a, b) -> a + " " + b).get();
             data.set("nick", name);
             try {
                 UsersData.save(target, data);
@@ -106,12 +104,13 @@ public class CoreCommand implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
+            @NotNull String alias, @NotNull String[] args) {
         List<String> suggestions = Arrays.asList("");
         if (args.length == 1) suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "spawnDragon");
         if (args.length == 2 && args[0].equalsIgnoreCase("nick")) return null;
-        
-        return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length-1]))
-            .collect(Collectors.toList());
+
+        return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length - 1]))
+                .collect(Collectors.toList());
     }
 }

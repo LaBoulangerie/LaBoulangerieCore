@@ -29,7 +29,8 @@ public class EventStep {
             i++;
             String[] params = action.split(" ", 2);
             if (params.length < 2) {
-                LaBoulangerieCore.PLUGIN.getLogger().warning("Invalid action in: "+parentEvent+":"+ name +":"+i);
+                LaBoulangerieCore.PLUGIN.getLogger()
+                        .warning("Invalid action in: " + parentEvent + ":" + name + ":" + i);
                 continue;
             }
 
@@ -42,19 +43,19 @@ public class EventStep {
                     String packageDir = identifier.replaceAll("-", "/");
                     try {
                         BetonQuest.event(executor.getUniqueId().toString(),
-                            new EventID(
-                                new ConfigPackage(new File(BetonQuest.getInstance().getDataFolder(), packageDir), identifier),
-                                params[1]
-                            )
-                        );
+                                new EventID(new ConfigPackage(
+                                        new File(BetonQuest.getInstance().getDataFolder(), packageDir), identifier),
+                                        params[1]));
                     } catch (ObjectNotFoundException e) {
                         e.printStackTrace();
                     }
                     break;
             }
-            
+
         }
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 }

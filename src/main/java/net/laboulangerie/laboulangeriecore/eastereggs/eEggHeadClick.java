@@ -21,9 +21,12 @@ import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class eEggHeadClick implements Listener {
     @EventHandler
-    public void eastereggClick (PlayerInteractEvent e) throws IOException {
-        if(e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock().getType() == null || e.getHand() != EquipmentSlot.HAND) return;
-        if(e.getClickedBlock().getType() == Material.PLAYER_HEAD || e.getClickedBlock().getType() == Material.PLAYER_WALL_HEAD){
+    public void eastereggClick(PlayerInteractEvent e) throws IOException {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getClickedBlock().getType() == null
+                || e.getHand() != EquipmentSlot.HAND)
+            return;
+        if (e.getClickedBlock().getType() == Material.PLAYER_HEAD
+                || e.getClickedBlock().getType() == Material.PLAYER_WALL_HEAD) {
             Player p = e.getPlayer();
 
             YamlConfiguration playerData = UsersData.get(p).orElseGet(() -> UsersData.createUserData(p));
@@ -32,8 +35,8 @@ public class eEggHeadClick implements Listener {
             String result = eEggUtil.getBlockIdentifier(block);
             List<String> foundEggs = new ArrayList<>();
 
-            if(eEggUtil.eggsData.getStringList("eggs").contains(result)) {
-                if(playerData.getStringList("eggs") != null || !playerData.getStringList("eggs").isEmpty()){
+            if (eEggUtil.eggsData.getStringList("eggs").contains(result)) {
+                if (playerData.getStringList("eggs") != null || !playerData.getStringList("eggs").isEmpty()) {
 
                     foundEggs = playerData.getStringList("eggs");
                     if (foundEggs.contains(result)) {
@@ -51,12 +54,16 @@ public class eEggHeadClick implements Listener {
     }
 
     @EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent event) { // Add number of eggs found to the infos sent by the cmd /stats of LaBoulangerieMmo
+    public void onCommand(PlayerCommandPreprocessEvent event) { // Add number of eggs found to the infos sent by the cmd
+                                                                // /stats of LaBoulangerieMmo
         if (!event.getMessage().equals("/stats")) return;
         new BukkitRunnable() {
             @Override
             public void run() {
-                event.getPlayer().sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.eggs-found").replace("%amount%", eEggUtil.getPlayerAmount(event.getPlayer()).toString()).replace("%total%", eEggUtil.getMaxAmount().toString()));
+                event.getPlayer()
+                        .sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.eggs-found")
+                                .replace("%amount%", eEggUtil.getPlayerAmount(event.getPlayer()).toString())
+                                .replace("%total%", eEggUtil.getMaxAmount().toString()));
             }
         }.runTaskAsynchronously(LaBoulangerieCore.PLUGIN); // Run asynchronously to add the text at the end
     }

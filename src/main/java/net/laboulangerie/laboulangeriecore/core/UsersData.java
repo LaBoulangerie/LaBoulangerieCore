@@ -24,6 +24,7 @@ public class UsersData {
 
     /**
      * Get the user's data if it's present or an empty optional
+     * 
      * @param user
      * @return
      */
@@ -31,8 +32,8 @@ public class UsersData {
         if (usersData.containsKey(user.getUniqueId())) return Optional.of(usersData.get(user.getUniqueId()));
 
         List<String> usersUUIDs = List.of(dataFolder.listFiles((dir, name) -> name.toLowerCase().endsWith(".yml")))
-            .stream().map(file -> file.getName().split("\\.")[0]).collect(Collectors.toList());
-        
+                .stream().map(file -> file.getName().split("\\.")[0]).collect(Collectors.toList());
+
         if (!usersUUIDs.contains(user.getUniqueId().toString())) return Optional.empty();
 
         File userFile = new File(dataFolder, user.getUniqueId() + ".yml");
@@ -43,9 +44,9 @@ public class UsersData {
     }
 
     /**
-     * If this fails to create the user's save file it will
-     * return an empty YamlConfiguration and the IO error
-     * should be handled whe trying to save this YamlConfiguration
+     * If this fails to create the user's save file it will return an empty YamlConfiguration and the IO error should be
+     * handled whe trying to save this YamlConfiguration
+     * 
      * @param user
      * @return
      */

@@ -45,7 +45,8 @@ public class MiscListener implements Listener {
     HashMap<UUID, Date> crystalDelay = new HashMap<>();
 
     private Map<UUID, Location> invulnerablePlayers = new HashMap<>();
-    private PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 255, true, false, false);
+    private PotionEffect blindnessEffect =
+            new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 255, true, false, false);
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -59,12 +60,10 @@ public class MiscListener implements Listener {
             player.displayName(Component.text(data.getString("nick")));
         }
 
-        if (player.hasPlayedBefore())
-            return;
+        if (player.hasPlayedBefore()) return;
 
         List<String> commands = LaBoulangerieCore.PLUGIN.getConfig().getStringList("first-join-commands");
-        if (commands == null)
-            return;
+        if (commands == null) return;
 
         commands.stream().forEach(cmd -> {
             Bukkit.getServer().getCommandMap().dispatch(Bukkit.getServer().getConsoleSender(),
@@ -78,9 +77,8 @@ public class MiscListener implements Listener {
         Player player = event.getPlayer();
 
         if (event.getStatus() == Status.DECLINED) {
-            Component kickMessage = MiniMessage.miniMessage()
-                    .deserialize(LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("misc")
-                            .getString("declined-pack-kick-msg"));
+            Component kickMessage = MiniMessage.miniMessage().deserialize(LaBoulangerieCore.PLUGIN.getConfig()
+                    .getConfigurationSection("misc").getString("declined-pack-kick-msg"));
             player.kick(kickMessage);
         }
     }
@@ -112,8 +110,7 @@ public class MiscListener implements Listener {
     }
 
     private void vegetableizePlayer(Player player) {
-        if (player.getGameMode() != GameMode.SURVIVAL)
-            return;
+        if (player.getGameMode() != GameMode.SURVIVAL) return;
         player.setInvulnerable(true);
         player.setCollidable(false);
         player.addPotionEffect(blindnessEffect);
@@ -121,20 +118,18 @@ public class MiscListener implements Listener {
     }
 
     public void registerProtocolLibListeners() {
-        ProtocolLibrary.getProtocolManager().addPacketListener(
-            new PacketAdapter(LaBoulangerieCore.PLUGIN, PacketType.Play.Client.POSITION) {
-                public void onPacketReceiving(PacketEvent event) {
-                    performAfkCheck(event.getPlayer());
-                }
-            }
-        );
-        ProtocolLibrary.getProtocolManager().addPacketListener(
-            new PacketAdapter(LaBoulangerieCore.PLUGIN, PacketType.Play.Client.POSITION_LOOK) {
-                public void onPacketReceiving(PacketEvent event) {
-                    performAfkCheck(event.getPlayer());   
-                }
-            }
-        );
+        ProtocolLibrary.getProtocolManager()
+                .addPacketListener(new PacketAdapter(LaBoulangerieCore.PLUGIN, PacketType.Play.Client.POSITION) {
+                    public void onPacketReceiving(PacketEvent event) {
+                        performAfkCheck(event.getPlayer());
+                    }
+                });
+        ProtocolLibrary.getProtocolManager()
+                .addPacketListener(new PacketAdapter(LaBoulangerieCore.PLUGIN, PacketType.Play.Client.POSITION_LOOK) {
+                    public void onPacketReceiving(PacketEvent event) {
+                        performAfkCheck(event.getPlayer());
+                    }
+                });
     }
 
     private boolean orientationEquals(Vector vec1, Vector vec2) {
@@ -147,10 +142,9 @@ public class MiscListener implements Listener {
                 invulnerablePlayers.replace(player.getUniqueId(), player.getEyeLocation());
                 return;
             }
-            if (
-                !orientationEquals(invulnerablePlayers.get(player.getUniqueId()).getDirection(), player.getEyeLocation().getDirection()) ||
-                !isCardinalMove(invulnerablePlayers.get(player.getUniqueId()), player.getEyeLocation())
-            ) {
+            if (!orientationEquals(invulnerablePlayers.get(player.getUniqueId()).getDirection(),
+                    player.getEyeLocation().getDirection())
+                    || !isCardinalMove(invulnerablePlayers.get(player.getUniqueId()), player.getEyeLocation())) {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -167,21 +161,25 @@ public class MiscListener implements Listener {
     private boolean isCardinalMove(Location loc1, Location loc2) {
         Vector vec = loc1.toVector().subtract(loc2.toVector());
         if (vec.equals(new Vector(0, 0, 0))) return true;
-        return (vec.getX() != 0 && vec.getY() == 0 && vec.getZ() == 0) || (vec.getX() == 0 && vec.getY() != 0 && vec.getZ() == 0) || (vec.getX() == 0 && vec.getY() == 0 && vec.getZ() != 0);
+        return (vec.getX() != 0 && vec.getY() == 0 && vec.getZ() == 0)
+                || (vec.getX() == 0 && vec.getY() != 0 && vec.getZ() == 0)
+                || (vec.getX() == 0 && vec.getY() == 0 && vec.getZ() != 0);
     }
 
     @EventHandler
     public void onCrystalExplode(EntityDamageByEntityEvent event) {
         if (event.getDamager().getType() != EntityType.ENDER_CRYSTAL) return;
 
-        event.setDamage(event.getDamage() * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage")/100));
+        event.setDamage(event.getDamage()
+                * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage") / 100));
     }
 
     @EventHandler
     public void onBlockExplode(EntityDamageByBlockEvent event) {
         if (!event.getCause().equals(DamageCause.BLOCK_EXPLOSION)) return;
 
-        event.setDamage(event.getDamage() * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage")/100));
+        event.setDamage(event.getDamage()
+                * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage") / 100));
     }
 
     @EventHandler
@@ -194,9 +192,16 @@ public class MiscListener implements Listener {
         }
 
         Date latestCrystal = crystalDelay.get(event.getPlayer().getUniqueId());
-        if (new Date().getTime() - latestCrystal.getTime() <= LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown")) {
+        if (new Date().getTime() - latestCrystal.getTime() <= LaBoulangerieCore.PLUGIN.getConfig()
+                .getDouble("crystal-cooldown")) {
             DecimalFormat formatter = new DecimalFormat("0.00");
-            event.getPlayer().sendActionBar(Component.text("§cVous devez attendre " + formatter.format((LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown") - (new Date().getTime() - latestCrystal.getTime()))/1000) + " secondes"));
+            event.getPlayer()
+                    .sendActionBar(
+                            Component.text("§cVous devez attendre "
+                                    + formatter
+                                            .format((LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-cooldown")
+                                                    - (new Date().getTime() - latestCrystal.getTime())) / 1000)
+                                    + " secondes"));
             event.setCancelled(true);
         } else {
             crystalDelay.replace(event.getPlayer().getUniqueId(), new Date());

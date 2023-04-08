@@ -13,7 +13,8 @@ public class NMSEntities {
     protected int networkID;
 
     public enum EntityType {
-        ARMOR_STAND(0x4E,"net.minecraft.world.entity.decoration.EntityArmorStand", NMS.getClass("net.minecraft.world.level.World"), double.class, double.class, double.class);
+        ARMOR_STAND(0x4E, "net.minecraft.world.entity.decoration.EntityArmorStand",
+                NMS.getClass("net.minecraft.world.level.World"), double.class, double.class, double.class);
 
         public final int networkID;
         public final String className;

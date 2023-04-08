@@ -16,19 +16,28 @@ public class EventState {
         this.name = name;
     }
 
-    public void start() { started = true; }
+    public void start() {
+        started = true;
+    }
+
     public void stop() {
         started = false;
         ended = true;
     }
+
     public void reset() {
         started = false;
         ended = false;
         stage = 0;
     }
-    public String getName() { return name; }
+
+    public String getName() {
+        return name;
+    }
+
     /**
      * Execute the next step in this event
+     * 
      * @return false if the step couldn't run because the event wasn't started or had already ended
      */
     public boolean nextStep(Player executor) {
@@ -43,7 +52,9 @@ public class EventState {
 
     /**
      * Go to the specified step without executing it
-     * @return false if the step couldn't be reached because the event wasn't started or had already ended or if the step didn't exist
+     * 
+     * @return false if the step couldn't be reached because the event wasn't started or had already ended or if the
+     *         step didn't exist
      */
     public boolean goTo(String name) {
         if (!started || ended) return false;
@@ -65,7 +76,9 @@ public class EventState {
 
     /**
      * Run the specified step without altering the event's progression
-     * @return false if the step couldn't run because the event wasn't started or had already ended or if the step didn't exist
+     * 
+     * @return false if the step couldn't run because the event wasn't started or had already ended or if the step
+     *         didn't exist
      */
     public boolean run(Player executor, String stepName) {
         if (!started || ended) return false;
@@ -80,9 +93,23 @@ public class EventState {
         this.steps.add(step);
     }
 
-    public ArrayList<EventStep> getSteps() { return steps; }
-    public int getStage() { return stage; }
-    public int getTotalStages() { return steps.size(); }
-    public boolean hasStarted() { return started; }
-    public boolean hasEnded() { return ended; }
+    public ArrayList<EventStep> getSteps() {
+        return steps;
+    }
+
+    public int getStage() {
+        return stage;
+    }
+
+    public int getTotalStages() {
+        return steps.size();
+    }
+
+    public boolean hasStarted() {
+        return started;
+    }
+
+    public boolean hasEnded() {
+        return ended;
+    }
 }

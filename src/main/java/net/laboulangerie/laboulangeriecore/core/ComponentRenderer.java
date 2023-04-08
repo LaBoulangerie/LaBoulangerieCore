@@ -13,20 +13,16 @@ public class ComponentRenderer {
 
     public MiniMessage getPapiMiniMessage(OfflinePlayer player) {
 
-        return MiniMessage.builder().tags(
-            TagResolver.builder()
-                    .resolver(StandardTags.defaults())
-                    .resolver(papiTagResolver(player))
-                    .build()
-            )
-            .build();
+        return MiniMessage.builder()
+                .tags(TagResolver.builder().resolver(StandardTags.defaults()).resolver(papiTagResolver(player)).build())
+                .build();
     }
 
     private TagResolver papiTagResolver(OfflinePlayer player) {
 
         return TagResolver.resolver("papi", (argumentQueue, context) -> {
-            String placeholder = argumentQueue
-                    .popOr("The <papi> tag requires exactly one argument, the PAPI placeholder").value();
+            String placeholder =
+                    argumentQueue.popOr("The <papi> tag requires exactly one argument, the PAPI placeholder").value();
 
             String parsedPlaceholder = PlaceholderAPI.setPlaceholders(player, '%' + placeholder + '%');
 

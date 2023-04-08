@@ -19,7 +19,8 @@ import net.laboulangerie.laboulangeriecore.core.houses.House;
 public class HouseShopCmd implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
+            @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("§4You must be in game to use this command!");
             return true;
@@ -27,7 +28,8 @@ public class HouseShopCmd implements CommandExecutor {
         Player player = (Player) sender;
         if (args.length == 0) {
             HouseShop.displayShop(player, (short) 0);
-            YamlConfiguration data = UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+            YamlConfiguration data =
+                    UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
             data.set("houseshop-uses", data.get("houseshop-uses", 0));
             return true;
         }
@@ -52,15 +54,17 @@ public class HouseShopCmd implements CommandExecutor {
                 player.sendMessage("§cVous devez être roi de la nation pour faire ça !");
                 return true;
             }
-            House house = LaBoulangerieCore.housesManager.getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(nation.getUUID()));
+            House house = LaBoulangerieCore.housesManager
+                    .getHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(nation.getUUID()));
             LaBoulangerieCore.nationHouseHolder.freeHouse(house.getUUID());
 
             player.sendMessage("§aVotre maison de nation a été vendue.");
             house.getMembers().clear();
-            YamlConfiguration data = UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+            YamlConfiguration data =
+                    UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
             data.set("houses-sold", data.get("houses-sold", 0));
             return true;
         }
         return true;
-    }  
+    }
 }

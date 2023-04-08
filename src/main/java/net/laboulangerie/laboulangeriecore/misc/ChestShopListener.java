@@ -89,8 +89,7 @@ public class ChestShopListener implements Listener {
                 count++;
             }
 
-            if (count == 0)
-                continue;
+            if (count == 0) continue;
 
             ItemStack stack = denomination.getKey().type.clone();
             stack.setAmount(count);
@@ -131,8 +130,7 @@ public class ChestShopListener implements Listener {
         }
 
         // If there are less empty slots than new filled slots
-        if (emptySlotsCount < newSlotsCount)
-            return true;
+        if (emptySlotsCount < newSlotsCount) return true;
 
         // Else everything's fine, there are enough empty slots :)
         return false;

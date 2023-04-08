@@ -19,18 +19,20 @@ public class NMSEntityTeleport {
      */
     public static void send(Player player, NMSEntities entity, double x, double y, double z) {
         try {
-            final Class<?> packetClass = NMS.getClass("net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport");
+            final Class<?> packetClass =
+                    NMS.getClass("net.minecraft.network.protocol.game.PacketPlayOutEntityTeleport");
             final Class<?> entityClass = NMS.getClass("net.minecraft.world.entity.Entity");
 
             final Constructor<?> packetConstructor = packetClass.getConstructor(entityClass);
 
-            final Method setPosition = entity.entity.getClass().getMethod("e", double.class, double.class, double.class);
+            final Method setPosition =
+                    entity.entity.getClass().getMethod("e", double.class, double.class, double.class);
             setPosition.invoke(entity.entity, x, y, z);
 
             final Object packet = packetConstructor.newInstance(entity.entity);
 
             NMS.sendPacket(player, packet);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

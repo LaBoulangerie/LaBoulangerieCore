@@ -32,14 +32,23 @@ public class EventsManager {
 
             for (Map<?, ?> step : section.getMapList("steps")) {
                 Map<String, ?> castStep = (Map<String, ?>) step;
-                EventStep eventStep = new EventStep(key, (String) castStep.get("name"), (ArrayList<String>) castStep.get("actions"));
+                EventStep eventStep =
+                        new EventStep(key, (String) castStep.get("name"), (ArrayList<String>) castStep.get("actions"));
                 eventState.addStep(eventStep);
             }
             events.put(key, eventState);
         }
     }
 
-    public static boolean hasEvent(String name) { return events.containsKey(name); }
-    public static EventState getEvent(String name) { return events.get(name); }
-    public static List<String> getEvents() { return List.copyOf(events.keySet()); }
+    public static boolean hasEvent(String name) {
+        return events.containsKey(name);
+    }
+
+    public static EventState getEvent(String name) {
+        return events.get(name);
+    }
+
+    public static List<String> getEvents() {
+        return List.copyOf(events.keySet());
+    }
 }

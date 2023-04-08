@@ -14,15 +14,17 @@ public class NMSEntityMetadata {
      */
     public static void send(Player player, NMSEntities entity) {
         try {
-            final Class<?> packetClass = NMS.getClass("net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata");
+            final Class<?> packetClass =
+                    NMS.getClass("net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata");
             final Class<?> dataWatcherClass = NMS.getClass("net.minecraft.network.syncher.DataWatcher");
 
-            final Constructor<?> packetConstructor = packetClass.getConstructor(int.class, dataWatcherClass, boolean.class);
+            final Constructor<?> packetConstructor =
+                    packetClass.getConstructor(int.class, dataWatcherClass, boolean.class);
 
             final Object packet = packetConstructor.newInstance(entity.getID(), entity.getDataWatcher(), true);
 
             NMS.sendPacket(player, packet);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

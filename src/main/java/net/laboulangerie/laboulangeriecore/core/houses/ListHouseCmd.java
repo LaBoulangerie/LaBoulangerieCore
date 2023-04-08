@@ -11,7 +11,8 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 public class ListHouseCmd implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("§4Only players can use this command!");
             return true;
@@ -28,9 +29,9 @@ public class ListHouseCmd implements CommandExecutor {
         }
 
         sender.sendMessage("§6====================");
-        sender.sendMessage("§aHouses: "+LaBoulangerieCore.housesManager.getHouses().size());
+        sender.sendMessage("§aHouses: " + LaBoulangerieCore.housesManager.getHouses().size());
         for (House house : LaBoulangerieCore.housesManager.getHouses().values()) {
-            sender.sendMessage("§e"+house.getName()+", "+house.getUUID());
+            sender.sendMessage("§e" + house.getName() + ", " + house.getUUID());
         }
         sender.sendMessage("§6====================");
 

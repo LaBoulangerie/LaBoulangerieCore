@@ -8,7 +8,8 @@ import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 
 public class TabRenderer {
     public Component renderSection(Player player, TabSection tabSection) {
-        String tabSectionFormat = LaBoulangerieCore.PLUGIN.getConfig().getString("tab." + tabSection.name().toLowerCase());
+        String tabSectionFormat =
+                LaBoulangerieCore.PLUGIN.getConfig().getString("tab." + tabSection.name().toLowerCase());
         ComponentRenderer renderer = LaBoulangerieCore.PLUGIN.getComponentRenderer();
 
         return renderer.getPapiMiniMessage(player).deserialize(tabSectionFormat);

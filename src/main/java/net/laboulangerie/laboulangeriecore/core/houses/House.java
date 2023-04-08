@@ -33,6 +33,7 @@ public class House implements ConfigurationSerializable {
         members = ((List<String>) data.get("members")).stream().map(UUID::fromString).collect(Collectors.toList());
         anchor = (Location) data.get("anchor");
     }
+
     public UUID getUUID() {
         return uuid;
     }
@@ -51,6 +52,7 @@ public class House implements ConfigurationSerializable {
 
     /**
      * Get UUIDs of players in this house
+     * 
      * @return
      */
     public List<UUID> getMembers() {
@@ -100,9 +102,9 @@ public class House implements ConfigurationSerializable {
     public boolean hasMember(UUID memberId) {
         return members.contains(memberId);
     }
+
     /**
-     * The "anchor" is the coordinates of the average of all blocks in
-     * the house
+     * The "anchor" is the coordinates of the average of all blocks in the house
      */
     public Location getAnchor() {
         return anchor;

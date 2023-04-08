@@ -30,9 +30,11 @@ public class NameTagListener implements Listener {
         PlayerNameTag nameTag = PlayerNameTag.get(player);
         if (nameTag == null) return;
 
-        new BukkitRunnable() { //Event is fired before the effect is applied
-            @Override          //thus we wait 2 ticks before updating the name tag
-            public void run() { nameTag.updateState(); }
+        new BukkitRunnable() { // Event is fired before the effect is applied
+            @Override // thus we wait 2 ticks before updating the name tag
+            public void run() {
+                nameTag.updateState();
+            }
         }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 
@@ -41,9 +43,11 @@ public class NameTagListener implements Listener {
         PlayerNameTag nameTag = PlayerNameTag.get(event.getPlayer());
         if (nameTag == null) return;
 
-        new BukkitRunnable() { //Event is fired before the player is teleported
-            @Override          //thus we wait 2 ticks before updating the name tag
-            public void run() { nameTag.updatePosition(); }
+        new BukkitRunnable() { // Event is fired before the player is teleported
+            @Override // thus we wait 2 ticks before updating the name tag
+            public void run() {
+                nameTag.updatePosition();
+            }
         }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 
@@ -57,8 +61,8 @@ public class NameTagListener implements Listener {
 
     @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
-        new BukkitRunnable() { //Event is fired before the player is actually sneaking, so its bounding box
-            @Override          //is still standing, thus we wait 2 ticks before updating the name tag
+        new BukkitRunnable() { // Event is fired before the player is actually sneaking, so its bounding box
+            @Override // is still standing, thus we wait 2 ticks before updating the name tag
             public void run() {
                 PlayerNameTag.get(event.getPlayer()).updateState();
                 PlayerNameTag.get(event.getPlayer()).updatePosition();
@@ -83,22 +87,27 @@ public class NameTagListener implements Listener {
         PlayerNameTag nameTag = PlayerNameTag.get((Player) event.getEntity());
         if (nameTag == null) return;
 
-        new BukkitRunnable() { //Event is fired before the player is actually riding,
-            @Override          //thus we wait 2 ticks before updating the name tag
-            public void run() { nameTag.updatePosition(); }
+        new BukkitRunnable() { // Event is fired before the player is actually riding,
+            @Override // thus we wait 2 ticks before updating the name tag
+            public void run() {
+                nameTag.updatePosition();
+            }
         }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR) //We update the state because the player might go in or out spectator mode where he is invisible
+    @EventHandler(priority = EventPriority.MONITOR) // We update the state because the player might go in or out
+                                                    // spectator mode where he is invisible
     public void onChangeGamemode(PlayerGameModeChangeEvent event) {
         if (event.isCancelled()) return;
 
         PlayerNameTag nameTag = PlayerNameTag.get(event.getPlayer());
         if (nameTag == null) return;
 
-        new BukkitRunnable() { //Event is fired before the player actually changed gamemode,
-            @Override          //thus we wait 2 ticks before updating the name tag
-            public void run() { nameTag.updateState(); }
+        new BukkitRunnable() { // Event is fired before the player actually changed gamemode,
+            @Override // thus we wait 2 ticks before updating the name tag
+            public void run() {
+                nameTag.updateState();
+            }
         }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 }

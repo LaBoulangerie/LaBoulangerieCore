@@ -33,7 +33,8 @@ public class NameTagManager {
         rawNameTags = new ArrayList<>();
         idToPlayer = new HashMap<>();
 
-        for (String key : configTabSection.getKeys(false)) rawNameTags.add(configTabSection.getString(key));
+        for (String key : configTabSection.getKeys(false))
+            rawNameTags.add(configTabSection.getString(key));
 
         Bukkit.getOnlinePlayers().forEach(p -> {
             idToPlayer.put(p.getEntityId(), p);
@@ -42,12 +43,13 @@ public class NameTagManager {
 
         textUpdateTask = new BukkitRunnable() {
             @Override
-            public void run() { PlayerNameTag.nameTags.forEach(PlayerNameTag::updateText); }  
+            public void run() {
+                PlayerNameTag.nameTags.forEach(PlayerNameTag::updateText);
+            }
         }.runTaskTimer(LaBoulangerieCore.PLUGIN, 20, 20);
 
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(
-            LaBoulangerieCore.PLUGIN, ListenerPriority.MONITOR, PacketType.Play.Server.NAMED_ENTITY_SPAWN
-        ) {
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(LaBoulangerieCore.PLUGIN,
+                ListenerPriority.MONITOR, PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
             @Override
             public void onPacketSending(PacketEvent event) {
                 Player newPlayer = idToPlayer.get(event.getPacket().getIntegers().getValues().get(0));
@@ -57,14 +59,12 @@ public class NameTagManager {
             }
         });
 
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(
-            LaBoulangerieCore.PLUGIN, ListenerPriority.MONITOR, PacketType.Play.Server.ENTITY_DESTROY
-        ) {
+        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(LaBoulangerieCore.PLUGIN,
+                ListenerPriority.MONITOR, PacketType.Play.Server.ENTITY_DESTROY) {
             @Override
             public void onPacketSending(PacketEvent event) {
-                event.getPacket().getIntLists().getValues().get(0).stream().filter(id ->
-                    idToPlayer.get(id) != null
-                ).map(idToPlayer::get).forEach(p -> PlayerNameTag.get(p).removeViewer(event.getPlayer()));
+                event.getPacket().getIntLists().getValues().get(0).stream().filter(id -> idToPlayer.get(id) != null)
+                        .map(idToPlayer::get).forEach(p -> PlayerNameTag.get(p).removeViewer(event.getPlayer()));
             }
         });
     }

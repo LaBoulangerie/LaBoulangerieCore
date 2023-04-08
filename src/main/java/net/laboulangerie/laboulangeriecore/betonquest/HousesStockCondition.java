@@ -10,6 +10,7 @@ public class HousesStockCondition extends Condition {
     public HousesStockCondition(Instruction instruction) {
         super(instruction);
     }
+
     @Override
     protected Boolean execute(String playerID) throws QuestRuntimeException {
         return LaBoulangerieCore.nationHouseHolder.getFreeHouses().size() != 0;

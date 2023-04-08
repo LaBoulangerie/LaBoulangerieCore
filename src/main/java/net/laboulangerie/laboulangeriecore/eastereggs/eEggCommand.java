@@ -19,17 +19,17 @@ public class eEggCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String msg, String[] args) {
 
-        if(!(sender instanceof Player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.console"));
             return true;
         }
 
         Player p = (Player) sender;
-        if(args.length != 1) {
+        if (args.length != 1) {
             p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.utilization"));
             return true;
         }
-        if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")){
+        if (args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("add")) {
             if (!p.hasPermission("laboulangeriecore.admin")) {
                 p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
                 return true;
@@ -37,7 +37,7 @@ public class eEggCommand implements TabExecutor {
 
             Block block = p.getTargetBlockExact(5);
 
-            if(block.getType() != Material.PLAYER_HEAD && block.getType() != Material.PLAYER_WALL_HEAD) {
+            if (block.getType() != Material.PLAYER_HEAD && block.getType() != Material.PLAYER_WALL_HEAD) {
                 p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.not-head"));
                 return true;
             }
@@ -84,7 +84,7 @@ public class eEggCommand implements TabExecutor {
             }
             p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.deleted"));
             return true;
-            
+
         }
         if (args[0].equalsIgnoreCase("help")) {
             if (p.hasPermission("laboulangeriecore.admin")) {
@@ -92,7 +92,8 @@ public class eEggCommand implements TabExecutor {
                 for (int i = 0; i < list.size(); i++) {
                     p.sendMessage(list.get(i));
                 }
-            } else p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
+            } else
+                p.sendMessage(LaBoulangerieCore.PLUGIN.getConfig().getString("eastereggs.messages.permission"));
             return true;
         }
 
@@ -101,7 +102,8 @@ public class eEggCommand implements TabExecutor {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
+            @NotNull String alias, @NotNull String[] args) {
         if (args.length != 1) return null;
 
         if (sender.hasPermission("laboulangeriecore.admin")) {

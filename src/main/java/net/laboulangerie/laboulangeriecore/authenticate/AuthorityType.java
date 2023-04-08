@@ -1,12 +1,11 @@
 package net.laboulangerie.laboulangeriecore.authenticate;
 
 public enum AuthorityType {
-    PLAYER("p", "joueur"),
-    TOWN("t", "ville"),
-    NATION("n", "nation");
+    PLAYER("p", "joueur"), TOWN("t", "ville"), NATION("n", "nation");
 
     private String prefix;
     private String suffix;
+
     private AuthorityType(String prefix, String suffix) {
         this.prefix = prefix;
         this.suffix = suffix;
@@ -18,8 +17,10 @@ public enum AuthorityType {
     public String getPrefix() {
         return prefix;
     }
+
     /**
      * Suffix used in the lore
+     * 
      * @return
      */
     public String getSuffix() {

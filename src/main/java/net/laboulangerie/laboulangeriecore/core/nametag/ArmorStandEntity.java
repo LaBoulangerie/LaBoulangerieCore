@@ -64,15 +64,21 @@ public class ArmorStandEntity extends NMSEntities {
         try {
             NMSSpawnEntityLiving.send(target, this);
             NMSEntityMetadata.send(target, this);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendMetadata(Player target) {
         if (wasHidden) spawn(target);
         try {
             NMSEntityMetadata.send(target, this);
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public boolean shouldBeDisplayed() { return shouldBeDisplayed; }
+    public boolean shouldBeDisplayed() {
+        return shouldBeDisplayed;
+    }
 }

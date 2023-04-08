@@ -20,17 +20,20 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class CreateHouseCmd implements CommandExecutor {
 
-    private void saveHouseToFile(@NotNull Player player, @NotNull String houseName, @NotNull ArrayList<Location> blocks) {
+    private void saveHouseToFile(@NotNull Player player, @NotNull String houseName,
+            @NotNull ArrayList<Location> blocks) {
         final House house = new House(houseName);
         house.addBlocks(blocks);
-        Location anchor = house.getBlocks().stream().reduce(new Location(player.getWorld(), 0, 0, 0), (e1, e2) -> e1.add(e2)).multiply((double) 1 / blocks.size());
+        Location anchor =
+                house.getBlocks().stream().reduce(new Location(player.getWorld(), 0, 0, 0), (e1, e2) -> e1.add(e2))
+                        .multiply((double) 1 / blocks.size());
         house.setAnchor(anchor);
 
         LaBoulangerieCore.housesManager.addHouse(house);
 
         try {
             LaBoulangerieCore.housesManager.saveHouses();
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             player.sendMessage("§4An error occurred when trying to save the house");
             return;
@@ -68,7 +71,8 @@ public class CreateHouseCmd implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("§4Only players can use this command!");
             return true;

@@ -45,8 +45,7 @@ public class HousesManager {
     public void deleteHouse(UUID houseId) {
         houses.remove(houseId);
         File file = new File(dataFolder, houseId + ".yml");
-        if (file.exists())
-            file.delete();
+        if (file.exists()) file.delete();
     }
 
     public Optional<House> getHouseByName(@NotNull String name) {
@@ -64,7 +63,7 @@ public class HousesManager {
     public House getHouse(UUID houseId) {
         return houses.get(houseId);
     }
-    
+
     public boolean hasHouse(UUID houseId) {
         return houses.containsKey(houseId);
     }

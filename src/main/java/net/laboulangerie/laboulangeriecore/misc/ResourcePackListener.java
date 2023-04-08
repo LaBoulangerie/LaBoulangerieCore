@@ -27,8 +27,8 @@ public class ResourcePackListener implements Listener {
                 break;
 
             case DECLINED:
-                Component kickMessage = MiniMessage.miniMessage()
-                        .deserialize(miscSection.getString("declined-pack-kick-msg"));
+                Component kickMessage =
+                        MiniMessage.miniMessage().deserialize(miscSection.getString("declined-pack-kick-msg"));
                 player.kick(kickMessage);
                 break;
 

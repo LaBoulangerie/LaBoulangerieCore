@@ -25,7 +25,8 @@ public class HouseWandCmd implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s,
+            @NotNull String[] strings) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("§4Only players can use this command!");
             return true;

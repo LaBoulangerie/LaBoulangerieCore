@@ -63,8 +63,7 @@ public class TabManager {
     }
 
     protected void loadTab(Player player) {
-        player.sendPlayerListHeaderAndFooter(
-                tabRenderer.renderSection(player, TabSection.HEADER),
+        player.sendPlayerListHeaderAndFooter(tabRenderer.renderSection(player, TabSection.HEADER),
                 tabRenderer.renderSection(player, TabSection.FOOTER));
         player.playerListName(tabRenderer.renderSection(player, TabSection.NAME));
     }

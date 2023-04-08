@@ -156,8 +156,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             @Override
             public void run() {
                 List<String> messages = getConfig().getStringList("auto-messages");
-                if (messages.size() == 0)
-                    return;
+                if (messages.size() == 0) return;
                 Random rand = new Random();
                 getServer()
                         .broadcast(MiniMessage.miniMessage().deserialize(messages.get(rand.nextInt(messages.size()))));
@@ -194,12 +193,9 @@ public class LaBoulangerieCore extends JavaPlugin {
     }
 
     private void registerListeners() {
-        List<Listener> listeners = Arrays.asList(
-                new TabListener(), new NameTagListener(), new ElytraGenRemover(),
-                new TradesHook(), new HouseShop(),
-                new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener()
-        );
+        List<Listener> listeners = Arrays.asList(new TabListener(), new NameTagListener(), new ElytraGenRemover(),
+                new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
+                new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener());
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 

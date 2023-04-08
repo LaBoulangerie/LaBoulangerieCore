@@ -36,20 +36,25 @@ public class NationHouseHolder {
 
         YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
         if (data.getList("free-houses") != null) {
-            freeHouses = (List<UUID>) data.getStringList("free-houses").stream().map(UUID::fromString).collect(Collectors.toList());
-        } else data.createSection("free-houses");
+            freeHouses = (List<UUID>) data.getStringList("free-houses").stream().map(UUID::fromString)
+                    .collect(Collectors.toList());
+        } else
+            data.createSection("free-houses");
 
         if (data.contains("occupied-houses")) {
             for (String houseId : data.getConfigurationSection("occupied-houses").getKeys(false)) {
-                occupiedHouses.put(UUID.fromString(houseId), UUID.fromString(data.getString("occupied-houses." + houseId)));
+                occupiedHouses.put(UUID.fromString(houseId),
+                        UUID.fromString(data.getString("occupied-houses." + houseId)));
             }
-        } else data.createSection("occupied-houses");
+        } else
+            data.createSection("occupied-houses");
 
         if (data.contains("prices")) {
             for (String houseId : data.getConfigurationSection("prices").getKeys(false)) {
                 prices.put(UUID.fromString(houseId), data.getDouble("prices." + houseId));
             }
-        } else data.createSection("prices");
+        } else
+            data.createSection("prices");
     }
 
     public void saveData() throws IOException {
@@ -58,68 +63,79 @@ public class NationHouseHolder {
         YamlConfiguration data = YamlConfiguration.loadConfiguration(dataFile);
 
         data.set("free-houses", freeHouses.stream().map(id -> id.toString()).collect(Collectors.toList()));
-        data.set("occupied-houses", occupiedHouses.entrySet().stream().collect(Collectors.toMap(
-            e -> e.getKey().toString(), e -> e.getValue().toString()
-        )));
-        data.set("prices", prices.entrySet().stream().collect(Collectors.toMap(
-            e -> e.getKey().toString(), Map.Entry::getValue
-        )));
+        data.set("occupied-houses", occupiedHouses.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toString(), e -> e.getValue().toString())));
+        data.set("prices",
+                prices.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().toString(), Map.Entry::getValue)));
         data.save(dataFile);
     }
 
-    public List<UUID> getFreeHouses() { return freeHouses; }
-    public Map<UUID, UUID> getOccupiedHouses() { return occupiedHouses; }
+    public List<UUID> getFreeHouses() {
+        return freeHouses;
+    }
+
+    public Map<UUID, UUID> getOccupiedHouses() {
+        return occupiedHouses;
+    }
 
     public void newNationHouse(UUID id, Double price) {
         prices.put(id, price);
         freeHouses.add(id);
     }
+
     /**
      * Assign a house to a nation
+     * 
      * @param houseId
      * @param nationId
      * @throws IllegalStateException if the house is already assigned
      */
     public void assignNationHouse(UUID houseId, UUID nationId) {
-        if (occupiedHouses.containsKey(houseId)) throw new IllegalStateException("House is already assigned to a nation!");
+        if (occupiedHouses.containsKey(houseId))
+            throw new IllegalStateException("House is already assigned to a nation!");
         occupiedHouses.put(houseId, nationId);
         freeHouses.remove(houseId);
     }
+
     public void freeHouse(UUID houseId) {
         if (freeHouses.contains(houseId)) throw new IllegalStateException("House is already free!");
         occupiedHouses.remove(houseId);
         freeHouses.add(houseId);
     }
+
     public void deleteNationHouse(UUID houseId) {
         occupiedHouses.remove(houseId);
         freeHouses.remove(houseId);
         prices.remove(houseId);
     }
+
     public Double getHousePrice(UUID id) {
         return prices.get(id);
     }
 
     /**
      * Test if nation has an nation house
+     * 
      * @param nationId the nation to check if it has an house
      * @return
      */
     public boolean hasHouse(UUID nationId) {
         return occupiedHouses.containsValue(nationId);
     }
+
     /**
      * Check if this house is also an house of nation
+     * 
      * @param house
      * @return
      */
     public boolean exists(House house) {
         return occupiedHouses.containsKey(house.getUUID()) || freeHouses.contains(house.getUUID());
     }
+
     public UUID getHouseOfNation(UUID nationId) {
         if (!hasHouse(nationId)) return null;
-        return occupiedHouses.entrySet()
-            .stream()
-            .filter(entry -> nationId.equals(entry.getValue()))
-            .map(Map.Entry::getKey).findFirst().get();
+        return occupiedHouses.entrySet().stream().filter(entry -> nationId.equals(entry.getValue()))
+                .map(Map.Entry::getKey).findFirst().get();
     }
 }

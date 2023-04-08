@@ -13,12 +13,14 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class Authenticable {
     private ItemStack item;
+
     public Authenticable(ItemStack item) {
         this.item = item;
     }
 
     public boolean isAuthenticated() {
-        return item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"), PersistentDataType.STRING) != null;
+        return item.getItemMeta().getPersistentDataContainer()
+                .get(new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"), PersistentDataType.STRING) != null;
     }
 
     /**
@@ -28,7 +30,8 @@ public class Authenticable {
         if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't retrieve authority type!");
 
         String value = getValue();
-        return value.startsWith("p") ? AuthorityType.PLAYER : value.startsWith("t") ? AuthorityType.TOWN : AuthorityType.NATION;
+        return value.startsWith("p") ? AuthorityType.PLAYER
+                : value.startsWith("t") ? AuthorityType.TOWN : AuthorityType.NATION;
     }
 
     /**
@@ -36,7 +39,8 @@ public class Authenticable {
      */
     public String getValue() {
         if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't retrieve authority value");
-        return item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"), PersistentDataType.STRING);
+        return item.getItemMeta().getPersistentDataContainer()
+                .get(new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"), PersistentDataType.STRING);
     }
 
     public UUID getAuthorityUUID() {
@@ -45,18 +49,19 @@ public class Authenticable {
 
     public String getAuthorityName() {
         if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't retrieve authority name");
-        String lore = PlainTextComponentSerializer.plainText().serialize(item.lore().get(item.lore().size()-1));
+        String lore = PlainTextComponentSerializer.plainText().serialize(item.lore().get(item.lore().size() - 1));
         return lore.split(" ")[2];
     }
 
     public void updateAuthorityName(String newName) {
         if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't update authority name");
         List<Component> lore = item.lore();
-        lore.set(item.lore().size()-1, Component.text(newName));
+        lore.set(item.lore().size() - 1, Component.text(newName));
         item.lore(lore);
     }
 
     public static String parseLore(String authority, AuthorityType type) {
-        return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore").replaceAll("%authority%", authority).replaceAll("%type%", type.getSuffix());
+        return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore").replaceAll("%authority%", authority)
+                .replaceAll("%type%", type.getSuffix());
     }
 }

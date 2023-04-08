@@ -53,13 +53,15 @@ public class ElytraGenRemover implements Listener {
             }
         }
     }
+
     private String getId(Chunk chunk) {
         return chunk.getWorld().getName() + " " + chunk.getX() + " " + chunk.getZ();
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onOpenEnderChest(PlayerInteractEvent event) {
-        if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.ENDER_CHEST && event.getAction() == Action.RIGHT_CLICK_BLOCK)
+        if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.ENDER_CHEST
+                && event.getAction() == Action.RIGHT_CLICK_BLOCK)
             event.setCancelled(true);
     }
 }

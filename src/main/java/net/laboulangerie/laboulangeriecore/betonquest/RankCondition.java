@@ -27,7 +27,8 @@ public class RankCondition extends Condition {
                 case "town":
                     return resident.hasTownRank(instruction.getPart(1));
                 default:
-                    throw new QuestRuntimeException("Invalid argument: "+ instruction.getPart(1) + ", possible arguments: town & nation");
+                    throw new QuestRuntimeException(
+                            "Invalid argument: " + instruction.getPart(1) + ", possible arguments: town & nation");
             }
         } catch (InstructionParseException e) {
             e.printStackTrace();

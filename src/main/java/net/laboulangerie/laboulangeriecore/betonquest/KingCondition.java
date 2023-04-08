@@ -14,6 +14,7 @@ public class KingCondition extends Condition {
     public KingCondition(Instruction instruction) {
         super(instruction);
     }
+
     @Override
     protected Boolean execute(String playerID) throws QuestRuntimeException {
         Resident resident = TownyUniverse.getInstance().getResident(UUID.fromString(playerID));

@@ -29,23 +29,20 @@ public class HouseWandListener implements Listener {
         final int zMax = Integer.max(firstPos.getBlockZ(), secondPos.getBlockZ());
 
 
-        return (Math.abs(xMax-xMin)+1) * (Math.abs(yMax-yMin)+1) * (Math.abs(zMax-zMin)+1);
+        return (Math.abs(xMax - xMin) + 1) * (Math.abs(yMax - yMin) + 1) * (Math.abs(zMax - zMin) + 1);
     }
 
     private boolean isHoldingWand(@NotNull ItemStack item) {
-        return (item.getType().equals(Material.IRON_AXE) && item.getItemMeta().hasDisplayName() &&
-                PlainTextComponentSerializer.plainText().serialize(
-                    item.getItemMeta().displayName()
-                ).equals("§6House wand") &&
-                item.getItemMeta().getCustomModelData() == 69420);
+        return (item.getType().equals(Material.IRON_AXE)
+                && item.getItemMeta().hasDisplayName() && PlainTextComponentSerializer.plainText()
+                        .serialize(item.getItemMeta().displayName()).equals("§6House wand")
+                && item.getItemMeta().getCustomModelData() == 69420);
     }
 
     private @NotNull String generateMessage(@NotNull String index, @NotNull Location location) {
         final StringBuilder builder = new StringBuilder();
-        builder.append("§d").append(index).append(" position set to (")
-                .append(location.getBlockX()).append(", ")
-                .append(location.getBlockY()).append(", ")
-                .append(location.getBlockZ()).append(")");
+        builder.append("§d").append(index).append(" position set to (").append(location.getBlockX()).append(", ")
+                .append(location.getBlockY()).append(", ").append(location.getBlockZ()).append(")");
 
         if (firstPos != null && secondPos != null) {
             builder.append(" (").append(getBlocksCount()).append(" blocks)");

@@ -25,11 +25,13 @@ public class EggManager {
         sendActionBar(player, progress);
     }
 
-    public static void eggTeleported(Location loc) { eggs.remove(loc); }
+    public static void eggTeleported(Location loc) {
+        eggs.remove(loc);
+    }
 
     private static void sendActionBar(Player player, EggBreakingProgress egg) {
-        String[] progressBar = {"a","c","c","c","c","c","c","c","e"};
-        int charactersToFill = (int) Math.round(progressBar.length*egg.getProgression());
+        String[] progressBar = {"a", "c", "c", "c", "c", "c", "c", "c", "e"};
+        int charactersToFill = (int) Math.round(progressBar.length * egg.getProgression());
         for (int i = 0; i < charactersToFill; i++) {
             switch (progressBar[i]) {
                 case "a":
@@ -44,6 +46,7 @@ public class EggManager {
             }
         }
 
-        player.sendActionBar(Component.text(List.of(progressBar).stream().reduce("", (a, b) -> a + " " + b)).font(Key.key("bread_dough", "icons")));
+        player.sendActionBar(Component.text(List.of(progressBar).stream().reduce("", (a, b) -> a + " " + b))
+                .font(Key.key("bread_dough", "icons")));
     }
 }

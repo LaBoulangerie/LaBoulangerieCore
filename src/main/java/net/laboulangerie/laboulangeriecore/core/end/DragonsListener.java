@@ -27,14 +27,17 @@ import net.laboulangerie.laboulangeriecore.core.favors.DivineFavorsHolder;
 
 public class DragonsListener implements Listener {
     private DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance();
+
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (event.getEntityType() != EntityType.ENDER_DRAGON
-            || !Dragon.DRAGONS.containsKey(event.getEntity().getUniqueId())) return;
-        
+                || !Dragon.DRAGONS.containsKey(event.getEntity().getUniqueId()))
+            return;
+
         Dragon dragon = Dragon.DRAGONS.get(event.getEntity().getUniqueId());
 
-        if (event.getDamager() instanceof Projectile && ((Projectile) event.getDamager()).getShooter() instanceof Player)
+        if (event.getDamager() instanceof Projectile
+                && ((Projectile) event.getDamager()).getShooter() instanceof Player)
             dragon.dealDamage((Player) ((Projectile) event.getDamager()).getShooter(), event.getDamage());
 
         if (event.getDamager().getType() != EntityType.PLAYER) return;
@@ -45,7 +48,8 @@ public class DragonsListener implements Listener {
     @EventHandler
     public void onDeath(EntityDeathEvent event) {
         if (event.getEntityType() != EntityType.ENDER_DRAGON
-            || !Dragon.DRAGONS.containsKey(event.getEntity().getUniqueId())) return;
+                || !Dragon.DRAGONS.containsKey(event.getEntity().getUniqueId()))
+            return;
 
         Dragon dragon = Dragon.DRAGONS.get(event.getEntity().getUniqueId());
         Audience implicatedPlayers = Audience.audience(dragon.getImplicatedPlayers());
@@ -59,28 +63,35 @@ public class DragonsListener implements Listener {
                 for (Entry<Player, Double> entry : dragon.sortDamagers().entrySet()) {
                     try {
                         Thread.sleep(700);
-                    } catch (InterruptedException e) { e.printStackTrace(); }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
-                    implicatedPlayers.sendMessage(Component.text(i +". ")
-                        .append(entry.getKey().displayName().color(TextColor.fromHexString("#555555")))
-                        .append(Component.text("§0 - §f" + formatter.format(entry.getValue()) + "🗡")
-                            .hoverEvent(HoverEvent.showText(Component.text("Dégats causés"))))
-                        .append(Component.text(" [", TextColor.fromHexString("#4d4848")))
-                        .append(Component.text(formatter.format(entry.getValue()/dragon.getTotalDamages()*100) + "%"))
-                        .append(Component.text("]", TextColor.fromHexString("#4d4848")))
-                    );
+                    implicatedPlayers.sendMessage(Component.text(i + ". ")
+                            .append(entry.getKey().displayName().color(TextColor.fromHexString("#555555")))
+                            .append(Component.text("§0 - §f" + formatter.format(entry.getValue()) + "🗡")
+                                    .hoverEvent(HoverEvent.showText(Component.text("Dégats causés"))))
+                            .append(Component.text(" [", TextColor.fromHexString("#4d4848")))
+                            .append(Component
+                                    .text(formatter.format(entry.getValue() / dragon.getTotalDamages() * 100) + "%"))
+                            .append(Component.text("]", TextColor.fromHexString("#4d4848"))));
                     i++;
                     if (i > 10) break;
                 }
                 implicatedPlayers.sendMessage(Component.text("§5-----------------------------------------------"));
                 try {
                     Thread.sleep(1500);
-                } catch (InterruptedException e) { e.printStackTrace(); }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 for (Player player : dragon.getImplicatedPlayers()) {
                     double multiplier = dragon.getDamageDealt(player) / dragon.getTotalDamages();
-                    double divineFavors = Math.round(LaBoulangerieCore.PLUGIN.getConfig().getInt("killing-dragon-reward") * multiplier);
-                    player.sendMessage(Component.text("Vous recevez §5" + divineFavors).append(Component.text("?").font(Key.key("bread_dough", "icons"))).append(Component.text(" §fpoints divins.")));
+                    double divineFavors = Math
+                            .round(LaBoulangerieCore.PLUGIN.getConfig().getInt("killing-dragon-reward") * multiplier);
+                    player.sendMessage(Component.text("Vous recevez §5" + divineFavors)
+                            .append(Component.text("?").font(Key.key("bread_dough", "icons")))
+                            .append(Component.text(" §fpoints divins.")));
                     DivineFavorsHolder.giveDivineFavors(player, divineFavors);
                 }
             }
@@ -91,7 +102,9 @@ public class DragonsListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK || event.getClickedBlock().getType() != Material.DRAGON_EGG) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.LEFT_CLICK_BLOCK
+                || event.getClickedBlock().getType() != Material.DRAGON_EGG)
+            return;
 
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             EggManager.eggTeleported(event.getClickedBlock().getLocation());

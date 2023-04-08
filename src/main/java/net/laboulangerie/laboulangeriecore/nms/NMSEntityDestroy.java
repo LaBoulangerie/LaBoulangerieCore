@@ -23,7 +23,7 @@ public class NMSEntityDestroy {
             final Object packet = packetConstructor.newInstance(new IntArrayList(id));
 
             NMS.sendPacket(player, packet);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

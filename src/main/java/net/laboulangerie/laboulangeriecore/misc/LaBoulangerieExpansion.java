@@ -9,13 +9,24 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
  */
 public class LaBoulangerieExpansion extends PlaceholderExpansion {
     @Override
-    public String getAuthor() { return "La Boulangerie"; }
+    public String getAuthor() {
+        return "La Boulangerie";
+    }
+
     @Override
-    public String getIdentifier() { return "lbcore"; }
+    public String getIdentifier() {
+        return "lbcore";
+    }
+
     @Override
-    public String getVersion() { return "1.0.0"; }
+    public String getVersion() {
+        return "1.0.0";
+    }
+
     @Override
-    public boolean persist() { return true; }
+    public boolean persist() {
+        return true;
+    }
 
     @Override
     public String onPlaceholderRequest(Player player, String params) {
@@ -56,7 +67,7 @@ public class LaBoulangerieExpansion extends PlaceholderExpansion {
                 default:
                     return null;
             }
-            return "<font:bread_dough:controls>"+key+"</font>";
+            return "<font:bread_dough:controls>" + key + "</font>";
         }
         return null;
     }

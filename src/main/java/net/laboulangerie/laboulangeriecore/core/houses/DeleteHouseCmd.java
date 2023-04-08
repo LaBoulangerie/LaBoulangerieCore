@@ -10,7 +10,8 @@ import org.jetbrains.annotations.NotNull;
 public class DeleteHouseCmd implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("§4Only players can use this command!");
             return true;
@@ -28,7 +29,7 @@ public class DeleteHouseCmd implements CommandExecutor {
         House house = LaBoulangerieCore.housesManager.getHouseByName(args[0]).get();
         LaBoulangerieCore.housesManager.deleteHouse(house.getUUID());
 
-        sender.sendMessage("§aHouse §e"+ args[0] +"§a deleted successfully");
+        sender.sendMessage("§aHouse §e" + args[0] + "§a deleted successfully");
 
         return false;
     }

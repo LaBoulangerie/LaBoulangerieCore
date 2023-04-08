@@ -36,8 +36,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("§4This command is restricted to players!");
             return true;
         }
-        if (args.length < 1 || !Arrays.asList("player", "town", "nation").contains(args[0]))
-            return false;
+        if (args.length < 1 || !Arrays.asList("player", "town", "nation").contains(args[0])) return false;
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -54,7 +53,10 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
         Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
         // Sign as a player, will be overwrote if nation or city parameter is provided
-        String loreText = Authenticable.parseLore(player.displayName() != null ? PlainTextComponentSerializer.plainText().serialize(player.displayName()) : player.getName(), AuthorityType.PLAYER);
+        String loreText = Authenticable.parseLore(
+                player.displayName() != null ? PlainTextComponentSerializer.plainText().serialize(player.displayName())
+                        : player.getName(),
+                AuthorityType.PLAYER);
         // first letter correspond to the authority type, t = player, n = nation, t = town
         String authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString();
 
@@ -95,8 +97,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
         lore.add(Component.text(loreText));
 
         ItemMeta meta = item.getItemMeta();
-        meta.getPersistentDataContainer().set(
-                new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"),
+        meta.getPersistentDataContainer().set(new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"),
                 PersistentDataType.STRING, authorityId);
         item.setItemMeta(meta);
 
@@ -104,10 +105,11 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
         try {
             YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
-            data.set("authentications-count", data.getInt("authentications-count", 0)+1);
+            data.set("authentications-count", data.getInt("authentications-count", 0) + 1);
             UsersData.save(player, data);
         } catch (IOException e) {
-            LaBoulangerieCore.PLUGIN.getLogger().severe("Failed to increase authentication counter for player: " + player.getName());
+            LaBoulangerieCore.PLUGIN.getLogger()
+                    .severe("Failed to increase authentication counter for player: " + player.getName());
             e.printStackTrace();
         }
         return true;
@@ -115,8 +117,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-        if (args.length == 1)
-            return Arrays.asList("player", "town", "nation");
+        if (args.length == 1) return Arrays.asList("player", "town", "nation");
         return Arrays.asList("");
     }
 }
