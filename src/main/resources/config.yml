@@ -5,7 +5,7 @@ tab:
     # MiniMessage format and PAPI placeholders allowed
     header: "<rainbow>La Boulangerie"
     name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
-    footer: "<papi:townyadvanced_towny_colour><papi:townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>"
+    footer: "<papi:townyadvanced_towny_colour><papi:townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>\n<#E4D9FF><papi:lbcore_date_full>"
 
 nametag:
     below: "<papi:player_colored_ping>"
@@ -87,6 +87,13 @@ crystal-nerf-percentage: 65.0 #Damage diminution percentage
 crystal-cooldown: 3000 #Cooldown in milliseconds : 1000ms = 1s
 #resource-pack-url: https://example.com/ResourcePack.zip
 #resource-pack-sha1: dummy
+
+calendar:
+  months:
+    - "Gaiarkhè"
+    - "Tempopidum"
+    - "Quinésil"
+    - "Éposendre"
 
 avancements:
     miner:
