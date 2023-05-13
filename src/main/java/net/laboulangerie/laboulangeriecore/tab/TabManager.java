@@ -47,14 +47,14 @@ public class TabManager {
             final Group g = groupsSorted.get(i);
             final String teamName = g.getName();
 
-            if (board.getTeam(teamName) != null)
+            if (board.getTeam(teamName) != null) {
+                board.getTeam(teamName).prefix(Component.text(String.format("%04d", i)));
                 continue;
+            }
             Team team = board.registerNewTeam(teamName);
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
             team.setCanSeeFriendlyInvisibles(false);
             team.prefix(Component.text(String.format("%04d", i)));
-            System.out.println(teamName);
-            System.out.println(team.prefix());
         }
     }
 
