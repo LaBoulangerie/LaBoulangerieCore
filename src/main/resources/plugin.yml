@@ -3,7 +3,7 @@ version: ${project.version}
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.19
 authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox]
-depend: [Towny, LuckPerms, ProtocolLib]
+depend: [Towny, LuckPerms, ProtocolLib, LaBoulangerieMmo]
 softdepend: [PlaceholderAPI, BetonQuest, QuickShop]
 commands:
     authenticate:
