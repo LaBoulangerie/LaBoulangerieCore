@@ -1,6 +1,5 @@
 package net.laboulangerie.laboulangeriecore.tab;
 
-import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
@@ -13,10 +12,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nonnull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 public class TabManager {
@@ -35,37 +30,23 @@ public class TabManager {
         updateTab();
 
         final Set<Group> groups = lpApi.getGroupManager().getLoadedGroups();
-
-        final List<Group> groupsSorted = new ArrayList<Group>();
-        groupsSorted.addAll(groups);
-        Collections.sort(groupsSorted, (a, b) -> (b.getWeight().isPresent() ? b.getWeight().getAsInt() : 0)
-                - (a.getWeight().isPresent() ? a.getWeight().getAsInt() : 0));
-
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
 
-        for (int i = 0; i < groupsSorted.size(); i++) {
-            final Group g = groupsSorted.get(i);
+        for (final Group g : groups) {
             final String teamName = g.getName();
-
-            if (board.getTeam(teamName) != null)
-                continue;
+            if (board.getTeam(teamName) != null) continue;
             Team team = board.registerNewTeam(teamName);
             team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
             team.setCanSeeFriendlyInvisibles(false);
-            team.prefix(Component.text(String.format("%04d", i)));
-            System.out.println(teamName);
-            System.out.println(team.prefix());
         }
     }
 
     public Team getTeam(@Nonnull Player player) {
         final User user = lpApi.getUserManager().getUser(player.getUniqueId());
-        if (user == null)
-            return null;
+        if (user == null) return null;
 
         final Group group = lpApi.getGroupManager().getGroup(user.getPrimaryGroup());
-        if (group == null)
-            return null;
+        if (group == null) return null;
 
         final String teamName = group.getName();
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
