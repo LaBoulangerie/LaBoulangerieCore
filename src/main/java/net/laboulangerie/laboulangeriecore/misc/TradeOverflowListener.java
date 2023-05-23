@@ -1,44 +1,56 @@
 package net.laboulangerie.laboulangeriecore.misc;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-
 public class TradeOverflowListener implements Listener {
-    private List<Player> potentialDroppers;
 
-    public TradeOverflowListener() {
-        this.potentialDroppers = new ArrayList<Player>();
+    boolean isInventory(Inventory inventory) {
+        return inventory.firstEmpty() == -1;
+    }
+
+    int numberOfEmptyStorageSlots(Inventory inventory) {
+        int count = 0;
+        for (ItemStack itemStack : inventory.getStorageContents()) {
+            if (itemStack == null)
+                count++;
+        }
+        return count;
     }
 
     @EventHandler
     void onInventoryClose(InventoryCloseEvent event) {
         Inventory inventory = event.getInventory();
-        if (inventory.getType() != InventoryType.MERCHANT) return;
-        
-        Player player = (Player) event.getPlayer();
-        potentialDroppers.add(player);
-        // Remove the potential dropper one tick later, only tick where the player can drop something
-        Bukkit.getScheduler().runTaskLater(LaBoulangerieCore.PLUGIN, () -> potentialDroppers.remove(player), 1);
-    }
+        if (inventory.getType() != InventoryType.MERCHANT)
+            return;
 
-    @EventHandler
-    void onItemDrop(PlayerDropItemEvent event) {
-        Player player = event.getPlayer();
-        if (!event.isCancelled() || !potentialDroppers.contains(player)) return;
-        
-        ItemStack itemStack = event.getItemDrop().getItemStack();
-        player.getWorld().dropItem(player.getLocation(), itemStack);
+        Player player = (Player) event.getPlayer();
+        ItemStack[] storageContents = inventory.getStorageContents();
+
+        int numberOfPlayerEmptySlots = numberOfEmptyStorageSlots(player.getInventory());
+        int numberOfMerchantOccupiedSlots = inventory.getStorageContents().length
+                - numberOfEmptyStorageSlots(inventory);
+
+        if (numberOfPlayerEmptySlots >= numberOfMerchantOccupiedSlots)
+            return;
+
+        // Empty storage contents
+        ItemStack[] airStacks = new ItemStack[storageContents.length];
+        Arrays.fill(airStacks, new ItemStack(Material.AIR));
+        inventory.setStorageContents(airStacks);
+
+        // Then drop the original content
+        for (ItemStack itemStack : storageContents) {
+            if (itemStack != null)
+                player.getWorld().dropItem(player.getLocation(), itemStack);
+        }
     }
 }
