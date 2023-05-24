@@ -44,7 +44,7 @@ public class TabManager {
 
         for (short i = 0; i < sortedGroups.size(); i++) {
             groupsMap.put(sortedGroups.get(i), i);
-            final String teamName = i + sortedGroups.get(i).getName();
+            final String teamName = String.format("%04d", i) + sortedGroups.get(i).getName();
             if (board.getTeam(teamName) != null)
                 continue;
 
