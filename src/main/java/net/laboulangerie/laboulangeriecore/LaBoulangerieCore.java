@@ -54,6 +54,7 @@ import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.MiscListener;
+import net.laboulangerie.laboulangeriecore.misc.TradeOverflowListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.milkbowl.vault.economy.Economy;
@@ -195,7 +196,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(new TabListener(), new NameTagListener(), new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener());
+                new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(), new TradeOverflowListener());
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
