@@ -188,7 +188,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             getLogger().severe("Failed to save nation houses while disabling");
             e.printStackTrace();
         }
-        nameTagManager.disable();
+        //nameTagManager.disable();
         getLogger().info("Disabled");
     }
 

@@ -27,8 +27,7 @@ import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
-            @NotNull String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
         if (args.length < 1) return false;
 
         if (Arrays.asList("reload", "rl").contains(args[0].toString())) {
@@ -36,8 +35,8 @@ public class CoreCommand implements TabExecutor {
             LaBoulangerieCore.PLUGIN.reloadConfig();
             UsersData.init(); // Clean cache & ensure directory exists
             sender.sendMessage("§bReloading name tags...");
-            LaBoulangerieCore.PLUGIN.getNameTagManager().disable();
-            LaBoulangerieCore.PLUGIN.getNameTagManager().enable();
+            // LaBoulangerieCore.PLUGIN.getNameTagManager().disable();
+            // LaBoulangerieCore.PLUGIN.getNameTagManager().enable();
             sender.sendMessage("§aReload complete");
             return true;
         }
@@ -46,8 +45,8 @@ public class CoreCommand implements TabExecutor {
             if (!(sender instanceof Player)) sender.sendMessage("§4Only players can use that");
             else {
                 ConversionInv.displayConversionInv((Player) sender);
-                YamlConfiguration data =
-                        UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+                YamlConfiguration data = UsersData.get((Player) sender)
+                        .orElseGet(() -> UsersData.createUserData((Player) sender));
                 data.set("conversions-count", data.getInt("conversions-count", 0) + 1);
                 try {
                     UsersData.save((Player) sender, data);
