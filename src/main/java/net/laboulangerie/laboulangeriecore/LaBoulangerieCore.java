@@ -44,7 +44,6 @@ import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShop;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHouseHolder;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHousesCmd;
-import net.laboulangerie.laboulangeriecore.core.nametag.NameTagListener;
 import net.laboulangerie.laboulangeriecore.core.nametag.NameTagManager;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
@@ -104,7 +103,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
-        nameTagManager.enable();
+        //nameTagManager.enable();
 
         try {
             eEggUtil.ensureFilesExist();
@@ -194,7 +193,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     }
 
     private void registerListeners() {
-        List<Listener> listeners = Arrays.asList(new TabListener(), new NameTagListener(), new ElytraGenRemover(),
+        List<Listener> listeners = Arrays.asList(new TabListener(), /** new NameTagListener(), **/ new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(), new TradeOverflowListener());
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
