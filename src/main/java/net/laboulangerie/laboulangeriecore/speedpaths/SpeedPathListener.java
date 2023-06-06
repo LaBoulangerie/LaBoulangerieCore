@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
@@ -31,7 +34,7 @@ public class SpeedPathListener implements Listener {
             SpeedPath path = paths.get(pathKey);
 
             if (!playerPaths.containsKey(player.getUniqueId()) && path.isOnIt(player.getLocation())) {
-                player.setWalkSpeed(path.getSpeed());
+                goFast(player, path.getSpeed());
                 playerPaths.put(player.getUniqueId(), pathKey);
                 break;
             }
@@ -52,11 +55,25 @@ public class SpeedPathListener implements Listener {
             @Override
             public void run() {
                 if (hasLeftPath(player)) {
-                    player.setWalkSpeed(PLAYER_DEFAULT_SPEED);
+                    goNormal(player);
                     playerPaths.remove(player.getUniqueId());
                 }
             }
-
         };
+    }
+
+    private void goFast(Player player, float speed) {
+        player.setWalkSpeed(speed);
+        if (player.getVehicle() != null && player.getVehicle() instanceof LivingEntity mount) {
+            mount.addPotionEffect(
+                    new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, (int) (10 * speed)));
+        }
+    }
+
+    private void goNormal(Player player) {
+        player.setWalkSpeed(PLAYER_DEFAULT_SPEED);
+        if (player.getVehicle() != null && player.getVehicle() instanceof LivingEntity mount) {
+            mount.removePotionEffect(PotionEffectType.SPEED);
+        }
     }
 }
