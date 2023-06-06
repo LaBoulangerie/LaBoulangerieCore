@@ -132,10 +132,8 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("event").setExecutor(new EventCmd());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
-        getCommand("discord").setExecutor(new LinkCommands());
         getCommand("youtube").setExecutor(new LinkCommands());
         getCommand("twitter").setExecutor(new LinkCommands());
-        getCommand("map").setExecutor(new LinkCommands());
         getCommand("github").setExecutor(new LinkCommands());
         getCommand("librahost").setExecutor(new LinkCommands());
 
