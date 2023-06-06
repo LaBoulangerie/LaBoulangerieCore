@@ -49,7 +49,7 @@ public class TabManager {
                 continue;
 
             Team team = board.registerNewTeam(teamName);
-            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.ALWAYS);
+            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
             team.setCanSeeFriendlyInvisibles(false);
         }
     }

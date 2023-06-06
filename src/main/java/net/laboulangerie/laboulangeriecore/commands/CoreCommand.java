@@ -38,8 +38,8 @@ public class CoreCommand implements TabExecutor {
             LaBoulangerieCore.PLUGIN.getSpeedPathManager().clear();
             LaBoulangerieCore.PLUGIN.getSpeedPathManager().load();
             sender.sendMessage("§bReloading name tags...");
-            // LaBoulangerieCore.PLUGIN.getNameTagManager().disable();
-            // LaBoulangerieCore.PLUGIN.getNameTagManager().enable();
+            LaBoulangerieCore.PLUGIN.getNameTagManager().disable();
+            LaBoulangerieCore.PLUGIN.getNameTagManager().enable();
             sender.sendMessage("§aReload complete");
             return true;
         }
