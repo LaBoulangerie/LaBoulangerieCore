@@ -19,7 +19,7 @@ public class PlayerNameTag {
     public static List<PlayerNameTag> nameTags = new ArrayList<>();
 
     private List<Player> viewers;
-    private List<ArmorStandEntity> nameTagEntities = new ArrayList<>();
+    private NameTagEntity entity;
     private Player player;
     private ComponentRenderer renderer;
 
@@ -51,31 +51,26 @@ public class PlayerNameTag {
 
     public void removeViewer(Player viewer) {
         viewers.remove(viewer);
-        NMSEntityDestroy.send(viewer, nameTagEntities.stream().mapToInt(ArmorStandEntity::getID).toArray());
+        NMSEntityDestroy.send(viewer, entity.getID());
     }
 
     private void createNameTags() {
-        for (int i = 0; i < NameTagManager.rawNameTags.size(); i++) {
-            nameTagEntities.add(new ArmorStandEntity(player.getWorld(), ArmorStandEntity.EntityType.ARMOR_STAND,
-                    player.getLocation().getX(), player.getBoundingBox().getMaxY() + 0.3 * i,
-                    player.getLocation().getZ()));
-            for (Player viewer : viewers)
-                nameTagEntities.get(i).spawn(viewer);
-        }
+        entity = new NameTagEntity(player.getLocation(), 100);
+        for (Player viewer : viewers) entity.spawn(viewer);
     }
 
     private void sendEntities(Player viewer) {
-        for (ArmorStandEntity armorStandEntity : nameTagEntities)
-            armorStandEntity.spawn(viewer);
+        entity.spawn(viewer);
     }
 
     public void updatePosition() {
-        for (Player viewer : viewers)
-            for (byte i = 0; i < nameTagEntities.size(); i++) {
-                if (!nameTagEntities.get(i).shouldBeDisplayed()) continue;
-                NMSEntityTeleport.send(viewer, nameTagEntities.get(i), player.getLocation().getX(),
-                        player.getBoundingBox().getMaxY() + 0.3 * i, player.getLocation().getZ());
-            }
+        if (!entity.shouldBeDisplayed()) return;
+        for (Player viewer : viewers) {
+            NMSEntityTeleport.send(
+                viewer, entity, player.getLocation().getX(),
+                player.getBoundingBox().getMaxY() + 0.3, player.getLocation().getZ()
+            );
+        }
     }
 
     /**
@@ -84,43 +79,44 @@ public class PlayerNameTag {
      * @param isVisible
      */
     public void updateState() {
-        for (int i = 0; i < nameTagEntities.size(); i++) {
-            ArmorStandEntity entity = nameTagEntities.get(i);
-            try {
-                Method setSneaking = entity.getEntity().getClass().getMethod("f", boolean.class);
-                setSneaking.invoke(entity.getEntity(), player.isSneaking());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                Method setCustomNameVisible = entity.getEntity().getClass().getMethod("n", boolean.class);
-                setCustomNameVisible.invoke(entity.getEntity(), !player.isInvisible());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (!entity.shouldBeDisplayed()) continue;
-            for (Player viewer : viewers)
-                entity.sendMetadata(viewer);
+        try {
+            Method setSneaking = entity.getEntity().getClass().getMethod("f", boolean.class);
+            setSneaking.invoke(entity.getEntity(), player.isSneaking());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        try {
+            Method setCustomNameVisible = entity.getEntity().getClass().getMethod("n", boolean.class);
+            setCustomNameVisible.invoke(entity.getEntity(), !player.isInvisible());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!entity.shouldBeDisplayed()) return;
+        for (Player viewer : viewers)
+            entity.sendMetadata(viewer);
     }
 
     public void updateText() {
-        for (int i = 0; i < NameTagManager.rawNameTags.size(); i++) {
-            ArmorStandEntity entity = nameTagEntities.get(i);
-            Component component = renderer.getPapiMiniMessage(player).deserialize(NameTagManager.rawNameTags.get(i));
-            entity.setText(component);
+        Component component = Component.empty();
+        NameTagManager.rawNameTags.forEach(line -> {
+            component.append(
+                renderer.getPapiMiniMessage(player).deserialize(line)
+            );
+            component.appendNewline();
+        });
 
-            if (!entity.shouldBeDisplayed()) continue;
+        entity.setText(component);
 
-            for (Player viewer : viewers) {
-                entity.sendMetadata(viewer);
-            }
+        if (!entity.shouldBeDisplayed()) return;
+
+        for (Player viewer : viewers) {
+            entity.sendMetadata(viewer);
         }
     }
 
     public void destroy() {
         for (Player viewer : viewers) {
-            NMSEntityDestroy.send(viewer, nameTagEntities.stream().mapToInt(ArmorStandEntity::getID).toArray());
+            entity.destroy(viewer);
             if (viewer == player) continue;
             PlayerNameTag viewerNameTag = PlayerNameTag.get(viewer);
             if (viewerNameTag != null) viewerNameTag.removeViewer(player);
