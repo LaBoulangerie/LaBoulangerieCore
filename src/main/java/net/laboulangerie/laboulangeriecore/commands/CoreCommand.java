@@ -35,6 +35,9 @@ public class CoreCommand implements TabExecutor {
             sender.sendMessage("§bReloading config...");
             LaBoulangerieCore.PLUGIN.reloadConfig();
             UsersData.init(); // Clean cache & ensure directory exists
+            sender.sendMessage("§bReloading speed paths...");
+            LaBoulangerieCore.PLUGIN.getSpeedPathManager().clear();
+            LaBoulangerieCore.PLUGIN.getSpeedPathManager().load();
             sender.sendMessage("§bReloading name tags...");
             LaBoulangerieCore.PLUGIN.getNameTagManager().disable();
             LaBoulangerieCore.PLUGIN.getNameTagManager().enable();

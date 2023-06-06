@@ -54,6 +54,8 @@ import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
+import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
+import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.milkbowl.vault.economy.Economy;
 import pl.betoncraft.betonquest.BetonQuest;
@@ -66,6 +68,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private ComponentRenderer componentRenderer;
     private NameTagManager nameTagManager;
+    private SpeedPathManager speedPathManager;
     private MiscListener miscListener = new MiscListener();
 
     @Override
@@ -102,7 +105,9 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
-        //nameTagManager.enable();
+        // nameTagManager.enable();
+        speedPathManager = new SpeedPathManager();
+        speedPathManager.load();
 
         try {
             eEggUtil.ensureFilesExist();
@@ -155,7 +160,8 @@ public class LaBoulangerieCore extends JavaPlugin {
             @Override
             public void run() {
                 List<String> messages = getConfig().getStringList("auto-messages");
-                if (messages.size() == 0) return;
+                if (messages.size() == 0)
+                    return;
                 Random rand = new Random();
                 getServer()
                         .broadcast(MiniMessage.miniMessage().deserialize(messages.get(rand.nextInt(messages.size()))));
@@ -171,6 +177,10 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     public NameTagManager getNameTagManager() {
         return nameTagManager;
+    }
+
+    public SpeedPathManager getSpeedPathManager() {
+        return speedPathManager;
     }
 
     @Override
@@ -192,9 +202,11 @@ public class LaBoulangerieCore extends JavaPlugin {
     }
 
     private void registerListeners() {
-        List<Listener> listeners = Arrays.asList(new TabListener(), /** new NameTagListener(), **/ new ElytraGenRemover(),
+        List<Listener> listeners = Arrays.asList(new TabListener(), /** new NameTagListener(), **/
+                new ElytraGenRemover(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-                new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener());
+                new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
+                new SpeedPathListener());
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
