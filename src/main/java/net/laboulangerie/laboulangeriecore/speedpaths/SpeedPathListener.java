@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.spigotmc.event.entity.EntityDismountEvent;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
@@ -22,7 +24,7 @@ public class SpeedPathListener implements Listener {
     private Map<UUID, String> playerPaths = new HashMap<>();
 
     @EventHandler
-    void onPlayerMoveEvent(PlayerMoveEvent event) {
+    void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         this.speedPathManager = LaBoulangerieCore.PLUGIN.getSpeedPathManager();
         Map<String, SpeedPath> paths = speedPathManager.getPaths();
@@ -45,6 +47,32 @@ public class SpeedPathListener implements Listener {
         }
     }
 
+    @EventHandler
+    void onPlayerDismount(EntityDismountEvent event) {
+        if (!(event.getDismounted() instanceof LivingEntity) || !(event.getEntity() instanceof Player))
+            return;
+
+        Player player = (Player) event.getEntity();
+        if (!playerPaths.containsKey(player.getUniqueId()))
+            return;
+
+        LivingEntity mount = (LivingEntity) event.getDismounted();
+        mount.removePotionEffect(PotionEffectType.SPEED);
+    }
+
+    @EventHandler
+    void onPlayerMount(EntityMountEvent event) {
+        if (!(event.getMount() instanceof LivingEntity) || !(event.getEntity() instanceof Player))
+            return;
+
+        Player player = (Player) event.getEntity();
+        if (!playerPaths.containsKey(player.getUniqueId()))
+            return;
+
+        LivingEntity mount = (LivingEntity) event.getMount();
+        mount.addPotionEffect(getPotionEffectForSpeed(player.getWalkSpeed()));
+    }
+
     private boolean hasLeftPath(Player player) {
         return playerPaths.containsKey(player.getUniqueId())
                 && !speedPathManager.getPath(playerPaths.get(player.getUniqueId())).isOnIt(player.getLocation());
@@ -65,8 +93,7 @@ public class SpeedPathListener implements Listener {
     private void goFast(Player player, float speed) {
         player.setWalkSpeed(speed);
         if (player.getVehicle() != null && player.getVehicle() instanceof LivingEntity mount) {
-            mount.addPotionEffect(
-                    new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, (int) (10 * speed)));
+            mount.addPotionEffect(getPotionEffectForSpeed(speed));
         }
     }
 
@@ -75,5 +102,10 @@ public class SpeedPathListener implements Listener {
         if (player.getVehicle() != null && player.getVehicle() instanceof LivingEntity mount) {
             mount.removePotionEffect(PotionEffectType.SPEED);
         }
+    }
+
+    private PotionEffect getPotionEffectForSpeed(float speed) {
+        return new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, (int) (10 * speed), false,
+                false);
     }
 }
