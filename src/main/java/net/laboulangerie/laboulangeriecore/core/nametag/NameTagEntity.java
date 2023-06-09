@@ -16,6 +16,7 @@ import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher.Registry;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 public class NameTagEntity {
     private boolean shouldBeDisplayed = true;
@@ -37,10 +38,10 @@ public class NameTagEntity {
     }
 
     public void setText(Component component) {
-        // if (PlainTextComponentSerializer.plainText().serialize(component).length() == 0) {
-        //     shouldBeDisplayed = false;
-        //     return;
-        // }
+        if (PlainTextComponentSerializer.plainText().serialize(component).length() == 0) {
+            shouldBeDisplayed = false;
+            return;
+        }
         this.text = component;
         shouldBeDisplayed = true;
     }
@@ -74,7 +75,6 @@ public class NameTagEntity {
             ProtocolLibrary.getProtocolManager().sendServerPacket(target, setPassenger);
         }
         sendMetadata(targets);
-
     }
 
     public void sendMetadata(Player... targets) {
@@ -88,19 +88,15 @@ public class NameTagEntity {
             Arrays.asList(
                 new WrappedDataValue(
                     0, // 0x20 = invisible, 0x02 = crouching
-                    Registry.get(Byte.class), (byte) ((isVisible ? 0 : 0x20) | (isCrouching ? 0x02 : 0x0))
+                    Registry.get(Byte.class), (byte) ((isVisible ? 0 : 0x20))
                 ),
                 new WrappedDataValue(
                     10,
-                    Registry.get(Vector3f.class), new Vector3f(0.0F, 0.7F, 0.0F) // Translation
+                    Registry.get(Vector3f.class), new Vector3f(0.0F, (isCrouching ? 0.5F : 0.7F), 0.0F) // Translation
                 ),
                 new WrappedDataValue(
                     14,
                     Registry.get(Byte.class), (byte) 0x3 // Fixed center
-                ),
-                new WrappedDataValue(
-                    15,
-                    Registry.get(Integer.class), (5 << 4 | 5 << 20) // brightness
                 ),
                 new WrappedDataValue(
                     16,
@@ -112,7 +108,7 @@ public class NameTagEntity {
                 ),
                 new WrappedDataValue(
                     25,
-                    Registry.get(Byte.class), (byte) -1 // Opacity
+                    Registry.get(Byte.class), (byte) (isVisible ? -1 : -252) // Opacity
                 ),
                 new WrappedDataValue(
                    22,

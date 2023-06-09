@@ -60,16 +60,6 @@ public class PlayerNameTag {
         entity.spawn(viewer);
     }
 
-    public void updatePosition() {
-        if (!entity.shouldBeDisplayed()) return;
-        // for (Player viewer : viewers) {
-        //     NMSEntityTeleport.send(
-        //         viewer, entity, player.getLocation().getX(),
-        //         player.getBoundingBox().getMaxY() + 0.3, player.getLocation().getZ()
-        //     );
-        // }
-    }
-
     /**
      * Send metadata of the different entities composing the name tag to the viewers (other players)
      * 

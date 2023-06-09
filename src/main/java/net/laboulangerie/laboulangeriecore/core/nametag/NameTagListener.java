@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.spigotmc.event.entity.EntityMountEvent;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class NameTagListener implements Listener {
@@ -53,21 +52,6 @@ public class NameTagListener implements Listener {
             PlayerNameTag.nameTags.remove(nameTag);
         }
         NameTagManager.idToPlayer.remove(event.getPlayer().getEntityId());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onMountEntity(EntityMountEvent event) {
-        if (!(event.getEntity() instanceof Player) || event.isCancelled()) return;
-
-        PlayerNameTag nameTag = PlayerNameTag.get((Player) event.getEntity());
-        if (nameTag == null) return;
-
-        new BukkitRunnable() { // Event is fired before the player is actually riding,
-            @Override // thus we wait 2 ticks before updating the name tag
-            public void run() {
-                nameTag.updatePosition();
-            }
-        }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
 
     @EventHandler(priority = EventPriority.MONITOR) // We update the state because the player might go in or out
