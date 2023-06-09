@@ -25,6 +25,7 @@ public class NameTagManager {
      * A cache linking entity id to its corresponding {@link Player}
      */
     public static Map<Integer, Player> idToPlayer;
+    private static int idCount = 1000000;
 
     private BukkitTask textUpdateTask;
 
@@ -52,10 +53,16 @@ public class NameTagManager {
                 ListenerPriority.MONITOR, PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
             @Override
             public void onPacketSending(PacketEvent event) {
-                Player newPlayer = idToPlayer.get(event.getPacket().getIntegers().getValues().get(0));
-                if (newPlayer == null) return;
+                new BukkitRunnable() { // We have to wait on first connection
+                    @Override // or the target won't recognize the new player's entity id
+                    public void run() {
+                        Player newPlayer = idToPlayer.get(event.getPacket().getIntegers().getValues().get(0));
 
-                PlayerNameTag.get(event.getPlayer()).addViewer(newPlayer);
+                        if (newPlayer == null) return;
+
+                        PlayerNameTag.get(newPlayer).addViewer(event.getPlayer());
+                    }
+                }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
             }
         });
 
@@ -73,5 +80,10 @@ public class NameTagManager {
         textUpdateTask.cancel();
         PlayerNameTag.nameTags.forEach(PlayerNameTag::destroy);
         PlayerNameTag.nameTags.clear();
+        idCount = 1000000;
+    }
+
+    public static int nextId() {
+        return idCount++;
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
@@ -23,7 +24,7 @@ public class PlayerNameTag {
         this.viewers = new ArrayList<>();
         this.player = owner;
         nameTags.add(this);
-        createNameTags();
+        createNameTag();
         updateText();
 
         YamlConfiguration playerData = UsersData.get(owner).orElseGet(() -> UsersData.createUserData(owner));
@@ -49,8 +50,9 @@ public class PlayerNameTag {
         entity.destroy(viewer);
     }
 
-    private void createNameTags() {
-        entity = new NameTagEntity(player.getLocation(), 1000000, player.getEntityId()); // TODO change that
+    private void createNameTag() {
+        entity = new NameTagEntity(player.getLocation(), NameTagManager.nextId(), player.getEntityId());
+        System.out.println("create " + viewers.size());
         for (Player viewer : viewers) entity.spawn(viewer);
     }
 
@@ -82,15 +84,12 @@ public class PlayerNameTag {
     }
 
     public void updateText() {
-        Component component = Component.text("sssdsdsdsd");
-        NameTagManager.rawNameTags.forEach(line -> {
-            component.append(
-                renderer.getPapiMiniMessage(player).deserialize(line)
-            );
-            component.appendNewline();
-        });
+        Component component = NameTagManager.rawNameTags.stream()
+            .map(line -> renderer.getPapiMiniMessage(player).deserialize(line))
+            .filter(line -> !PlainTextComponentSerializer.plainText().serialize(line).equals(""))
+            .reduce((arg0, arg1) -> arg0.appendNewline().append(arg1)).get();
 
-        entity.setText(component);
+        entity.setText(component.compact());
 
         if (!entity.shouldBeDisplayed()) return;
 

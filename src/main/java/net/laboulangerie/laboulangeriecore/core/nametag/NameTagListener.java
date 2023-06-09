@@ -7,13 +7,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.spigotmc.event.entity.EntityMountEvent;
-
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class NameTagListener implements Listener {
@@ -39,33 +36,11 @@ public class NameTagListener implements Listener {
     }
 
     @EventHandler
-    public void playerTeleport(PlayerTeleportEvent event) {
-        PlayerNameTag nameTag = PlayerNameTag.get(event.getPlayer());
-        if (nameTag == null) return;
-
-        new BukkitRunnable() { // Event is fired before the player is teleported
-            @Override // thus we wait 2 ticks before updating the name tag
-            public void run() {
-                nameTag.updatePosition();
-            }
-        }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
-    }
-
-    @EventHandler
-    public void onMove(PlayerMoveEvent event) {
-        PlayerNameTag playerNameTag = PlayerNameTag.get(event.getPlayer());
-        if (playerNameTag == null) return;
-
-        playerNameTag.updatePosition();
-    }
-
-    @EventHandler
     public void onSneak(PlayerToggleSneakEvent event) {
         new BukkitRunnable() { // Event is fired before the player is actually sneaking, so its bounding box
             @Override // is still standing, thus we wait 2 ticks before updating the name tag
             public void run() {
                 PlayerNameTag.get(event.getPlayer()).updateState();
-                PlayerNameTag.get(event.getPlayer()).updatePosition();
             }
         }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
     }
