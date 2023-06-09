@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 public class SpeedPathListener implements Listener {
     private final static float PLAYER_DEFAULT_SPEED = 0.2f;
@@ -32,6 +34,15 @@ public class SpeedPathListener implements Listener {
         if (paths.isEmpty())
             return;
 
+        if (hasLeftPath(player)) {
+            offRunnable(player).runTaskLater(LaBoulangerieCore.PLUGIN, SPEED_TICK_COOLDOWN);
+            return;
+        }
+
+        YamlConfiguration playerData = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        if (!playerData.getBoolean("enable-speed-path", true))
+            return;
+
         for (String pathKey : paths.keySet()) {
             SpeedPath path = paths.get(pathKey);
 
@@ -40,10 +51,6 @@ public class SpeedPathListener implements Listener {
                 playerPaths.put(player.getUniqueId(), pathKey);
                 break;
             }
-        }
-
-        if (hasLeftPath(player)) {
-            offRunnable(player).runTaskLater(LaBoulangerieCore.PLUGIN, SPEED_TICK_COOLDOWN);
         }
     }
 
