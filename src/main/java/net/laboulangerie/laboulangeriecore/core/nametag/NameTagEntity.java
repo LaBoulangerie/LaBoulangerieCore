@@ -31,7 +31,6 @@ public class NameTagEntity {
     private boolean isVisible = true;
 
     public NameTagEntity(Location location, int id, int ownerId) {
-        System.out.println(id);
         this.location = location;
         this.id = id;
         this.ownerId = ownerId;
@@ -70,7 +69,6 @@ public class NameTagEntity {
         setPassenger.getIntegerArrays().write(0, new int[]{id});
 
         for (Player target : targets) {
-            System.out.println("Sending to " + target.getName() + " from " + NameTagManager.idToPlayer.get(ownerId).getName());
             ProtocolLibrary.getProtocolManager().sendServerPacket(target, spawnText);
             ProtocolLibrary.getProtocolManager().sendServerPacket(target, setPassenger);
         }
@@ -78,8 +76,11 @@ public class NameTagEntity {
     }
 
     public void sendMetadata(Player... targets) {
-        if (wasHidden) spawn(targets);
-        // System.out.println(ownerId); 
+        if (wasHidden) {
+            spawn(targets);
+            return;
+        }
+
         PacketContainer textMetadata = new PacketContainer(PacketType.Play.Server.ENTITY_METADATA);
 
         textMetadata.getIntegers().write(0, id);
@@ -96,7 +97,7 @@ public class NameTagEntity {
                 ),
                 new WrappedDataValue(
                     14,
-                    Registry.get(Byte.class), (byte) 0x3 // Fixed center
+                    Registry.get(Byte.class), (byte) 0x1 // Fixed center
                 ),
                 new WrappedDataValue(
                     16,
@@ -108,7 +109,7 @@ public class NameTagEntity {
                 ),
                 new WrappedDataValue(
                     25,
-                    Registry.get(Byte.class), (byte) (isVisible ? -1 : -252) // Opacity
+                    Registry.get(Byte.class), (byte) (isVisible ? (isCrouching ? -100 : -1 ) : -252) // Opacity
                 ),
                 new WrappedDataValue(
                    22,
@@ -121,9 +122,8 @@ public class NameTagEntity {
             ) 
         );
 
-        for (Player target : targets){
-            // System.out.println(ownerId + target.getName());
-            ProtocolLibrary.getProtocolManager().sendServerPacket(target, textMetadata);}
+        for (Player target : targets)
+            ProtocolLibrary.getProtocolManager().sendServerPacket(target, textMetadata);
     }
 
     public boolean shouldBeDisplayed() {

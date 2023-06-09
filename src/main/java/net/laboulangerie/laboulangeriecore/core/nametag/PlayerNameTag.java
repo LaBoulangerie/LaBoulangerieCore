@@ -52,7 +52,6 @@ public class PlayerNameTag {
 
     private void createNameTag() {
         entity = new NameTagEntity(player.getLocation(), NameTagManager.nextId(), player.getEntityId());
-        System.out.println("create " + viewers.size());
         for (Player viewer : viewers) entity.spawn(viewer);
     }
 
@@ -76,7 +75,7 @@ public class PlayerNameTag {
     public void updateText() {
         Component component = NameTagManager.rawNameTags.stream()
             .map(line -> renderer.getPapiMiniMessage(player).deserialize(line))
-            .filter(line -> !PlainTextComponentSerializer.plainText().serialize(line).equals(""))
+            .filter(line -> !PlainTextComponentSerializer.plainText().serialize(line).trim().equals(""))
             .reduce((arg0, arg1) -> arg0.appendNewline().append(arg1)).get();
 
         entity.setText(component.compact());
