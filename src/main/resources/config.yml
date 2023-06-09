@@ -65,7 +65,8 @@ eastereggs:
 fist-join-commands:
 
 auto-messages-interval: 120 #Interval in seconds between message broadcast
-auto-messages: #List of messages to broadcast automatically
+#List of messages to broadcast automatically
+auto-messages:
     # - Subscribe to Technoblade
     # - Not even close
     # - frogs are the best
@@ -87,11 +88,11 @@ crystal-cooldown: 3000 #Cooldown in milliseconds : 1000ms = 1s
 #resource-pack-sha1: dummy
 
 calendar:
-  months:
-    - "Gaiarkhè"
-    - "Tempopidum"
-    - "Quinésil"
-    - "Éposendre"
+    months:
+        - "Gaiarkhè"
+        - "Tempopidum"
+        - "Quinésil"
+        - "Éposendre"
 
 avancements:
     miner:
@@ -159,3 +160,25 @@ avancements:
             enabled: true
         grow_100_potatoes:
             enabled: true
+
+# Use BARRIER for any blocks
+# Top to bottom priority
+speed-paths:
+    grasspath:
+        speed: 0.4
+        blocks:
+            - DIRT_PATH
+
+    amethystpath:
+        speed: 0.8
+        blocks:
+            - BARRIER
+            - AMETHYST_BLOCK
+
+    testpath:
+        speed: 0.1
+        blocks:
+            - BARRIER
+            - SANDSTONE
+            - BARRIER
+            - RED_SANDSTONE
