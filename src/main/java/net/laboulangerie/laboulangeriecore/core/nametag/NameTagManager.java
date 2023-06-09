@@ -1,22 +1,17 @@
 package net.laboulangerie.laboulangeriecore.core.nametag;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class NameTagManager {
@@ -30,12 +25,8 @@ public class NameTagManager {
     private BukkitTask textUpdateTask;
 
     public void enable() {
-        ConfigurationSection configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("nametag");
-        rawNameTags = new ArrayList<>();
+        rawNameTags = LaBoulangerieCore.PLUGIN.getConfig().getStringList("nametag");
         idToPlayer = new HashMap<>();
-
-        for (String key : configTabSection.getKeys(false))
-            rawNameTags.add(configTabSection.getString(key));
 
         Bukkit.getOnlinePlayers().forEach(p -> {
             idToPlayer.put(p.getEntityId(), p);
