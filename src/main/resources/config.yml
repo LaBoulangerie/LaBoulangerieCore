@@ -176,11 +176,3 @@ speed-paths:
         blocks:
             - BARRIER
             - AMETHYST_BLOCK
-
-    testpath:
-        speed: 0.1
-        blocks:
-            - BARRIER
-            - SANDSTONE
-            - BARRIER
-            - RED_SANDSTONE
