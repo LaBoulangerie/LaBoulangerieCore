@@ -172,7 +172,7 @@ speed-paths:
             - DIRT_PATH
 
     amethystpath:
-        speed: 0.8
+        speed: 0.6
         blocks:
             - BARRIER
             - AMETHYST_BLOCK
