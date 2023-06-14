@@ -19,9 +19,10 @@ public class SpeedPath {
 
     public boolean isOnIt(Location location) {
         for (int i = 0; i < materials.size(); i++) {
-            if (materials.get(i) == ANY)
+            Material matAtLoc = getMaterialAtLocation(location, i);
+            if (materials.get(i) == ANY && matAtLoc != Material.AIR)
                 continue;
-            if (getMaterialAtLocation(location, i) != materials.get(i))
+            if (matAtLoc != materials.get(i))
                 return false;
         }
         return true;

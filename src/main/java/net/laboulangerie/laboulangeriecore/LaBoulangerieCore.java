@@ -106,6 +106,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
         nameTagManager.enable();
+      
         speedPathManager = new SpeedPathManager();
         speedPathManager.load();
 
@@ -205,6 +206,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
             new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(), new TradeOverflowListener()
         );
+   
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
