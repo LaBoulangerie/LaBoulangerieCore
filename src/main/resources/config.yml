@@ -8,17 +8,15 @@ tab:
     footer: "<papi:townyadvanced_towny_colour><papi:townyadvanced_player_status>\n<papi:townyadvanced_town_tag> <papi:townyadvanced_nation_tag>\n<#E4D9FF><papi:lbcore_date_full>"
 
 nametag:
-    below: "<papi:player_colored_ping>"
-    nametag: "<rainbow><papi:player_name>"
-    above: "<papi:luckperms_prefix>"
+    - <papi:luckperms_prefix>[<papi:lbmmo_palier_colored>] <gray><papi:player_name>
+    - <papi:lbcore_eastereggs_worldguard>
+    - <papi:player_health_rounded><red>❤</red>
 
 links:
-    discord: "https://laboulangerie.net/discord"
     youtube: "https://www.youtube.com/channel/UCrIHI9-q9b8MGUgU6UGuclg"
     wiki: "https://laboulangerie.fandom.com/fr/wiki/Wiki_La_Boulangerie"
     twitter: "https://twitter.com/BoulangerieMc"
     github: "https://github.com/LaBoulangerie"
-    map: "https://laboulangerie.net/map"
     librahost: "https://librahost.fr"
 
 misc:

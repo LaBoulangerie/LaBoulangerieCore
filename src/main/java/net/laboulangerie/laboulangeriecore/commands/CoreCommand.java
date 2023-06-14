@@ -27,8 +27,7 @@ import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
-            @NotNull String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
         if (args.length < 1) return false;
 
         if (Arrays.asList("reload", "rl").contains(args[0].toString())) {
@@ -49,8 +48,8 @@ public class CoreCommand implements TabExecutor {
             if (!(sender instanceof Player)) sender.sendMessage("§4Only players can use that");
             else {
                 ConversionInv.displayConversionInv((Player) sender);
-                YamlConfiguration data =
-                        UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+                YamlConfiguration data = UsersData.get((Player) sender)
+                        .orElseGet(() -> UsersData.createUserData((Player) sender));
                 data.set("conversions-count", data.getInt("conversions-count", 0) + 1);
                 try {
                     UsersData.save((Player) sender, data);
@@ -103,6 +102,27 @@ public class CoreCommand implements TabExecutor {
             sender.sendMessage("§aNickname set successfully!");
             return true;
         }
+
+        if (args[0].equalsIgnoreCase("unnick") && args.length > 1) {
+            OfflinePlayer target = Bukkit.getOfflinePlayer(Bukkit.getPlayerUniqueId(args[1]));
+            if (target == null) {
+                sender.sendMessage("§4Player is unknown!");
+                return true;
+            }
+            YamlConfiguration data = UsersData.get(target).orElseGet(() -> UsersData.createUserData(target));
+            data.set("nick", null);
+            try {
+                UsersData.save(target, data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (target.isOnline()) {
+                ((Player) target).displayName(null);
+            }
+            sender.sendMessage("§aNickname reset successfully!");
+            return true;
+        }
         return false;
     }
 
@@ -110,8 +130,8 @@ public class CoreCommand implements TabExecutor {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
             @NotNull String alias, @NotNull String[] args) {
         List<String> suggestions = Arrays.asList("");
-        if (args.length == 1) suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "spawnDragon");
-        if (args.length == 2 && args[0].equalsIgnoreCase("nick")) return null;
+        if (args.length == 1) suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "unnick", "spawnDragon");
+        if (args.length == 2 && (args[0].equalsIgnoreCase("nick") || args[0].equalsIgnoreCase("unnick"))) return null;
 
         return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length - 1]))
                 .collect(Collectors.toList());

@@ -1,22 +1,17 @@
 package net.laboulangerie.laboulangeriecore.core.nametag;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class NameTagManager {
@@ -25,16 +20,13 @@ public class NameTagManager {
      * A cache linking entity id to its corresponding {@link Player}
      */
     public static Map<Integer, Player> idToPlayer;
+    private static int idCount = 1000000;
 
     private BukkitTask textUpdateTask;
 
     public void enable() {
-        ConfigurationSection configTabSection = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("nametag");
-        rawNameTags = new ArrayList<>();
+        rawNameTags = LaBoulangerieCore.PLUGIN.getConfig().getStringList("nametag");
         idToPlayer = new HashMap<>();
-
-        for (String key : configTabSection.getKeys(false))
-            rawNameTags.add(configTabSection.getString(key));
 
         Bukkit.getOnlinePlayers().forEach(p -> {
             idToPlayer.put(p.getEntityId(), p);
@@ -52,10 +44,16 @@ public class NameTagManager {
                 ListenerPriority.MONITOR, PacketType.Play.Server.NAMED_ENTITY_SPAWN) {
             @Override
             public void onPacketSending(PacketEvent event) {
-                Player newPlayer = idToPlayer.get(event.getPacket().getIntegers().getValues().get(0));
-                if (newPlayer == null) return;
+                new BukkitRunnable() { // We have to wait on first connection
+                    @Override // or the target won't recognize the new player's entity id
+                    public void run() {
+                        Player newPlayer = idToPlayer.get(event.getPacket().getIntegers().getValues().get(0));
 
-                PlayerNameTag.get(event.getPlayer()).addViewer(newPlayer);
+                        if (newPlayer == null) return;
+
+                        PlayerNameTag.get(newPlayer).addViewer(event.getPlayer());
+                    }
+                }.runTaskLater(LaBoulangerieCore.PLUGIN, 2);
             }
         });
 
@@ -73,5 +71,10 @@ public class NameTagManager {
         textUpdateTask.cancel();
         PlayerNameTag.nameTags.forEach(PlayerNameTag::destroy);
         PlayerNameTag.nameTags.clear();
+        idCount = 1000000;
+    }
+
+    public static int nextId() {
+        return idCount++;
     }
 }
