@@ -97,7 +97,7 @@ public class NameTagEntity {
                 ),
                 new WrappedDataValue(
                     14,
-                    Registry.get(Byte.class), (byte) 0x1 // Fixed center
+                    Registry.get(Byte.class), (byte) 0x3 // Fixed center
                 ),
                 new WrappedDataValue(
                     16,
@@ -117,7 +117,7 @@ public class NameTagEntity {
                 ),
                 new WrappedDataValue(
                     26,
-                    Registry.get(Byte.class), (byte) (isCrouching ? 0 : 0x02) // See through blocks
+                    Registry.get(Byte.class), (byte) 0/**(isCrouching ? 0 : 0x02)**/ // See through blocks
                 )
             ) 
         );
