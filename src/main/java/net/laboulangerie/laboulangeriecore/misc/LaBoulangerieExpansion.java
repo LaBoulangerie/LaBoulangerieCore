@@ -1,10 +1,20 @@
 package net.laboulangerie.laboulangeriecore.misc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Optional;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.laboulangerie.laboulangeriecore.core.GaiartosDate;
+import net.laboulangerie.laboulangeriecore.core.UsersData;
 
 /**
  * LaBoulangerieExpansion
@@ -32,7 +42,6 @@ public class LaBoulangerieExpansion extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String params) {
-
         if (params.startsWith("key_")) {
             String name = params.split("_")[1];
             char key = ' ';
@@ -88,6 +97,21 @@ public class LaBoulangerieExpansion extends PlaceholderExpansion {
                 default:
                     return null;
             }
+        }
+
+        if (params.startsWith("eastereggs")) {
+            Optional<YamlConfiguration> data = UsersData.get(player);
+            if (data.isEmpty()) return null;
+
+            if (params.endsWith("worldguard")) {
+                RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+                RegionQuery query = container.createQuery();
+                ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
+                if (!set.testState(WorldGuardPlugin.inst().wrapPlayer(player), Flags.INVINCIBILITY)) return "";
+            }
+
+            int count = data.get().getList("eggs", new ArrayList<>()).size();
+            return count + "<font:bread_dough:icons>!</font>";
         }
         return null;
     }
