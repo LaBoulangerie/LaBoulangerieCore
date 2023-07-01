@@ -63,7 +63,7 @@ public class TabManager {
         if (group == null)
             return null;
 
-        final String teamName = (groupsMap.containsKey(group) ? groupsMap.get(group) : "" ) + group.getName();
+        final String teamName = String.format("%04d", (groupsMap.containsKey(group) ? groupsMap.get(group) : "" )) + group.getName();
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         return board.getTeam(teamName);
     }
