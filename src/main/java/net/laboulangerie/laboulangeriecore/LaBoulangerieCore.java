@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -166,6 +167,21 @@ public class LaBoulangerieCore extends JavaPlugin {
                         .broadcast(MiniMessage.miniMessage().deserialize(messages.get(rand.nextInt(messages.size()))));
             }
         }.runTaskTimerAsynchronously(this, 200, getConfig().getInt("auto-messages-interval") * 20);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                getServer().getOnlinePlayers().stream().forEach(p -> {
+                    p.getInventory().forEach(item -> {
+                        if (item != null
+                            && (item.getType() == Material.EMERALD || item.getType() == Material.DIAMOND || item.getType() == Material.AMETHYST_SHARD)
+                            && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 1) {
+                            p.damage(1);
+                        }
+                    });
+                });
+            }
+        }.runTaskTimer(this, 100, 20);
 
         getLogger().info("Enabled Successfully");
     }
