@@ -11,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
@@ -107,7 +109,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
         nameTagManager.enable();
-      
+
         speedPathManager = new SpeedPathManager();
         speedPathManager.load();
 
@@ -174,14 +176,30 @@ public class LaBoulangerieCore extends JavaPlugin {
                 getServer().getOnlinePlayers().stream().forEach(p -> {
                     p.getInventory().forEach(item -> {
                         if (item != null
-                            && (item.getType() == Material.EMERALD || item.getType() == Material.DIAMOND || item.getType() == Material.AMETHYST_SHARD)
-                            && item.getItemMeta().hasCustomModelData() && item.getItemMeta().getCustomModelData() == 1) {
+                                && (item.getType() == Material.EMERALD || item.getType() == Material.DIAMOND
+                                        || item.getType() == Material.AMETHYST_SHARD)
+                                && item.getItemMeta().hasCustomModelData()
+                                && item.getItemMeta().getCustomModelData() == 1) {
                             p.damage(1);
                         }
                     });
                 });
             }
         }.runTaskTimer(this, 100, 20);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                long freeSpace = new File("/").getFreeSpace() / 1024 / 1024 / 1024; // in Go
+                if (freeSpace < 1) {
+                    getServer().getOnlinePlayers().stream().forEach(p -> {
+                        p.kick(Component.text("Arrêt d'urgence, contactez les administrateurs :)"));
+                    });
+                    getLogger().severe("Almost no disk space left ! Shutting down in prevention !");
+                    getServer().shutdown();
+                }
+            }
+        }.runTaskTimer(this, 0, 20 * 60 * 60);
 
         getLogger().info("Enabled Successfully");
     }
@@ -218,11 +236,11 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
-            new TabListener(), new NameTagListener(), new ElytraGenRemover(), new SpeedPathListener(),
-            new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
-            new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(), new TradeOverflowListener()
-        );
-   
+                new TabListener(), new NameTagListener(), new ElytraGenRemover(), new SpeedPathListener(),
+                new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
+                new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
+                new TradeOverflowListener());
+
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
