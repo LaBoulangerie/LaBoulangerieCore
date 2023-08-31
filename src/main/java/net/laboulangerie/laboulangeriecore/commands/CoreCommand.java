@@ -28,7 +28,8 @@ import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 public class CoreCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-        if (args.length < 1) return false;
+        if (args.length < 1)
+            return false;
 
         if (Arrays.asList("reload", "rl").contains(args[0].toString())) {
             sender.sendMessage("§bReloading config...");
@@ -45,11 +46,11 @@ public class CoreCommand implements TabExecutor {
         }
 
         if (args[0].equalsIgnoreCase("conversion")) {
-            if (!(sender instanceof Player)) sender.sendMessage("§4Only players can use that");
+            if (!(sender instanceof Player))
+                sender.sendMessage("§4Only players can use that");
             else {
                 ConversionInv.displayConversionInv((Player) sender);
-                YamlConfiguration data = UsersData.get((Player) sender)
-                        .orElseGet(() -> UsersData.createUserData((Player) sender));
+                YamlConfiguration data = UsersData.getOrCreate((Player) sender);
                 data.set("conversions-count", data.getInt("conversions-count", 0) + 1);
                 try {
                     UsersData.save((Player) sender, data);
@@ -76,7 +77,8 @@ public class CoreCommand implements TabExecutor {
             dragon.spawn();
             dragon.spawnCrystals();
 
-            if (args.length > 1 && args[1].equalsIgnoreCase("withEgg")) dragon.setShouldSpawnEgg(true);
+            if (args.length > 1 && args[1].equalsIgnoreCase("withEgg"))
+                dragon.setShouldSpawnEgg(true);
             return true;
         }
 
@@ -86,7 +88,7 @@ public class CoreCommand implements TabExecutor {
                 sender.sendMessage("§4Player is unknown!");
                 return true;
             }
-            YamlConfiguration data = UsersData.get(target).orElseGet(() -> UsersData.createUserData(target));
+            YamlConfiguration data = UsersData.getOrCreate(target);
 
             String name = List.of(args).subList(2, args.length).stream().reduce((a, b) -> a + " " + b).get();
             data.set("nick", name);
@@ -109,7 +111,7 @@ public class CoreCommand implements TabExecutor {
                 sender.sendMessage("§4Player is unknown!");
                 return true;
             }
-            YamlConfiguration data = UsersData.get(target).orElseGet(() -> UsersData.createUserData(target));
+            YamlConfiguration data = UsersData.getOrCreate(target);
             data.set("nick", null);
             try {
                 UsersData.save(target, data);
@@ -130,8 +132,10 @@ public class CoreCommand implements TabExecutor {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
             @NotNull String alias, @NotNull String[] args) {
         List<String> suggestions = Arrays.asList("");
-        if (args.length == 1) suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "unnick", "spawnDragon");
-        if (args.length == 2 && (args[0].equalsIgnoreCase("nick") || args[0].equalsIgnoreCase("unnick"))) return null;
+        if (args.length == 1)
+            suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "unnick", "spawnDragon");
+        if (args.length == 2 && (args[0].equalsIgnoreCase("nick") || args[0].equalsIgnoreCase("unnick")))
+            return null;
 
         return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length - 1]))
                 .collect(Collectors.toList());

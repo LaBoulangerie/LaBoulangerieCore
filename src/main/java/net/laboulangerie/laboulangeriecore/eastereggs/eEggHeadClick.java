@@ -29,7 +29,7 @@ public class eEggHeadClick implements Listener {
                 || e.getClickedBlock().getType() == Material.PLAYER_WALL_HEAD) {
             Player p = e.getPlayer();
 
-            YamlConfiguration playerData = UsersData.get(p).orElseGet(() -> UsersData.createUserData(p));
+            YamlConfiguration playerData = UsersData.getOrCreate(p);
             Block block = e.getClickedBlock();
 
             String result = eEggUtil.getBlockIdentifier(block);
@@ -56,7 +56,8 @@ public class eEggHeadClick implements Listener {
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) { // Add number of eggs found to the infos sent by the cmd
                                                                 // /stats of LaBoulangerieMmo
-        if (!event.getMessage().equals("/stats")) return;
+        if (!event.getMessage().equals("/stats"))
+            return;
         new BukkitRunnable() {
             @Override
             public void run() {

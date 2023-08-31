@@ -45,8 +45,8 @@ public class MiscListener implements Listener {
     HashMap<UUID, Date> crystalDelay = new HashMap<>();
 
     private Map<UUID, Location> invulnerablePlayers = new HashMap<>();
-    private PotionEffect blindnessEffect =
-            new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 255, true, false, false);
+    private PotionEffect blindnessEffect = new PotionEffect(PotionEffectType.BLINDNESS, Integer.MAX_VALUE, 255, true,
+            false, false);
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -54,16 +54,18 @@ public class MiscListener implements Listener {
 
         vegetableizePlayer(player); // Invulnerability at connection and portal travel
 
-        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        YamlConfiguration data = UsersData.getOrCreate(player);
 
         if (data.getString("nick") != null) {
             player.displayName(Component.text(data.getString("nick")));
         }
 
-        if (player.hasPlayedBefore()) return;
+        if (player.hasPlayedBefore())
+            return;
 
         List<String> commands = LaBoulangerieCore.PLUGIN.getConfig().getStringList("first-join-commands");
-        if (commands == null) return;
+        if (commands == null)
+            return;
 
         commands.stream().forEach(cmd -> {
             Bukkit.getServer().getCommandMap().dispatch(Bukkit.getServer().getConsoleSender(),
@@ -86,7 +88,7 @@ public class MiscListener implements Listener {
     @EventHandler
     public void onJoinResourcePack(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        YamlConfiguration data = UsersData.getOrCreate(player);
         data.set("last-ip-address", player.getAddress().getHostString());
         try {
             UsersData.save(player, data);
@@ -110,7 +112,8 @@ public class MiscListener implements Listener {
     }
 
     private void vegetableizePlayer(Player player) {
-        if (player.getGameMode() != GameMode.SURVIVAL) return;
+        if (player.getGameMode() != GameMode.SURVIVAL)
+            return;
         player.setInvulnerable(true);
         player.setCollidable(false);
         player.addPotionEffect(blindnessEffect);
@@ -160,7 +163,8 @@ public class MiscListener implements Listener {
 
     private boolean isCardinalMove(Location loc1, Location loc2) {
         Vector vec = loc1.toVector().subtract(loc2.toVector());
-        if (vec.equals(new Vector(0, 0, 0))) return true;
+        if (vec.equals(new Vector(0, 0, 0)))
+            return true;
         return (vec.getX() != 0 && vec.getY() == 0 && vec.getZ() == 0)
                 || (vec.getX() == 0 && vec.getY() != 0 && vec.getZ() == 0)
                 || (vec.getX() == 0 && vec.getY() == 0 && vec.getZ() != 0);
@@ -168,7 +172,8 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onCrystalExplode(EntityDamageByEntityEvent event) {
-        if (event.getDamager().getType() != EntityType.ENDER_CRYSTAL) return;
+        if (event.getDamager().getType() != EntityType.ENDER_CRYSTAL)
+            return;
 
         event.setDamage(event.getDamage()
                 * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage") / 100));
@@ -176,7 +181,8 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onBlockExplode(EntityDamageByBlockEvent event) {
-        if (!event.getCause().equals(DamageCause.BLOCK_EXPLOSION)) return;
+        if (!event.getCause().equals(DamageCause.BLOCK_EXPLOSION))
+            return;
 
         event.setDamage(event.getDamage()
                 * (1 - LaBoulangerieCore.PLUGIN.getConfig().getDouble("crystal-nerf-percentage") / 100));
@@ -184,7 +190,8 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onPlaceCrystal(EntityPlaceEvent event) {
-        if (event.getEntityType() != EntityType.ENDER_CRYSTAL) return;
+        if (event.getEntityType() != EntityType.ENDER_CRYSTAL)
+            return;
 
         if (!crystalDelay.containsKey(event.getPlayer().getUniqueId())) {
             crystalDelay.put(event.getPlayer().getUniqueId(), new Date());

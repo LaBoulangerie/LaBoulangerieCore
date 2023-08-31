@@ -27,8 +27,9 @@ public class PlayerNameTag {
         createNameTag();
         updateText();
 
-        YamlConfiguration playerData = UsersData.get(owner).orElseGet(() -> UsersData.createUserData(owner));
-        if (playerData.getBoolean("show-own-name-tag", false)) addViewer(owner);
+        YamlConfiguration playerData = UsersData.getOrCreate(owner);
+        if (playerData.getBoolean("show-own-name-tag", false))
+            addViewer(owner);
     }
 
     public Player getOwner() {
@@ -40,7 +41,8 @@ public class PlayerNameTag {
     }
 
     public void addViewer(Player viewer) {
-        if (viewers.contains(viewer)) return;
+        if (viewers.contains(viewer))
+            return;
         sendEntities(viewer);
         viewers.add(viewer);
     }
@@ -52,7 +54,8 @@ public class PlayerNameTag {
 
     private void createNameTag() {
         entity = new NameTagEntity(player.getLocation(), NameTagManager.nextId(), player.getEntityId());
-        for (Player viewer : viewers) entity.spawn(viewer);
+        for (Player viewer : viewers)
+            entity.spawn(viewer);
     }
 
     private void sendEntities(Player viewer) {
@@ -60,7 +63,8 @@ public class PlayerNameTag {
     }
 
     /**
-     * Send metadata of the different entities composing the name tag to the viewers (other players)
+     * Send metadata of the different entities composing the name tag to the viewers
+     * (other players)
      * 
      * @param isVisible
      */
@@ -68,19 +72,21 @@ public class PlayerNameTag {
         entity.setCrouching(player.isSneaking());
         entity.setVisible(!player.isInvisible());
 
-        if (!entity.shouldBeDisplayed()) return;
+        if (!entity.shouldBeDisplayed())
+            return;
         entity.sendMetadata(viewers.toArray(new Player[viewers.size()]));
     }
 
     public void updateText() {
         Component component = NameTagManager.rawNameTags.stream()
-            .map(line -> renderer.getPapiMiniMessage(player).deserialize(line))
-            .filter(line -> !PlainTextComponentSerializer.plainText().serialize(line).trim().equals(""))
-            .reduce((arg0, arg1) -> arg0.appendNewline().append(arg1)).get();
+                .map(line -> renderer.getPapiMiniMessage(player).deserialize(line))
+                .filter(line -> !PlainTextComponentSerializer.plainText().serialize(line).trim().equals(""))
+                .reduce((arg0, arg1) -> arg0.appendNewline().append(arg1)).get();
 
         entity.setText(component.compact());
 
-        if (!entity.shouldBeDisplayed()) return;
+        if (!entity.shouldBeDisplayed())
+            return;
 
         entity.sendMetadata(viewers.toArray(new Player[viewers.size()]));
     }
@@ -88,15 +94,18 @@ public class PlayerNameTag {
     public void destroy() {
         entity.destroy(viewers.toArray(new Player[viewers.size()]));
         for (Player viewer : viewers) {
-            if (viewer == player) continue;
+            if (viewer == player)
+                continue;
             PlayerNameTag viewerNameTag = PlayerNameTag.get(viewer);
-            if (viewerNameTag != null) viewerNameTag.removeViewer(player);
+            if (viewerNameTag != null)
+                viewerNameTag.removeViewer(player);
         }
     }
 
     public static PlayerNameTag get(Player player) {
         for (PlayerNameTag p : nameTags)
-            if (p.player.getUniqueId().equals(player.getUniqueId())) return (p);
+            if (p.player.getUniqueId().equals(player.getUniqueId()))
+                return (p);
         return (null);
     }
 }

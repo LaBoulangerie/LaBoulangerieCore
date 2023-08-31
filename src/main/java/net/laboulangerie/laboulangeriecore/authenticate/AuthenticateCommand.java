@@ -104,7 +104,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
         item.lore(lore);
 
         try {
-            YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+            YamlConfiguration data = UsersData.getOrCreate(player);
             data.set("authentications-count", data.getInt("authentications-count", 0) + 1);
             UsersData.save(player, data);
         } catch (IOException e) {

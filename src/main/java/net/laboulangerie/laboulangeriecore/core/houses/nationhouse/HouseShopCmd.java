@@ -28,8 +28,7 @@ public class HouseShopCmd implements CommandExecutor {
         Player player = (Player) sender;
         if (args.length == 0) {
             HouseShop.displayShop(player, (short) 0);
-            YamlConfiguration data =
-                    UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+            YamlConfiguration data = UsersData.getOrCreate((Player) sender);
             data.set("houseshop-uses", data.get("houseshop-uses", 0));
             return true;
         }
@@ -60,8 +59,7 @@ public class HouseShopCmd implements CommandExecutor {
 
             player.sendMessage("§aVotre maison de nation a été vendue.");
             house.getMembers().clear();
-            YamlConfiguration data =
-                    UsersData.get((Player) sender).orElseGet(() -> UsersData.createUserData((Player) sender));
+            YamlConfiguration data = UsersData.getOrCreate((Player) sender);
             data.set("houses-sold", data.get("houses-sold", 0));
             return true;
         }

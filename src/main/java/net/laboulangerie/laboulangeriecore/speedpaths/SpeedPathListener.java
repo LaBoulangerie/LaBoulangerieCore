@@ -39,7 +39,7 @@ public class SpeedPathListener implements Listener {
             return;
         }
 
-        YamlConfiguration playerData = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        YamlConfiguration playerData = UsersData.getOrCreate(player);
         if (!playerData.getBoolean("enable-speed-path", true))
             return;
 

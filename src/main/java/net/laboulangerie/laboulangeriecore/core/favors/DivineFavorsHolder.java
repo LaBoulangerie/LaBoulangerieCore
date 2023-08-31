@@ -16,7 +16,7 @@ public class DivineFavorsHolder {
      * @return
      */
     public static double getDivineFavorsAmount(OfflinePlayer player) {
-        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        YamlConfiguration data = UsersData.getOrCreate(player);
         return data.getDouble("divine-favors", 0);
     }
 
@@ -27,7 +27,7 @@ public class DivineFavorsHolder {
      * @param amount
      */
     public static void giveDivineFavors(OfflinePlayer player, double amount) {
-        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        YamlConfiguration data = UsersData.getOrCreate(player);
         data.set("divine-favors", data.getDouble("divine-favors", 0) + amount);
         try {
             UsersData.save(player, data);
@@ -46,7 +46,7 @@ public class DivineFavorsHolder {
      * @return false if the player doesn't have enough favors, true otherwise
      */
     public static boolean withdrawDivineFavors(OfflinePlayer player, double amount) {
-        YamlConfiguration data = UsersData.get(player).orElseGet(() -> UsersData.createUserData(player));
+        YamlConfiguration data = UsersData.getOrCreate(player);
         if (data.getDouble("divine-favors", 0) >= amount) {
             data.set("divine-favors", data.getDouble("divine-favors") - amount);
             try {
