@@ -25,6 +25,7 @@ import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.commands.SeenCmd;
 import net.laboulangerie.laboulangeriecore.commands.SpawnCmd;
+import net.laboulangerie.laboulangeriecore.commands.SpeedCommand;
 import net.laboulangerie.laboulangeriecore.core.ComponentRenderer;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.core.end.DragonsListener;
@@ -138,6 +139,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("spawn").setExecutor(new SpawnCmd());
         getCommand("seen").setExecutor(new SeenCmd());
         getCommand("event").setExecutor(new EventCmd());
+        getCommand("speed").setExecutor(new SpeedCommand());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("youtube").setExecutor(new LinkCommands());

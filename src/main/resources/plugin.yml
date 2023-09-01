@@ -70,6 +70,9 @@ commands:
         description: Main command for the event assistant
         permission: laboulangeriecore.eventassistant
         usage: /event [name] <start|stop|nextStep|run|goTo|status> ([stepName])
+    speed:
+        description: Toggle speed paths
+        usage: /speed
 permissions:
     laboulangeriecore.*:
         default: op
