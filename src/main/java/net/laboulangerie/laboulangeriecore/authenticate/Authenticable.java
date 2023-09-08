@@ -19,19 +19,21 @@ public class Authenticable {
     }
 
     public boolean isAuthenticated() {
-        return item.getItemMeta().getPersistentDataContainer()
+        return item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer()
                 .get(new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"), PersistentDataType.STRING) != null;
     }
 
     /**
-     * If the value is present but invalid for whatever reason, it will return AuthorityType.NATION
+     * If the value is present but invalid for whatever reason, it will return AuthorityType.INVALID
      */
     public AuthorityType getAuthorityType() {
         if (!isAuthenticated()) throw new Error("The item isn't authenticated, can't retrieve authority type!");
 
         String value = getValue();
         return value.startsWith("p") ? AuthorityType.PLAYER
-                : value.startsWith("t") ? AuthorityType.TOWN : AuthorityType.NATION;
+                : value.startsWith("t") ? AuthorityType.TOWN
+                : value.startsWith("n") ? AuthorityType.NATION
+                : AuthorityType.INVALID;
     }
 
     /**

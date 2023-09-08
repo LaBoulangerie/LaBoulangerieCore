@@ -1,7 +1,10 @@
 package net.laboulangerie.laboulangeriecore.authenticate;
 
 public enum AuthorityType {
-    PLAYER("p", "joueur"), TOWN("t", "ville"), NATION("n", "nation");
+    PLAYER("p", "joueur"),
+    TOWN("t", "ville"),
+    NATION("n", "nation"),
+    INVALID(null, null);
 
     private String prefix;
     private String suffix;

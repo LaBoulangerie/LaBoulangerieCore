@@ -16,6 +16,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
+import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateListener;
 import net.laboulangerie.laboulangeriecore.betonquest.HasHouseCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.HousesStockCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.KingCondition;
@@ -241,7 +242,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new TabListener(), new NameTagListener(), new ElytraGenRemover(), new SpeedPathListener(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
-                new TradeOverflowListener());
+                new TradeOverflowListener(), new AuthenticateListener());
 
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
