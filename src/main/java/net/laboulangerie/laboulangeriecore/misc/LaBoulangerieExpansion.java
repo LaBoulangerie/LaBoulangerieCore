@@ -101,17 +101,19 @@ public class LaBoulangerieExpansion extends PlaceholderExpansion {
 
         if (params.startsWith("eastereggs")) {
             Optional<YamlConfiguration> data = UsersData.get(player);
-            if (data.isEmpty()) return null;
+            if (data.isEmpty())
+                return null;
 
             if (params.endsWith("worldguard")) {
                 RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
                 RegionQuery query = container.createQuery();
                 ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(player.getLocation()));
-                if (!set.testState(WorldGuardPlugin.inst().wrapPlayer(player), Flags.INVINCIBILITY)) return "";
+                if (!set.testState(WorldGuardPlugin.inst().wrapPlayer(player), Flags.INVINCIBILITY))
+                    return "";
             }
 
             int count = data.get().getList("eggs", new ArrayList<>()).size();
-            return count + "<font:bread_dough:icons>!</font>";
+            return count + "<papi:img_easter_egg>";
         }
         return null;
     }
