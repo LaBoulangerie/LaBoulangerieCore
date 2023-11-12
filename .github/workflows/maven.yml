@@ -43,11 +43,11 @@ jobs:
           name: laboulangeriecore
       - name: Clone Plugins Project
         run: |
-          git config --global user.email "$ci@laboulangerie.net"
-          git config --global user.name "ci"
-          git clone https://ci:${{ secrets.GH_TOKEN }}@git.laboulangerie.net/ci/plugins.git
-          cp [!original-]**.jar plugins/
-          cd plugins/
+          git config user.name "octocroissant[bot]"
+          git config user.email 149737708+octocroissant[bot]@users.noreply.github.com
+          git clone https://ci:${{ secrets.PAT_TOKEN }}@github.com/LaBoulangerie/Server.git
+          cp [!original-]**.jar Server/plugins/
+          cd Server
           git add .
-          git commit -m "workflow $GITHUB_RUN_ID from $GITHUB_REPOSITORY"
-          git push https://ci:${{ secrets.GH_TOKEN }}@git.laboulangerie.net/ci/plugins.git HEAD:master
+          git commit -m "Update artifact from $GITHUB_REPOSITORY"
+          git push
