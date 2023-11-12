@@ -113,7 +113,7 @@ public class LaBoulangerieExpansion extends PlaceholderExpansion {
             }
 
             int count = data.get().getList("eggs", new ArrayList<>()).size();
-            return count + "<papi:img_easter_egg>";
+            return count + "%img_easter_egg%";
         }
         return null;
     }
