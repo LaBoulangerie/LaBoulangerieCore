@@ -72,7 +72,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage("§4Pour authentifier un objet en tant que ville, vous devez en être le maire !");
                     return true;
                 }
-                loreText = Authenticable.parseLore(town.getName(), AuthorityType.TOWN);
+                loreText = Authenticable.parseLore(town.getName().replace('_', ' '), AuthorityType.TOWN);
                 authorityId = AuthorityType.TOWN.getPrefix() + town.getUUID().toString();
                 break;
             case "nation":
@@ -86,7 +86,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage("§4Pour authentifier un objet en tant que nation, vous devez en être le roi !");
                     return true;
                 }
-                loreText = Authenticable.parseLore(nation.getName(), AuthorityType.NATION);
+                loreText = Authenticable.parseLore(nation.getName().replace('_', ' '), AuthorityType.NATION);
                 authorityId = AuthorityType.NATION.getPrefix() + nation.getUUID().toString();
             case "player":
             default:
