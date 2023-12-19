@@ -1,54 +1,75 @@
 package net.laboulangerie.laboulangeriecore.authenticate;
 
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
+
+import com.destroystokyo.paper.event.inventory.PrepareResultEvent;
+
+import io.papermc.paper.event.player.PlayerLoomPatternSelectEvent;
+import io.papermc.paper.event.player.PlayerStonecutterRecipeSelectEvent;
 
 public class AuthenticateListener implements Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    private void onInventoryClickWithAuthenticate(InventoryClickEvent event) {
-        Inventory inventory = event.getInventory();
-
-        int resultSlot = inventory.getSize() - 1;
-        switch (inventory.getType()) {
-            case WORKBENCH:
-            case CRAFTING:
-                resultSlot = 0;
-                break;
-            case CARTOGRAPHY:
-            case ENCHANTING:
-            case ANVIL:
-                break;
-            default:
-                return;
-        }
-
-        if (!containsAuthenticate(inventory)
-                || !isAuthenticated(event.getCurrentItem()))
+    // Anvil, Grindstone, Smithing
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onPrepareResult(PrepareResultEvent event) {
+        ItemStack[] items = event.getInventory().getContents();
+        if (containsAuthenticated(items)) {
+            event.setResult(null);
             return;
-
-        inventory.setItem(resultSlot, new ItemStack(Material.AIR));
+        }
     }
 
-    private boolean containsAuthenticate(Inventory inventory) {
-        ItemStack[] items = inventory.getContents();
-        boolean containsAuthenticated = false;
+    // Crafting table
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onCraftItem(CraftItemEvent event) {
+        ItemStack[] matrix = event.getInventory().getMatrix();
+        if (containsAuthenticated(matrix)) {
+            event.setCancelled(true);
+            return;
+        }
+    }
 
-        for (int i = 0; i < items.length; i++) {
-            if (isAuthenticated(items[i])) {
-                containsAuthenticated = true;
-                break;
+    // Loom
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onLoomPatternSelect(PlayerLoomPatternSelectEvent event) {
+        ItemStack[] items = event.getLoomInventory().getContents();
+        if (containsAuthenticated(items)) {
+            event.setCancelled(true);
+            return;
+        }
+    }
+
+    // Stonecutter
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onStonecutterSelect(PlayerStonecutterRecipeSelectEvent event) {
+        ItemStack[] items = event.getStonecutterInventory().getContents();
+        if (containsAuthenticated(items)) {
+            event.setCancelled(true);
+            return;
+        }
+    }
+
+    // Enchanting table
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onEnchantItem(EnchantItemEvent event) {
+        ItemStack[] items = event.getInventory().getContents();
+        if (containsAuthenticated(items)) {
+            event.setCancelled(true);
+            return;
+        }
+    }
+
+    private boolean containsAuthenticated(ItemStack[] items) {
+        for (ItemStack item : items) {
+            if (new Authenticable(item).isAuthenticated()) {
+                return true;
             }
         }
-        return containsAuthenticated;
-    }
-
-    private boolean isAuthenticated(ItemStack item) {
-        return item != null && new Authenticable(item).isAuthenticated();
+        return false;
     }
 }
