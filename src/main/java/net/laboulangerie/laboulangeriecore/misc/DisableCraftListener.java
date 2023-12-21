@@ -17,7 +17,6 @@ public class DisableCraftListener implements Listener {
     private void onCraftItem(CraftItemEvent event) {
         List<Material> disabledItems = getDisabledItems();
         Material resultMaterial = event.getRecipe().getResult().getType();
-        System.out.println(resultMaterial);
         if (disabledItems.contains(resultMaterial)) {
             event.setCancelled(true);
             return;
