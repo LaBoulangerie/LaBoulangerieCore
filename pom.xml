@@ -53,7 +53,7 @@
             <url>https://betonquest.org/nexus/repository/betonquest/</url>
         </repository>
         <repository>
-            <id>quickshop-repo</id>
+            <id>codemc</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <repository>
@@ -110,10 +110,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.maxgamer</groupId>
-            <artifactId>QuickShop</artifactId>
-            <version>5.1.2.5</version>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-bukkit</artifactId>
+            <version>5.2.0.6</version>
             <scope>provided</scope>
+            <classifier>shaded</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>simplereloadlib</artifactId>
+            <version>1.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.github.LaBoulangerie</groupId>

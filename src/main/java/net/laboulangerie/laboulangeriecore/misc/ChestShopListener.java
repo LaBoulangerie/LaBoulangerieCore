@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,10 +14,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.gestern.gringotts.currency.Denomination;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
-import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.api.shop.ShopType;
+
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.obj.QUser;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopType;
 
 import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
@@ -35,16 +35,23 @@ public class ChestShopListener implements Listener {
         Shop shop = event.getShop();
 
         if (shop.getShopType() == ShopType.BUYING) {
-            event.setCancelled(true);
+            // Selling only
             return;
         }
-        OfflinePlayer owner = Bukkit.getOfflinePlayer(shop.getOwner());
-        Player purchaser = Bukkit.getPlayer(event.getPurchaser());
+
+        QUser qOwner = shop.getOwner();
+        QUser qPurchaser = event.getPurchaser();
+        if (!qPurchaser.getBukkitPlayer().isPresent()) {
+            event.setCancelled(true, "Purchaser is not a real player");
+            return;
+        }
+
+        Player purchaser = event.getPurchaser().getBukkitPlayer().get();
         Chest chest = (Chest) shop.getLocation().getBlock().getState();
         final double total = event.getTotal();
 
         if ((int) total == 0) {
-            event.setCancelled(true);
+            event.setCancelled(true, "Item is free, no need to place money in shop");
             return;
         }
 
@@ -52,8 +59,8 @@ public class ChestShopListener implements Listener {
 
         // If out of space
         if (isGoingToOverflow(chest.getInventory(), stacks)) {
-            QuickShop.getInstance().text().of(purchaser, "purchase-out-of-space", owner.getName()).send();
-            event.setCancelled(true);
+            QuickShop.getInstance().text().of(purchaser, "purchase-out-of-space", qOwner.getUsername()).send();
+            event.setCancelled(true, "Shop is out of space");
             return;
         }
         // Withdraw purchaser
@@ -89,7 +96,8 @@ public class ChestShopListener implements Listener {
                 count++;
             }
 
-            if (count == 0) continue;
+            if (count == 0)
+                continue;
 
             ItemStack stack = denomination.getKey().type.clone();
             stack.setAmount(count);
@@ -130,7 +138,8 @@ public class ChestShopListener implements Listener {
         }
 
         // If there are less empty slots than new filled slots
-        if (emptySlotsCount < newSlotsCount) return true;
+        if (emptySlotsCount < newSlotsCount)
+            return true;
 
         // Else everything's fine, there are enough empty slots :)
         return false;
