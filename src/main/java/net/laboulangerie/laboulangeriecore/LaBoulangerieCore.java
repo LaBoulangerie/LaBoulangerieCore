@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
@@ -245,7 +246,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
                 new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener());
 
-        if (getServer().getPluginManager().getPlugin("QuickShop") != null)
+        if (getServer().getPluginManager().getPlugin("QuickShop-Hikari") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
 
         listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
