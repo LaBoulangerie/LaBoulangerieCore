@@ -54,6 +54,7 @@ import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
+import net.laboulangerie.laboulangeriecore.misc.DisableCraftListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.MiscListener;
@@ -242,7 +243,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new TabListener(), new NameTagListener(), new ElytraGenRemover(), new SpeedPathListener(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
-                new TradeOverflowListener(), new AuthenticateListener());
+                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener());
 
         if (getServer().getPluginManager().getPlugin("QuickShop") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);

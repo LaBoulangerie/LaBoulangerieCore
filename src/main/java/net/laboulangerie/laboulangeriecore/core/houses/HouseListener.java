@@ -25,9 +25,9 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.EquipmentSlot;
-import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.util.Util;
+
+import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.util.Util;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
@@ -36,13 +36,14 @@ public class HouseListener implements Listener {
 
     public HouseListener() {
         if (Bukkit.getServer().getPluginManager().getPlugin("QuickShop") != null) {
-            quickShop = Optional.of(QuickShop.getInstance());
+            quickShop = Optional.of(QuickShopAPI.getInstance());
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBreakBlock(BlockBreakEvent event) {
-        if (!event.isCancelled()) return;
+        if (!event.isCancelled())
+            return;
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(event.getBlock().getLocation());
 
@@ -55,7 +56,8 @@ public class HouseListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlaceBlock(BlockPlaceEvent event) {
-        if (!event.isCancelled()) return;
+        if (!event.isCancelled())
+            return;
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(event.getBlock().getLocation());
 
@@ -68,10 +70,12 @@ public class HouseListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlaceItemFrame(HangingPlaceEvent event) {
-        if (!event.isCancelled()) return;
+        if (!event.isCancelled())
+            return;
 
         Location loc = event.getEntity().getLocation().toBlockLocation();
-        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of those
+        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of
+                         // those
         loc.setYaw(0);
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(loc);
@@ -85,10 +89,12 @@ public class HouseListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onRemoveItemFrame(HangingBreakByEntityEvent event) {
-        if (!event.isCancelled() || !(event.getRemover() instanceof Player)) return;
+        if (!event.isCancelled() || !(event.getRemover() instanceof Player))
+            return;
 
         Location loc = event.getEntity().getLocation().toBlockLocation();
-        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of those
+        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of
+                         // those
         loc.setYaw(0);
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(loc);
@@ -108,7 +114,8 @@ public class HouseListener implements Listener {
             return;
 
         Location loc = event.getRightClicked().getLocation().toBlockLocation();
-        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of those
+        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of
+                         // those
         loc.setYaw(0);
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(loc);
@@ -130,7 +137,8 @@ public class HouseListener implements Listener {
             return;
 
         Location loc = event.getRightClicked().getLocation().toBlockLocation();
-        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of those
+        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of
+                         // those
         loc.setYaw(0);
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(loc);
@@ -144,10 +152,12 @@ public class HouseListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChangeArmorStand(PlayerArmorStandManipulateEvent event) {
-        if (!event.isCancelled()) return;
+        if (!event.isCancelled())
+            return;
 
         Location loc = event.getRightClicked().getLocation().toBlockLocation();
-        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of those
+        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of
+                         // those
         loc.setYaw(0);
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(loc);
@@ -174,7 +184,8 @@ public class HouseListener implements Listener {
                         || (quickShop.isPresent() && Util.canBeShop(block)))) {
             Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(block.getLocation());
 
-            if (!house.isPresent() || !house.get().hasMember(event.getPlayer().getUniqueId())) return;
+            if (!house.isPresent() || !house.get().hasMember(event.getPlayer().getUniqueId()))
+                return;
 
             if ((block.getType() == Material.LEVER || block.getType().toString().endsWith("_BUTTON")
                     || block.getType().toString().endsWith("PRESSURE_PLATE")
@@ -187,10 +198,11 @@ public class HouseListener implements Listener {
                 event.setCancelled(false);
             return;
         }
-        if (event.useItemInHand() != Event.Result.DENY || event.getMaterial() != Material.ARMOR_STAND) return;
+        if (event.useItemInHand() != Event.Result.DENY || event.getMaterial() != Material.ARMOR_STAND)
+            return;
 
-        Optional<House> house =
-                LaBoulangerieCore.housesManager.getHouseAt(event.getInteractionPoint().toBlockLocation());
+        Optional<House> house = LaBoulangerieCore.housesManager
+                .getHouseAt(event.getInteractionPoint().toBlockLocation());
 
         if (!house.isPresent() || !house.get().hasMember(event.getPlayer().getUniqueId())
                 || !house.get().hasFlag(HouseFlags.CAN_SET_ARMOR_STANDS))
@@ -207,7 +219,8 @@ public class HouseListener implements Listener {
             return;
 
         Location loc = event.getEntity().getLocation().toBlockLocation();
-        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of those
+        loc.setPitch(0); // The entity's position contains decimals and orientation info, we get rid of
+                         // those
         loc.setYaw(0);
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(loc);
@@ -221,11 +234,13 @@ public class HouseListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onOpenInventory(InventoryOpenEvent event) {
-        if (!event.isCancelled() || !(event.getInventory().getHolder() instanceof BlockInventoryHolder)) return;
+        if (!event.isCancelled() || !(event.getInventory().getHolder() instanceof BlockInventoryHolder))
+            return;
 
         Block block = ((BlockInventoryHolder) event.getInventory().getHolder()).getBlock();
 
-        if (quickShop.isEmpty() || !Util.canBeShop(block)) return;
+        if (quickShop.isEmpty() || !Util.canBeShop(block))
+            return;
 
         Optional<House> house = LaBoulangerieCore.housesManager.getHouseAt(block.getLocation());
 

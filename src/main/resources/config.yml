@@ -174,3 +174,8 @@ speed-paths:
         blocks:
             - BARRIER
             - AMETHYST_BLOCK
+
+# Items which are results of crafting recipes
+# that should be disabled
+disabled-crafts:
+    - VEX_ARMOR_TRIM_SMITHING_TEMPLATE

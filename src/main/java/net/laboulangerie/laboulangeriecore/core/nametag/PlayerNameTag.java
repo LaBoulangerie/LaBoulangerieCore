@@ -58,7 +58,7 @@ public class PlayerNameTag {
             entity.spawn(viewer);
     }
 
-    private void sendEntities(Player viewer) {
+    public void sendEntities(Player viewer) {
         entity.spawn(viewer);
     }
 

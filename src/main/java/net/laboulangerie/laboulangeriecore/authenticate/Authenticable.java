@@ -19,7 +19,7 @@ public class Authenticable {
     }
 
     public boolean isAuthenticated() {
-        return item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer()
+        return item != null && item.getItemMeta() != null && item.getItemMeta().getPersistentDataContainer()
                 .get(new NamespacedKey(LaBoulangerieCore.PLUGIN, "authority"), PersistentDataType.STRING) != null;
     }
 

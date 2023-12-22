@@ -53,7 +53,7 @@
             <url>https://betonquest.org/nexus/repository/betonquest/</url>
         </repository>
         <repository>
-            <id>quickshop-repo</id>
+            <id>codemc</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <repository>
@@ -70,19 +70,19 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.palmergames.bukkit.towny</groupId>
             <artifactId>towny</artifactId>
-            <version>0.99.0.0</version>
+            <version>0.100.0.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.3</version>
+            <version>2.11.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -110,10 +110,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.maxgamer</groupId>
-            <artifactId>QuickShop</artifactId>
-            <version>5.1.0.9</version>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-bukkit</artifactId>
+            <version>5.2.0.6</version>
             <scope>provided</scope>
+            <classifier>shaded</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>simplereloadlib</artifactId>
+            <version>1.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.github.LaBoulangerie</groupId>
@@ -123,7 +129,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>5.0.0-SNAPSHOT</version>
+            <version>5.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
