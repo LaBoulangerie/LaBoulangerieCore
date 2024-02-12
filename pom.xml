@@ -118,8 +118,10 @@
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
-            <artifactId>simplereloadlib</artifactId>
-            <version>1.1.2</version>
+            <artifactId>quickshop-common</artifactId>
+            <version>5.2.0.6</version>
+            <scope>provided</scope>
+            <classifier>shaded</classifier>
         </dependency>
         <dependency>
             <groupId>com.github.LaBoulangerie</groupId>
