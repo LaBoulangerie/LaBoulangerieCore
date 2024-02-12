@@ -49,8 +49,8 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>betonquest</id>
-            <url>https://betonquest.org/nexus/repository/betonquest/</url>
+            <id>betonquest-repo</id>
+            <url>https://nexus.betonquest.org/repository/betonquest/</url>
         </repository>
         <repository>
             <id>codemc</id>
