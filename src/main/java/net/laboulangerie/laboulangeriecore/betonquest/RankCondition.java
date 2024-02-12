@@ -19,13 +19,14 @@ public class RankCondition extends Condition {
     @Override
     protected Boolean execute(String playerId) throws QuestRuntimeException {
         Resident resident = TownyUniverse.getInstance().getResident(UUID.fromString(playerId));
-        if (resident == null) return false;
+        if (resident == null)
+            return false;
         try {
             switch (instruction.getPart(1)) {
                 case "nation":
-                    return resident.hasNationRank(instruction.getPart(1));
+                    return resident.hasNationRank(instruction.getPart(2));
                 case "town":
-                    return resident.hasTownRank(instruction.getPart(1));
+                    return resident.hasTownRank(instruction.getPart(2));
                 default:
                     throw new QuestRuntimeException(
                             "Invalid argument: " + instruction.getPart(1) + ", possible arguments: town & nation");
