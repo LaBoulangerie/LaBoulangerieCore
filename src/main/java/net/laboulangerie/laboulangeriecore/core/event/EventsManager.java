@@ -31,9 +31,11 @@ public class EventsManager {
             EventState eventState = new EventState(key);
 
             for (Map<?, ?> step : section.getMapList("steps")) {
+                @SuppressWarnings("unchecked")
                 Map<String, ?> castStep = (Map<String, ?>) step;
-                EventStep eventStep =
-                        new EventStep(key, (String) castStep.get("name"), (ArrayList<String>) castStep.get("actions"));
+                @SuppressWarnings("unchecked")
+                EventStep eventStep = new EventStep(key, (String) castStep.get("name"),
+                        (ArrayList<String>) castStep.get("actions"));
                 eventState.addStep(eventStep);
             }
             events.put(key, eventState);

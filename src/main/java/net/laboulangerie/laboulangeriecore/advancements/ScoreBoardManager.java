@@ -2,6 +2,7 @@ package net.laboulangerie.laboulangeriecore.advancements;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
@@ -17,7 +18,8 @@ public class ScoreBoardManager {
         if (board.getObjective("ability_used_count") != null) {
             objective = board.getObjective("ability_used_count");
         } else {
-            objective = board.registerNewObjective("ability_used_count", "dummy", Component.text("Ability used coint"));
+            objective = board.registerNewObjective("ability_used_count", Criteria.DUMMY,
+                    Component.text("Ability used count"));
         }
         useObjectives(objective, player, board);
     }

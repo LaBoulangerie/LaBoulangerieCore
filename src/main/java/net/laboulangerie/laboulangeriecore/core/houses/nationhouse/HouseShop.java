@@ -34,8 +34,8 @@ import net.laboulangerie.laboulangeriecore.core.houses.House;
 public class HouseShop implements Listener {
     public static void displayShop(Player player, short page) {
         int invSize = 27;
-        Inventory inv =
-                Bukkit.createInventory(null, invSize, Component.text("§2Maisons de nation - page " + (page + 1)));
+        Inventory inv = Bukkit.createInventory(null, invSize,
+                Component.text("§2Maisons de nation - page " + (page + 1)));
         List<UUID> freeHouses = LaBoulangerieCore.nationHouseHolder.getFreeHouses();
 
         for (int i = page * (invSize - 2); i < Math.min(freeHouses.size(), (page + 1) * (invSize - 2)); i++) {
@@ -77,11 +77,13 @@ public class HouseShop implements Listener {
     public void onClick(InventoryClickEvent event) {
         InventoryView view = event.getView();
         String title = PlainTextComponentSerializer.plainText().serialize(view.title());
-        if (!title.contains("Maisons de nation")) return;
+        if (!title.contains("Maisons de nation"))
+            return;
 
         event.setCancelled(true);
 
-        if (event.getClick() != ClickType.LEFT || event.getCurrentItem() == null) return;
+        if (event.getClick() != ClickType.LEFT || event.getCurrentItem() == null)
+            return;
 
         ItemStack item = event.getCurrentItem();
         short page = Short.parseShort(title.split("page ")[1]);
@@ -98,7 +100,8 @@ public class HouseShop implements Listener {
             return;
         }
 
-        if (item.getType() != Material.BRICKS) return;
+        if (item.getType() != Material.BRICKS)
+            return;
 
         double price = 0;
         try {
@@ -130,8 +133,8 @@ public class HouseShop implements Listener {
             return;
         }
 
-        String name =
-                PlainTextComponentSerializer.plainText().serialize(item.getItemMeta().displayName()).split("§6")[1];
+        String name = PlainTextComponentSerializer.plainText().serialize(item.getItemMeta().displayName())
+                .split("§6")[1];
         House house = LaBoulangerieCore.housesManager.getHouseByName(name).get();
 
         LaBoulangerieCore.nationHouseHolder.assignNationHouse(house.getUUID(), nation.getUUID());
@@ -194,7 +197,7 @@ public class HouseShop implements Listener {
 
     @EventHandler
     public void onDeleteNation(DeleteNationEvent event) {
-        if (LaBoulangerieCore.nationHouseHolder.hasHouse(event.getNationKing())) {
+        if (LaBoulangerieCore.nationHouseHolder.hasHouse(event.getLeaderUUID())) {
             LaBoulangerieCore.nationHouseHolder
                     .freeHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNationUUID()));
         }

@@ -68,6 +68,7 @@ public class CoreCommand implements TabExecutor {
             List<Map<?, ?>> confCrystals = LaBoulangerieCore.PLUGIN.getConfig().getMapList("crystals");
 
             for (Map<?, ?> map : confCrystals) {
+                @SuppressWarnings("unchecked")
                 Map<String, Double> crystal = (Map<String, Double>) map;
                 crystalLocs.add(new Location(world, crystal.get("x"), crystal.get("y"), crystal.get("z")));
             }
@@ -136,20 +137,20 @@ public class CoreCommand implements TabExecutor {
             PlayerNameTag tag = PlayerNameTag.get(target);
 
             if (args.length == 2) {
-                sender.sendMessage("Debugging "+target.getName()+"'s nametag");
-                sender.sendMessage("* Number of viewers: §e"+tag.getViewers().size());
+                sender.sendMessage("Debugging " + target.getName() + "'s nametag");
+                sender.sendMessage("* Number of viewers: §e" + tag.getViewers().size());
                 sender.sendMessage("* Viewers:");
                 for (Player p : tag.getViewers()) {
-                    sender.sendMessage("  - §e"+p.getName());
+                    sender.sendMessage("  - §e" + p.getName());
                 }
                 return true;
-            }else {
+            } else {
                 Player secondPlayer = null;
                 switch (args[2].toLowerCase()) {
                     case "hide":
 
                         break;
-                
+
                     default:
                         if (args.length >= 4) {
                             secondPlayer = Bukkit.getPlayer(args[3]);
@@ -157,7 +158,8 @@ public class CoreCommand implements TabExecutor {
                                 sender.sendMessage("§4Player isn't online");
                                 return true;
                             }
-                        }else return false;
+                        } else
+                            return false;
                     case "addViewer":
                         tag.addViewer(secondPlayer);
                         return true;
@@ -179,11 +181,10 @@ public class CoreCommand implements TabExecutor {
         List<String> suggestions = Arrays.asList("");
         if (args.length == 1)
             suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "unnick", "spawnDragon", "nametag");
-        if (args.length == 2 && (
-            args[0].equalsIgnoreCase("nick") ||
-            args[0].equalsIgnoreCase("unnick") ||
-            args[0].equalsIgnoreCase("nametag")
-        )) return null;
+        if (args.length == 2 && (args[0].equalsIgnoreCase("nick") ||
+                args[0].equalsIgnoreCase("unnick") ||
+                args[0].equalsIgnoreCase("nametag")))
+            return null;
         if (args.length == 3 && args[0].equalsIgnoreCase("nametag"))
             suggestions = Arrays.asList("addViewer", "removeViewer", "sendNametag");
 
