@@ -73,6 +73,9 @@ commands:
     speed:
         description: Toggle speed paths
         usage: /speed
+    realname:
+        description: Get the real name of a player
+        usage: /realname <nickname>
 permissions:
     laboulangeriecore.*:
         default: op
