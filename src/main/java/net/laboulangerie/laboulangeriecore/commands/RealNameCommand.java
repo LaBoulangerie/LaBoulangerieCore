@@ -20,11 +20,7 @@ public class RealNameCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias,
             @NotNull String[] args) {
-        if (args.length != 1) {
-            return false;
-        }
-
-        String nick = args[0];
+        String nick = String.join(" ", args);
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             YamlConfiguration userData = UsersData.getOrCreate(player);
