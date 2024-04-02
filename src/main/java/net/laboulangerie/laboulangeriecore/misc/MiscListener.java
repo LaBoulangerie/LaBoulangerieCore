@@ -21,6 +21,7 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityPlaceEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
@@ -36,6 +37,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
@@ -213,5 +215,20 @@ public class MiscListener implements Listener {
         } else {
             crystalDelay.replace(event.getPlayer().getUniqueId(), new Date());
         }
+    }
+
+    // Obfuscate killer name in player death message
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        // PvP kill only
+        if (!(event.getEntity().getKiller() instanceof Player))
+            return;
+
+        String killerName = event.getEntity().getKiller().getName();
+        TextReplacementConfig killerReplacement = TextReplacementConfig.builder().matchLiteral(killerName)
+                .replacement("???").build();
+
+        Component newDeathMessage = event.deathMessage().replaceText(killerReplacement);
+        event.deathMessage(newDeathMessage);
     }
 }
