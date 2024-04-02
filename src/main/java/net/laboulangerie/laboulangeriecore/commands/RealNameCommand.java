@@ -31,7 +31,7 @@ public class RealNameCommand implements CommandExecutor, TabCompleter {
             String playerNick = userData.getString("nick");
 
             if (playerNick != null && playerNick.equals(nick)) {
-                sender.sendMessage(player.getName());
+                sender.sendMessage(nick + " est joué par " + player.getName());
                 return true;
             }
         }
