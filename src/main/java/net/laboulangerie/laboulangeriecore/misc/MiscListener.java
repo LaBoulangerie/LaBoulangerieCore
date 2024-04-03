@@ -226,7 +226,8 @@ public class MiscListener implements Listener {
             return;
 
         String killerName = event.getEntity().getKiller().getName();
-        Component obfuscatedKiller = Component.text("??????").decoration(TextDecoration.OBFUSCATED, true);
+        Component obfuscatedKiller = Component.text("??????").decoration(TextDecoration.OBFUSCATED, true)
+                .clickEvent(null);
         TextReplacementConfig killerReplacement = TextReplacementConfig.builder().matchLiteral(killerName)
                 .replacement(obfuscatedKiller).build();
 
