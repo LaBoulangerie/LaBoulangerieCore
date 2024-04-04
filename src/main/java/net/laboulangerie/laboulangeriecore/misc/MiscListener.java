@@ -38,6 +38,7 @@ import com.comphenix.protocol.events.PacketEvent;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
@@ -227,7 +228,7 @@ public class MiscListener implements Listener {
 
         String killerName = event.getEntity().getKiller().getName();
         Component obfuscatedKiller = Component.text("??????").decoration(TextDecoration.OBFUSCATED, true)
-                .clickEvent(null);
+                .clickEvent(ClickEvent.suggestCommand("mystère..."));
         TextReplacementConfig killerReplacement = TextReplacementConfig.builder().matchLiteral(killerName)
                 .replacement(obfuscatedKiller).build();
 
