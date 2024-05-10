@@ -76,6 +76,9 @@ commands:
     realname:
         description: Get the real name of a player
         usage: /realname <nickname>
+    hat:
+        description: Put something on your head
+        usage: /hat
 permissions:
     laboulangeriecore.*:
         default: op
