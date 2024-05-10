@@ -24,6 +24,7 @@ import net.laboulangerie.laboulangeriecore.betonquest.KingCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.MayorCondition;
 import net.laboulangerie.laboulangeriecore.betonquest.RankCondition;
 import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
+import net.laboulangerie.laboulangeriecore.commands.HatCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
 import net.laboulangerie.laboulangeriecore.commands.RealNameCommand;
 import net.laboulangerie.laboulangeriecore.commands.SeenCmd;
@@ -145,6 +146,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("event").setExecutor(new EventCmd());
         getCommand("speed").setExecutor(new SpeedCommand());
         getCommand("realname").setExecutor(new RealNameCommand());
+        getCommand("hat").setExecutor(new HatCommand());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("youtube").setExecutor(new LinkCommands());
