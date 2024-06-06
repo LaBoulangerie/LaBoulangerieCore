@@ -47,7 +47,7 @@ public class ChestShopListener implements Listener {
         }
 
         Player purchaser = event.getPurchaser().getBukkitPlayer().get();
-        Chest chest = (Chest) shop.getLocation().getBlock().getState();
+        org.bukkit.block.Container container = (org.bukkit.block.Container) shop.getLocation().getBlock().getState();
         final double total = event.getTotal();
 
         if ((int) total == 0) {
@@ -58,7 +58,7 @@ public class ChestShopListener implements Listener {
         List<ItemStack> stacks = getItemsForPrice((int) total);
 
         // If out of space
-        if (isGoingToOverflow(chest.getInventory(), stacks)) {
+        if (isGoingToOverflow(container.getInventory(), stacks)) {
             QuickShop.getInstance().text().of(purchaser, "purchase-out-of-space", qOwner.getUsername()).send();
             event.setCancelled(true, "Shop is out of space");
             return;
@@ -72,9 +72,9 @@ public class ChestShopListener implements Listener {
             return;
         }
 
-        // Add the corresponding items to the chest
+        // Add the corresponding items to the container
         for (ItemStack stack : stacks) {
-            chest.getInventory().addItem(stack);
+            container.getInventory().addItem(stack);
         }
 
         // ""Cancel"" the transaction to the owner's inventory by setting total to 0
