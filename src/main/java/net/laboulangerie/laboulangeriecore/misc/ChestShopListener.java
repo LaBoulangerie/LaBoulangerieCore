@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.bukkit.block.Chest;
+import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -47,7 +47,7 @@ public class ChestShopListener implements Listener {
         }
 
         Player purchaser = event.getPurchaser().getBukkitPlayer().get();
-        org.bukkit.block.Container container = (org.bukkit.block.Container) shop.getLocation().getBlock().getState();
+        Container container = (Container) shop.getLocation().getBlock().getState();
         final double total = event.getTotal();
 
         if ((int) total == 0) {
