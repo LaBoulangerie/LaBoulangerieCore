@@ -23,7 +23,6 @@ import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.core.end.Dragon;
-import net.laboulangerie.laboulangeriecore.core.nametag.PlayerNameTag;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
@@ -35,13 +34,10 @@ public class CoreCommand implements TabExecutor {
         if (Arrays.asList("reload", "rl").contains(args[0].toString())) {
             sender.sendMessage("§bReloading config...");
             LaBoulangerieCore.PLUGIN.reloadConfig();
-            UsersData.init(); // Clean cache & ensure directory exists
+            UsersData.init(); // Cleans cache & ensures directory exists
             sender.sendMessage("§bReloading speed paths...");
             LaBoulangerieCore.PLUGIN.getSpeedPathManager().clear();
             LaBoulangerieCore.PLUGIN.getSpeedPathManager().load();
-            sender.sendMessage("§bReloading name tags...");
-            LaBoulangerieCore.PLUGIN.getNameTagManager().disable();
-            LaBoulangerieCore.PLUGIN.getNameTagManager().enable();
             sender.sendMessage("§aReload complete");
             return true;
         }
@@ -126,51 +122,6 @@ public class CoreCommand implements TabExecutor {
             }
             sender.sendMessage("§aNickname reset successfully!");
             return true;
-        }
-
-        if (args[0].equalsIgnoreCase("nametag") && args.length > 1) {
-            Player target = Bukkit.getPlayer(args[1]);
-            if (target == null || !target.isOnline()) {
-                sender.sendMessage("§4Player is offline!");
-                return true;
-            }
-            PlayerNameTag tag = PlayerNameTag.get(target);
-
-            if (args.length == 2) {
-                sender.sendMessage("Debugging " + target.getName() + "'s nametag");
-                sender.sendMessage("* Number of viewers: §e" + tag.getViewers().size());
-                sender.sendMessage("* Viewers:");
-                for (Player p : tag.getViewers()) {
-                    sender.sendMessage("  - §e" + p.getName());
-                }
-                return true;
-            } else {
-                Player secondPlayer = null;
-                switch (args[2].toLowerCase()) {
-                    case "hide":
-
-                        break;
-
-                    default:
-                        if (args.length >= 4) {
-                            secondPlayer = Bukkit.getPlayer(args[3]);
-                            if (secondPlayer == null || !secondPlayer.isOnline()) {
-                                sender.sendMessage("§4Player isn't online");
-                                return true;
-                            }
-                        } else
-                            return false;
-                    case "addViewer":
-                        tag.addViewer(secondPlayer);
-                        return true;
-                    case "removeViewer":
-                        tag.removeViewer(secondPlayer);
-                        return true;
-                    case "sendNametag":
-                        tag.sendEntities(secondPlayer);
-                        return true;
-                }
-            }
         }
         return false;
     }

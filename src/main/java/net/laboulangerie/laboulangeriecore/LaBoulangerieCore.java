@@ -53,8 +53,6 @@ import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShop;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHouseHolder;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHousesCmd;
-import net.laboulangerie.laboulangeriecore.core.nametag.NameTagListener;
-import net.laboulangerie.laboulangeriecore.core.nametag.NameTagManager;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
@@ -78,7 +76,6 @@ public class LaBoulangerieCore extends JavaPlugin {
     public static NationHouseHolder nationHouseHolder;
 
     private ComponentRenderer componentRenderer;
-    private NameTagManager nameTagManager;
     private SpeedPathManager speedPathManager;
     private MiscListener miscListener = new MiscListener();
 
@@ -115,8 +112,6 @@ public class LaBoulangerieCore extends JavaPlugin {
         }
 
         componentRenderer = new ComponentRenderer();
-        nameTagManager = new NameTagManager();
-        // nameTagManager.enable();
 
         speedPathManager = new SpeedPathManager();
         speedPathManager.load();
@@ -244,10 +239,6 @@ public class LaBoulangerieCore extends JavaPlugin {
         return componentRenderer;
     }
 
-    public NameTagManager getNameTagManager() {
-        return nameTagManager;
-    }
-
     public SpeedPathManager getSpeedPathManager() {
         return speedPathManager;
     }
@@ -266,13 +257,12 @@ public class LaBoulangerieCore extends JavaPlugin {
             getLogger().severe("Failed to save nation houses while disabling");
             e.printStackTrace();
         }
-        nameTagManager.disable();
         getLogger().info("Disabled");
     }
 
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
-                new TabListener(), new NameTagListener(), new ElytraGenRemover(), new SpeedPathListener(),
+                new TabListener(), new ElytraGenRemover(), new SpeedPathListener(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
                 new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener());
