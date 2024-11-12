@@ -1,16 +1,14 @@
 package net.laboulangerie.laboulangeriecore.core.event;
 
-import java.io.File;
 import java.util.ArrayList;
-
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.config.Config;
+import org.betonquest.betonquest.exceptions.ObjectNotFoundException;
+import org.betonquest.betonquest.id.EventID;
+import org.betonquest.betonquest.utils.PlayerConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import pl.betoncraft.betonquest.BetonQuest;
-import pl.betoncraft.betonquest.config.ConfigPackage;
-import pl.betoncraft.betonquest.exceptions.ObjectNotFoundException;
-import pl.betoncraft.betonquest.id.EventID;
 
 public class EventStep {
     private String parentEvent;
@@ -42,10 +40,10 @@ public class EventStep {
                     String identifier = params[1].split("\\.")[0];
                     String packageDir = identifier.replaceAll("-", "/");
                     try {
-                        BetonQuest.event(executor.getUniqueId().toString(),
-                                new EventID(new ConfigPackage(
-                                        new File(BetonQuest.getInstance().getDataFolder(), packageDir), identifier),
-                                        params[1]));
+                        BetonQuest.event(
+                            PlayerConverter.getID(executor),
+                            new EventID(Config.getPackages().get(packageDir), identifier)
+                        );
                     } catch (ObjectNotFoundException e) {
                         e.printStackTrace();
                     }

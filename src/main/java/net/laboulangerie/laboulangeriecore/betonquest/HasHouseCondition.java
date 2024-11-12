@@ -1,25 +1,16 @@
 package net.laboulangerie.laboulangeriecore.betonquest;
 
-import java.util.UUID;
-
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Resident;
-
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
-public class HasHouseCondition extends Condition {
-    @SuppressWarnings("deprecation")
-    public HasHouseCondition(Instruction instruction) {
-        super(instruction);
-    }
-
-    @Override
-    protected Boolean execute(String playerId) throws QuestRuntimeException {
-        Resident resident = TownyUniverse.getInstance().getResidentOpt(UUID.fromString(playerId)).orElse(null);
+public class HasHouseCondition implements PlayerCondition {
+    public boolean check(Profile profile) throws QuestRuntimeException {
+        Resident resident = TownyUniverse.getInstance().getResidentOpt(profile.getPlayerUUID()).orElse(null);
         if (resident == null) return false;
         Nation nation = resident.getNationOrNull();
         if (nation == null) return false;

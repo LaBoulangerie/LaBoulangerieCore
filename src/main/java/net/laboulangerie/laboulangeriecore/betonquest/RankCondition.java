@@ -1,39 +1,37 @@
 package net.laboulangerie.laboulangeriecore.betonquest;
 
-import java.util.UUID;
-
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Resident;
 
-import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.exceptions.InstructionParseException;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-
-public class RankCondition extends Condition {
-    @SuppressWarnings("deprecation")
-    public RankCondition(Instruction instruction) {
-        super(instruction);
+public class RankCondition implements PlayerCondition {
+    private String entity;
+    private String rank;
+    /**
+     * Checks if the player has the specified rank in the specified entity
+     * @param entity nation or town
+     * @param rank assistant, co-maire...
+     */
+    public RankCondition(String entity, String rank) {
+        this.entity = entity;
+        this.rank = rank;
     }
 
     @Override
-    protected Boolean execute(String playerId) throws QuestRuntimeException {
-        Resident resident = TownyUniverse.getInstance().getResident(UUID.fromString(playerId));
+    public boolean check(Profile profile) throws QuestRuntimeException {
+        Resident resident = TownyUniverse.getInstance().getResident(profile.getPlayerUUID());
         if (resident == null)
             return false;
-        try {
-            switch (instruction.getPart(1)) {
-                case "nation":
-                    return resident.hasNationRank(instruction.getPart(2));
-                case "town":
-                    return resident.hasTownRank(instruction.getPart(2));
-                default:
-                    throw new QuestRuntimeException(
-                            "Invalid argument: " + instruction.getPart(1) + ", possible arguments: town & nation");
-            }
-        } catch (InstructionParseException e) {
-            e.printStackTrace();
+        switch (entity) {
+            case "nation":
+                return resident.hasNationRank(rank);
+            case "town":
+                return resident.hasTownRank(rank);
+            default:
+                throw new QuestRuntimeException("Invalid argument: "
+                    + entity + ", possible arguments: town & nation");
         }
-        return false;
     }
 }

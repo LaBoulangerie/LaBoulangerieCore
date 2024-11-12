@@ -1,18 +1,13 @@
 package net.laboulangerie.laboulangeriecore.betonquest;
 
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
-import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
 
-public class HousesStockCondition extends Condition {
-    @SuppressWarnings("deprecation")
-    public HousesStockCondition(Instruction instruction) {
-        super(instruction);
-    }
-
+public class HousesStockCondition implements PlayerCondition {
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
+    public boolean check(Profile profile) throws QuestRuntimeException {
         return LaBoulangerieCore.nationHouseHolder.getFreeHouses().size() != 0;
     }
 }

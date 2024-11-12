@@ -5,14 +5,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
+import org.betonquest.betonquest.BetonQuest;
+import org.betonquest.betonquest.Instruction;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
+import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
@@ -67,7 +70,6 @@ import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 import net.milkbowl.vault.economy.Economy;
-import pl.betoncraft.betonquest.BetonQuest;
 
 public class LaBoulangerieCore extends JavaPlugin {
     public static LaBoulangerieCore PLUGIN;
@@ -114,7 +116,7 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         componentRenderer = new ComponentRenderer();
         nameTagManager = new NameTagManager();
-        nameTagManager.enable();
+        // nameTagManager.enable();
 
         speedPathManager = new SpeedPathManager();
         speedPathManager.load();
@@ -155,11 +157,36 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("librahost").setExecutor(new LinkCommands());
 
         if (getServer().getPluginManager().getPlugin("BetonQuest") != null) {
-            BetonQuest.getInstance().registerConditions("towny_is_king", KingCondition.class);
-            BetonQuest.getInstance().registerConditions("towny_is_mayor", MayorCondition.class);
-            BetonQuest.getInstance().registerConditions("nation_houses_has_stocks", HousesStockCondition.class);
-            BetonQuest.getInstance().registerConditions("towny_has_house", HasHouseCondition.class);
-            BetonQuest.getInstance().registerConditions("towny_has_rank", RankCondition.class);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_is_king", new PlayerConditionFactory() {
+                @Override
+                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                    return new KingCondition();
+                }
+            }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_is_mayor", new PlayerConditionFactory() {
+                @Override
+                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                    return new MayorCondition();
+                }
+            }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("nation_houses_has_stocks", new PlayerConditionFactory() {
+                @Override
+                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                    return new HousesStockCondition();
+                }
+            }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_has_house", new PlayerConditionFactory() {
+                @Override
+                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                    return new HasHouseCondition();
+                }
+            }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_has_rank", new PlayerConditionFactory() {
+                @Override
+                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                    return new RankCondition(instruction.getPart(1), instruction.getPart(2));
+                }
+            }, null);
             getLogger().info("Hooked in BetonQuest!");
         }
 

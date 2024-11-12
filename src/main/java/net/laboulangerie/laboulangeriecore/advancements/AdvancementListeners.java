@@ -235,8 +235,8 @@ public class AdvancementListeners implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
-        if (player.getActivePotionEffects().contains(player.getPotionEffect(PotionEffectType.FAST_DIGGING))) {
-            PotionEffect effect = player.getPotionEffect(PotionEffectType.FAST_DIGGING);
+        if (player.getActivePotionEffects().contains(player.getPotionEffect(PotionEffectType.HASTE))) {
+            PotionEffect effect = player.getPotionEffect(PotionEffectType.HASTE);
             if (block.getType() == Material.OBSIDIAN && effect.getAmplifier() >= 2) {
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/pioche_aiguisee_on_obsidian");
             }
