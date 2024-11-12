@@ -23,6 +23,7 @@ import net.kyori.adventure.text.Component;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.core.end.Dragon;
+import net.laboulangerie.laboulangeriecore.core.event.EventsManager;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
 
 public class CoreCommand implements TabExecutor {
@@ -38,6 +39,8 @@ public class CoreCommand implements TabExecutor {
             sender.sendMessage("§bReloading speed paths...");
             LaBoulangerieCore.PLUGIN.getSpeedPathManager().clear();
             LaBoulangerieCore.PLUGIN.getSpeedPathManager().load();
+            sender.sendMessage("§bReloading events assistant...");
+            EventsManager.innit();
             sender.sendMessage("§aReload complete");
             return true;
         }
