@@ -64,7 +64,20 @@ public class Authenticable {
     }
 
     public static String parseLore(String authority, AuthorityType type) {
-        return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore").replaceAll("%authority%", authority)
-                .replaceAll("%type%", type.getSuffix());
+        switch(type.getSuffix) // DATE A REVOIR !!!
+        case "joueur":
+            return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore-player").replaceAll("%authority%", authority)
+                    .replaceAll("%date%", type.getSuffix());
+        case "ville":
+            return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore-land").replaceAll("%authority%", authority)
+                    .replaceAll("%date%", type.getSuffix());
+        case "nation":
+            return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore-nation").replaceAll("%authority%", authority)
+                    .replaceAll("%date%", type.getSuffix());
+        case "entreprise":
+            return LaBoulangerieCore.PLUGIN.getConfig().getString("authenticate.lore-company").replaceAll("%authority%", authority)
+                    .replaceAll("%date%", type.getSuffix());
+        default:
+            break;
     }
 }
