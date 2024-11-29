@@ -1,5 +1,8 @@
 authenticate:
-    lore: "§6Authentifié par %authority% (%type%)"
+    lore-player: "§6Authentifié par %authority%\nLe %date%."
+    lore-land: "§6Authentifié par la ville de %authority%\nLe %date%."
+    lore-nation: "§6Authentifié par la nation de %authority%\nLe %date%."
+    lore-company: "§6Authentifié par l'entreprise %authority%\nLe %date%."
 
 tab:
     # MiniMessage format and PAPI placeholders allowed

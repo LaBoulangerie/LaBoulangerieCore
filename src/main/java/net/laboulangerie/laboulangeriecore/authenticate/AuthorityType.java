@@ -4,6 +4,7 @@ public enum AuthorityType {
     PLAYER("p", "joueur"),
     TOWN("t", "ville"),
     NATION("n", "nation"),
+    COMPANY("c", "entreprise")
     INVALID(null, null);
 
     private String prefix;
