@@ -13,7 +13,8 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class Authenticable {
     private ItemStack item;
-
+    private LandsIntegration api = LandsIntegration.of(this);
+    
     public Authenticable(ItemStack item) {
         this.item = item;
     }

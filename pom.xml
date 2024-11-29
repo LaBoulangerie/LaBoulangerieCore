@@ -139,6 +139,12 @@
             <artifactId>worldguard-bukkit</artifactId>
             <version>7.0.8</version>
             <scope>provided</scope>
+        </dependency> 
+        <dependency>
+            <groupId>com.github.angeschossen</groupId>
+            <artifactId>LandsAPI</artifactId>
+            <version>version</version> <!-- Version à modifier avant déploiement -->
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
