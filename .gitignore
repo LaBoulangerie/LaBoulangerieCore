@@ -1,9 +1,34 @@
-.vscode/
-target/
+# User-specific stuff
+.idea/
+
+*.iml
+*.ipr
+*.iws
 build.bat
-.project
-.classpath
-.settings/org.eclipse.m2e.core.prefs
-.settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.core.resources.prefs
 bin/
+target/
+.gradle/
+build/
+
+# IntelliJ
+out/
+
+# VSCode
+.classpath
+.project
+.settings
+.vscode
+
+# Compiled class file
+*.class
+
+# Package Files #
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Common working directory
+run/
