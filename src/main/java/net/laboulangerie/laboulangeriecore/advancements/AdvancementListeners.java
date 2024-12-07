@@ -188,19 +188,6 @@ public class AdvancementListeners implements Listener {
         Player player = event.getPlayer();
         MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
         if (event.getRightClicked() instanceof Player
-                && player.getInventory().getItemInMainHand().getType() == Material.NETHERITE_AXE
-                && doesPlayerHaveRequiredLevel(mmoPlayer,
-                        LaBoulangerieMmo.talentsRegistry.getTalent("lumberjack").abilitiesArchetypes.get("strip"),
-                        "lumberjack")
-                && !(AdvancementManager.playerHasAdvancement(player, "mmo/lumberjack/strip_a_player"))) {
-            AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/strip_a_player");
-            mmoPlayer.useAbility(
-                    LaBoulangerieMmo.talentsRegistry.getTalent("lumberjack").abilitiesArchetypes.get("strip"),
-                    LaBoulangerieMmo.talentsRegistry.getTalent("lumberjack"));
-            player.sendMessage("Vous venez de Strip " + event.getRightClicked().getName());
-            event.getRightClicked().sendMessage("Vous venez d'être strip par " + player.getName());
-        }
-        if (event.getRightClicked() instanceof Player
                 && player.getInventory().getItemInMainHand().getType() == Material.BONE_MEAL
                 && doesPlayerHaveRequiredLevel(mmoPlayer,
                         LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("better-bonemeal"),
