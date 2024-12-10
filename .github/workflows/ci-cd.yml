@@ -8,12 +8,12 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v4
             - name: JDk 21 setup
               uses: actions/setup-java@v1
               with:
                 java-version: 1.21
-            - uses: actions/cache@v3
+            - uses: actions/cache@v4
               env:
                 cache-name: cache-gradle
               with:
@@ -23,7 +23,7 @@ jobs:
                     .gradle/caches
                 key: ${{ runner.os }}-gradle-${{ env.cache-name }}-${{ hashFiles('*.gradle.kts', '**/gradle-wrapper.properties') }}
             - name: Gradle Build Action
-              uses: gradle/gradle-build-action@v3.5.0
+              uses: gradle/actions/setup-gradle@v3
               with:
                 gradle-version: "7.4.2"
                 arguments: assemble
