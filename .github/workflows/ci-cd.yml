@@ -9,23 +9,30 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
-            - name: Cache m2 repository
-              uses: actions/cache@v2
-              env:
-                  cache-name: cache-m2-repository
-              with:
-                  path: ~/.m2
-                  key: ${{ github.repository }}-build-${{ env.cache-name }}-${{ hashFiles('pom.xml') }}
-            - name: JDk 1.17 setup
-              uses: actions/setup-java@v1
-              with:
-                  java-version: 1.17
-            - name: Maven build
-              run: mvn clean package
+            - name: JDk 21 setup
+                uses: actions/setup-java@v1
+                with:
+                    java-version: 1.21
+            - uses: actions/cache@v3
+                env:
+                cache-name: cache-gradle
+                with:
+                path: |
+                    ~/.gradle/caches
+                    ~/.gradle/wrapper
+                    .gradle/caches
+                key: ${{ runner.os }}-gradle-${{ env.cache-name }}-${{ hashFiles('*.gradle.kts', '**/gradle-wrapper.properties') }}
+            - name: Gradle Build Action
+                uses: gradle/gradle-build-action@v2.1.3
+                with:
+                gradle-version: "7.4.1"
+                arguments: assemble
+            - name: Clean build outputs
+                run: rm build/libs/LaBoulangerieCore-*dev*.jar
             - uses: actions/upload-artifact@v1
-              with:
-                  name: laboulangeriecore
-                  path: target
+                with:
+                name: laboulangeriecore
+                path: build/libs/
     deploy:
         runs-on: ubuntu-latest
         needs: [build]
