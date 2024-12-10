@@ -177,7 +177,7 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onCrystalExplode(EntityDamageByEntityEvent event) {
-        if (event.getDamager().getType() != EntityType.ENDER_CRYSTAL)
+        if (event.getDamager().getType() != EntityType.END_CRYSTAL)
             return;
 
         event.setDamage(event.getDamage()
@@ -195,7 +195,7 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onPlaceCrystal(EntityPlaceEvent event) {
-        if (event.getEntityType() != EntityType.ENDER_CRYSTAL)
+        if (event.getEntityType() != EntityType.END_CRYSTAL)
             return;
 
         if (!crystalDelay.containsKey(event.getPlayer().getUniqueId())) {

@@ -17,6 +17,7 @@ public class EventsManager {
     private static Map<String, EventState> events = new HashMap<>();
 
     public static void innit() {
+        events.clear();
         if (!file.exists()) {
             try {
                 file.createNewFile();

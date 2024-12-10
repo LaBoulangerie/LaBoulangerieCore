@@ -75,7 +75,7 @@ public class Dragon {
     public void spawnCrystals() {
         for (Location location : crystalsLocation) {
             EnderCrystal crystal =
-                    (EnderCrystal) spawnLocation.getWorld().spawnEntity(location, EntityType.ENDER_CRYSTAL);
+                    (EnderCrystal) spawnLocation.getWorld().spawnEntity(location, EntityType.END_CRYSTAL);
             crystal.setShowingBottom(true);
             crystals.add(crystal);
         }

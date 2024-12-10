@@ -1,23 +1,15 @@
 package net.laboulangerie.laboulangeriecore.betonquest;
 
-import java.util.UUID;
-
+import org.betonquest.betonquest.api.profiles.Profile;
+import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
+import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.object.Resident;
 
-import pl.betoncraft.betonquest.Instruction;
-import pl.betoncraft.betonquest.api.Condition;
-import pl.betoncraft.betonquest.exceptions.QuestRuntimeException;
-
-public class MayorCondition extends Condition {
-    @SuppressWarnings("deprecation")
-    public MayorCondition(Instruction instruction) {
-        super(instruction);
-    }
-
+public class MayorCondition implements PlayerCondition {
     @Override
-    protected Boolean execute(String playerID) throws QuestRuntimeException {
-        Resident resident = TownyUniverse.getInstance().getResident(UUID.fromString(playerID));
+    public boolean check(Profile profile) throws QuestRuntimeException {
+        Resident resident = TownyUniverse.getInstance().getResident(profile.getPlayerUUID());
         return resident != null && resident.isMayor();
     }
 }
