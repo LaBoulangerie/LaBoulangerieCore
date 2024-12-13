@@ -18,6 +18,7 @@ repositories {
     maven("https://repo.codemc.io/repository/maven-public/")
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://maven.enginehub.org/repo/")
+    maven("https://repo.viaversion.com")
 }
 
 dependencies {
