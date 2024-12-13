@@ -21,6 +21,12 @@ repositories {
     maven("https://repo.viaversion.com")
 }
 
+configurations {
+    "compileClasspath" {
+        resolutionStrategy.force("com.google.guava:guava:33.2.1-jre")
+    }
+}
+
 dependencies {
     paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
     compileOnly("com.palmergames.bukkit.towny:towny:0.100.4.12")
