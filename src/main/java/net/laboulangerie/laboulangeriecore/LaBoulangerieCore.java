@@ -64,6 +64,7 @@ import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradeOverflowListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
+import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
@@ -124,6 +125,8 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         EventsManager.innit();
 
+        VaultsReset.reset();
+
         registerListeners();
 
         getCommand("authenticate").setExecutor(new AuthenticateCommand());
@@ -152,36 +155,41 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("librahost").setExecutor(new LinkCommands());
 
         if (getServer().getPluginManager().getPlugin("BetonQuest") != null) {
-            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_is_king", new PlayerConditionFactory() {
-                @Override
-                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
-                    return new KingCondition();
-                }
-            }, null);
-            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_is_mayor", new PlayerConditionFactory() {
-                @Override
-                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
-                    return new MayorCondition();
-                }
-            }, null);
-            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("nation_houses_has_stocks", new PlayerConditionFactory() {
-                @Override
-                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
-                    return new HousesStockCondition();
-                }
-            }, null);
-            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_has_house", new PlayerConditionFactory() {
-                @Override
-                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
-                    return new HasHouseCondition();
-                }
-            }, null);
-            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_has_rank", new PlayerConditionFactory() {
-                @Override
-                public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
-                    return new RankCondition(instruction.getPart(1), instruction.getPart(2));
-                }
-            }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_is_king",
+                    new PlayerConditionFactory() {
+                        @Override
+                        public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                            return new KingCondition();
+                        }
+                    }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_is_mayor",
+                    new PlayerConditionFactory() {
+                        @Override
+                        public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                            return new MayorCondition();
+                        }
+                    }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("nation_houses_has_stocks",
+                    new PlayerConditionFactory() {
+                        @Override
+                        public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                            return new HousesStockCondition();
+                        }
+                    }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_has_house",
+                    new PlayerConditionFactory() {
+                        @Override
+                        public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                            return new HasHouseCondition();
+                        }
+                    }, null);
+            BetonQuest.getInstance().getQuestRegistries().getConditionTypes().register("towny_has_rank",
+                    new PlayerConditionFactory() {
+                        @Override
+                        public PlayerCondition parsePlayer(Instruction instruction) throws InstructionParseException {
+                            return new RankCondition(instruction.getPart(1), instruction.getPart(2));
+                        }
+                    }, null);
             getLogger().info("Hooked in BetonQuest!");
         }
 

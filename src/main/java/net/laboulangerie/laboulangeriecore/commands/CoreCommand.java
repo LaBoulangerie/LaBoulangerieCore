@@ -25,6 +25,7 @@ import net.laboulangerie.laboulangeriecore.core.UsersData;
 import net.laboulangerie.laboulangeriecore.core.end.Dragon;
 import net.laboulangerie.laboulangeriecore.core.event.EventsManager;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
+import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
 
 public class CoreCommand implements TabExecutor {
     @Override
@@ -126,6 +127,11 @@ public class CoreCommand implements TabExecutor {
             sender.sendMessage("§aNickname reset successfully!");
             return true;
         }
+
+        if (args[0].equalsIgnoreCase("resetvaults")) {
+            VaultsReset.reset();
+            return true;
+        }
         return false;
     }
 
@@ -134,7 +140,8 @@ public class CoreCommand implements TabExecutor {
             @NotNull String alias, @NotNull String[] args) {
         List<String> suggestions = Arrays.asList("");
         if (args.length == 1)
-            suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "unnick", "spawnDragon", "nametag");
+            suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "unnick", "spawnDragon", "nametag",
+                    "resetvaults");
         if (args.length == 2 && (args[0].equalsIgnoreCase("nick") ||
                 args[0].equalsIgnoreCase("unnick") ||
                 args[0].equalsIgnoreCase("nametag")))
