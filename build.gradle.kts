@@ -35,6 +35,11 @@ dependencies {
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
 }
 
+java {
+  sourceCompatibility = JavaVersion.VERSION_21
+  targetCompatibility = JavaVersion.VERSION_21
+}
+
 tasks {
   compileJava {
     options.encoding = Charsets.UTF_8.name()
