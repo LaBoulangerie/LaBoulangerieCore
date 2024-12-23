@@ -177,7 +177,7 @@ public class MiscListener implements Listener {
 
     @EventHandler
     public void onCrystalExplode(EntityDamageByEntityEvent event) {
-        if (event.getDamager().getType() != EntityType.END_CRYSTAL)
+        if (event.getDamager().getType() != EntityType.END_CRYSTAL && event.getDamager().getType() != EntityType.TNT_MINECART)
             return;
 
         event.setDamage(event.getDamage()
