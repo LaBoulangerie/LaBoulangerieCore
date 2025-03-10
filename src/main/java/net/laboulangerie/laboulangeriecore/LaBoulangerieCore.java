@@ -65,6 +65,7 @@ import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradeOverflowListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
+import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommands;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
@@ -147,6 +148,8 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("speed").setExecutor(new SpeedCommand());
         getCommand("realname").setExecutor(new RealNameCommand());
         getCommand("hat").setExecutor(new HatCommand());
+        getCommand("roll").setExecutor(new RollCommands());
+        getCommand("wroll").setExecutor(new RollCommands());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("youtube").setExecutor(new LinkCommands());
