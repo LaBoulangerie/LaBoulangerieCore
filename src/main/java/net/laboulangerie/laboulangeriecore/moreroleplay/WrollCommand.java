@@ -15,48 +15,32 @@ import net.kyori.adventure.text.format.TextDecoration;
 
 public class WrollCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-        if (!(sender instanceof Player)) { // Vérification de l'existence du joueur
+    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args){
+        if (!(sender instanceof Player)) { // Vérification de la nature du sender
             sender.sendMessage("§4You must be in game to use this command!");
             return true;
         }
 
         int max = 20;
-        int result;
 		Random random = new Random();
+        int result = (args.length == 0 ? random.nextInt(max) + 1 : null);
 
-        if (args.length == 0) { // Détermination du maximum (si renseigné)
-            result = random.nextInt(max) + 1;
-        } else {
-            try {
-                max = Integer.parseInt(args[0]);
-            } catch (NumberFormatException e) {
-                sender.sendMessage(Component.text("Merci d'indiquer un nombre entier en tant que maximum.", NamedTextColor.DARK_RED));
-                return true;
-            }
-
-            if (max > 1){
-                result = random.nextInt(max) + 1;
-            } else {
-                sender.sendMessage(Component.text("Merci d'indiquer un nombre supérieur à 1 en tant que maximum.", NamedTextColor.DARK_RED));
-                return true;
-            }
+        try {
+            result = random.nextInt(Integer.parseInt(args[0])) + 1;
+        } catch (NumberFormatException e) {
+            sender.sendMessage(Component.text("Merci d'indiquer un nombre entier supérieur à 1 en tant que maximum.", NamedTextColor.DARK_RED));
+            return true;
         }
 
-        // Envoie du résultat à tous les joueurs
-        String message;
-
-        for (Player target : Bukkit.getOnlinePlayers()) {
-
-            message = "Les dieux ont jeté les dés de vos destins, et ont obtenu " + result + "/" + max +
-                (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".");
-
-            target.sendMessage(Component.text(message)
+        // Envoie du résultat aux joueurs proches
+        for (Player target : Bukkit.getOnlinePlayers()){
+            target.sendMessage(Component.text("Les dieux ont jeté les dés de vos destins, et ont obtenu " + result + "/" + max +
+                (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : "."))
                 .color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
                 .decorate(TextDecoration.BOLD));
 
-            target.playSound(target.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-        }
+                target.playSound(target.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+            }
         
         return true;
     }
