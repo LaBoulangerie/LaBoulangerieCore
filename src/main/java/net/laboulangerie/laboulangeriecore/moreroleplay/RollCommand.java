@@ -36,7 +36,7 @@ public class RollCommand implements CommandExecutor {
                 return true;
             }
 
-            if (max >= 1){
+            if (max > 1){
                 result = random.nextInt(max) + 1;
             } else {
                 sender.sendMessage(Component.text("Merci d'indiquer un nombre supérieur à 1 en tant que maximum.", NamedTextColor.DARK_RED));
