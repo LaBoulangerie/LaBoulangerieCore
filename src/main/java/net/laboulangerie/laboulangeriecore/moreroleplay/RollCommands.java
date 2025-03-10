@@ -46,14 +46,14 @@ public class RollCommands implements CommandExecutor {
             }
         }
 
-        if (cmd.getName() == "roll") // Envoie du résultat aux joueurs proches
+        if (cmd.getName().equals("roll")) // Envoie du résultat aux joueurs proches
             for (Player targetInRadius : player.getWorld().getPlayers())
                 if (targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-radius", 10))
                     targetInRadius.sendMessage(Component.text(PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
                         (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : "."))
                         .color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW));
 
-        else if (cmd.getName() == "wroll") // Envoie du résultat à tous les joueurs
+        else if (cmd.getName().equals("wroll")) // Envoie du résultat à tous les joueurs
             for (Player targetInServer : Bukkit.getOnlinePlayers()){
                 targetInServer.sendMessage(Component.text("Les dieux ont jeté les dés de vos destins, et ont obtenu " + result + "/" + max +
                     (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : "."))
