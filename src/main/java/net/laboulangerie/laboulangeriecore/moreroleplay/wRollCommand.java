@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.commands;
+package net.laboulangerie.laboulangeriecore.moreroleplay;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
 
-public class RollCommand implements CommandExecutor {
+public class WrollCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
         if (!(sender instanceof Player)) { // Vérification de l'existence du joueur
@@ -24,7 +24,7 @@ public class RollCommand implements CommandExecutor {
         int result;
 
         if (args.length == 0) { // Détermination du maximum (si renseigné)
-            int result = random.nextInt(100) + 1;
+            result = random.nextInt(100) + 1;
         } else {
             try {
                 max = Integer.parseInt(args[0]);
@@ -42,7 +42,7 @@ public class RollCommand implements CommandExecutor {
         }
 
         // Envoie du résultat aux joueurs
-        string message;
+        String message;
 
         for (Player target : Bukkit.getOnlinePlayers()) {
             if(result == max)

@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.commands;
+package net.laboulangerie.laboulangeriecore.moreroleplay;
 
 import java.io.IOException;
 
@@ -22,10 +22,9 @@ public class RollCommand implements CommandExecutor {
 
         int max = 100;
         int result;
-        string message;
 
         if (args.length == 0) { // Détermination du maximum (si renseigné)
-            int result = random.nextInt(100) + 1;
+            result = random.nextInt(100) + 1;
         } else {
             try {
                 max = Integer.parseInt(args[0]);
@@ -45,6 +44,7 @@ public class RollCommand implements CommandExecutor {
         // Envoie du résultat aux joueurs proches
         Location playerLocation = sender.getLocation();
         int radius = LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-radius", 10);
+        String message;
 
         for (Player target : player.getWorld().getPlayers()) {
             if (target.getLocation().distance(playerLocation) <= radius) {
