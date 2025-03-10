@@ -19,17 +19,28 @@ public class RollCommand implements CommandExecutor {
             sender.sendMessage("§4You must be in game to use this command!");
             return true;
         }
-
+        
         int max = 20;
+        int result;
 		Random random = new Random();
-        int result = (args.length == 0 ? random.nextInt(max) + 1 : null);
         Player player = (Player) sender;
 
-        try {
-            result = random.nextInt(Integer.parseInt(args[0])) + 1;
-        } catch (NumberFormatException e) {
-            sender.sendMessage(Component.text("Merci d'indiquer un nombre entier supérieur à 1 en tant que maximum.", NamedTextColor.DARK_RED));
-            return true;
+        if (args.length == 0) { // Détermination du maximum (si renseigné)
+            result = random.nextInt(max) + 1;
+        } else {
+            try {
+                max = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(Component.text("Le maximum doit être un nombre entier.", NamedTextColor.DARK_RED));
+                return true;
+            }
+
+            if (max > 1){
+                result = random.nextInt(max) + 1;
+            } else {
+                sender.sendMessage(Component.text("Le maximum doit être supérieur à 1.", NamedTextColor.DARK_RED));
+                return true;
+            }
         }
 
         // Envoie du résultat aux joueurs proches
