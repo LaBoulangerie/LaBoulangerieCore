@@ -1,8 +1,8 @@
 name: LaBoulangerieCore
-version: 1.0.3
+version: 1.0.4
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: 1.21
-authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox]
+authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grole]
 depend: [Towny, LuckPerms, ProtocolLib, LaBoulangerieMmo]
 softdepend: [PlaceholderAPI, BetonQuest, QuickShop]
 commands:
@@ -79,6 +79,16 @@ commands:
     hat:
         description: Put something on your head
         usage: /hat
+    roll:
+        description: Return a random number between 1 and <max>
+        usage: /roll <max>
+        aliases: [r]
+    wroll:
+        description: Return a random number between 1 and <max> to all the players
+        usage: /wroll <max>
+        aliases: [wr]
+        permission: laboulangeriecore.wroll
+        permission-message: You do not have <permission>
 permissions:
     laboulangeriecore.*:
         default: op
@@ -90,6 +100,7 @@ permissions:
             - laboulangeriecore.houseshop
             - laboulangeriecore.seen
             - laboulangeriecore.eventassistant
+            - laboulangeriecore.wroll
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
@@ -105,4 +116,6 @@ permissions:
     laboulangeriecore.seen:
         default: op
     laboulangeriecore.eventassistant:
+        default: op
+    laboulangeriecore.wroll:
         default: op

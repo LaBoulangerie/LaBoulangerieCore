@@ -182,3 +182,6 @@ disabled-crafts:
 
 vault-reset-regions:
     - world:spawn_trial
+
+more-roleplay:
+    roll-radius: 10
