@@ -1,16 +1,17 @@
 package net.laboulangerie.laboulangeriecore.moreroleplay;
 
-import java.io.IOException;
+import java.util.Random;
 
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.laboulangerie.laboulangeriecore.core.UsersData;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class RollCommand implements CommandExecutor {
     @Override
@@ -20,11 +21,13 @@ public class RollCommand implements CommandExecutor {
             return true;
         }
 
-        int max = 100;
+        int max = 20;
         int result;
+		Random random = new Random();
+        Player player = (Player) sender;
 
         if (args.length == 0) { // Détermination du maximum (si renseigné)
-            result = random.nextInt(100) + 1;
+            result = random.nextInt(max) + 1;
         } else {
             try {
                 max = Integer.parseInt(args[0]);
@@ -33,31 +36,26 @@ public class RollCommand implements CommandExecutor {
                 return true;
             }
 
-            if (max != 0){
+            if (max >= 1){
                 result = random.nextInt(max) + 1;
             } else {
-                sender.sendMessage(Component.text("0 n'est pas un maximum valide.", NamedTextColor.DARK_RED));
+                sender.sendMessage(Component.text("Merci d'indiquer un nombre supérieur à 1 en tant que maximum.", NamedTextColor.DARK_RED));
                 return true;
             }
         }
 
         // Envoie du résultat aux joueurs proches
-        Location playerLocation = sender.getLocation();
+        Location playerLocation = player.getLocation();
         int radius = LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-radius", 10);
         String message;
 
         for (Player target : player.getWorld().getPlayers()) {
             if (target.getLocation().distance(playerLocation) <= radius) {
-                if(result == max)
-                    message = sender.displayName() + " a jeté les dés de son destin, et a obtenu " + result + "/" + max + ", c'est une réussite critique !";
-                else if(result == 1)
-                    message = sender.displayName() + " a jeté les dés de son destin, et a obtenu " + result + "/" + max + ", c'est un échec critique !";
-                else
-                    message = sender.displayName() + " a jeté les dés de son destin, et a obtenu " + result + "/" + max + ".";
+                message = PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
+                    (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".");
 
                 target.sendMessage(Component.text(message)
-                    .color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
-                    .decorate(TextDecoration.BOLD));
+                    .color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW));
             }
         }
         

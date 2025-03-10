@@ -1,7 +1,7 @@
 name: LaBoulangerieCore
 version: 1.0.4
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
-api-version: 1.21
+api-version: "1.21"
 authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle]
 depend: [Towny, LuckPerms, ProtocolLib, LaBoulangerieMmo]
 softdepend: [PlaceholderAPI, BetonQuest, QuickShop]
