@@ -37,7 +37,7 @@ dependencies {
     compileOnly("org.betonquest:betonquest:2.1.3")
     compileOnly("com.ghostchu:quickshop-bukkit:5.2.0.6:shaded")
     compileOnly("com.ghostchu:quickshop-common:5.2.0.6:shaded")
-    compileOnly("com.github.LaBoulangerie:Gringotts:2.12.2")
+    compileOnly("com.github.LaBoulangerie:Gringotts:master-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
 }
