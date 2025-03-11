@@ -22,11 +22,12 @@ jobs:
                       ~/.gradle/wrapper
                       .gradle/caches
                   key: ${{ runner.os }}-gradle-${{ env.cache-name }}-${{ hashFiles('*.gradle.kts', '**/gradle-wrapper.properties') }}
-            - name: Gradle Build Action
-              uses: gradle/actions/setup-gradle@v3
+            - name: Setup Gradle
+              uses: gradle/actions/setup-gradle@v4
               with:
-                  gradle-version: "8.13"
-                  arguments: assemble
+                  gradle-version: 8.13
+            - name: Assemble the project
+              run: ./gradlew reobfJar
             - name: Clean build outputs
               run: rm build/libs/LaBoulangerieCore-*dev*.jar
             - uses: actions/upload-artifact@v4
