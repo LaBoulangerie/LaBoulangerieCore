@@ -16,6 +16,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import me.angeschossen.lands.api.LandsIntegration;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
@@ -50,9 +52,9 @@ import net.laboulangerie.laboulangeriecore.core.houses.ListHouseCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.housewand.HouseWandCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.housewand.HouseWandListener;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShop;
-import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShopCmd;
+//import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHouseHolder;
-import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHousesCmd;
+//import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHousesCmd;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
@@ -76,6 +78,7 @@ public class LaBoulangerieCore extends JavaPlugin {
     public static Economy econ = null;
     public static HousesManager housesManager;
     public static NationHouseHolder nationHouseHolder;
+    public static LandsIntegration apiLands;
 
     private ComponentRenderer componentRenderer;
     private SpeedPathManager speedPathManager;
@@ -138,10 +141,10 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("deletehouse").setExecutor(new DeleteHouseCmd());
         getCommand("houseflag").setExecutor(new HouseFlagCmd());
         getCommand("housemembers").setExecutor(new HouseMembersCmd());
-        getCommand("nationhouses").setExecutor(new NationHousesCmd());
+        //getCommand("nationhouses").setExecutor(new NationHousesCmd());
         getCommand("core").setExecutor(new CoreCommand());
         getCommand("easteregg").setExecutor(new eEggCommand());
-        getCommand("houseshop").setExecutor(new HouseShopCmd());
+        //getCommand("houseshop").setExecutor(new HouseShopCmd());
         getCommand("spawn").setExecutor(new SpawnCmd());
         getCommand("seen").setExecutor(new SeenCmd());
         getCommand("event").setExecutor(new EventCmd());
@@ -242,6 +245,8 @@ public class LaBoulangerieCore extends JavaPlugin {
                 }
             }
         }.runTaskTimer(this, 0, 20 * 60 * 60);
+
+        apiLands = LandsIntegration.of(PLUGIN);
 
         getLogger().info("Enabled Successfully");
     }

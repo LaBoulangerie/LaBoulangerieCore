@@ -3,8 +3,6 @@ package net.laboulangerie.laboulangeriecore.betonquest;
 import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
-import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.Resident;
 
 public class RankCondition implements PlayerCondition {
     private String entity;
@@ -21,7 +19,7 @@ public class RankCondition implements PlayerCondition {
 
     @Override
     public boolean check(Profile profile) throws QuestRuntimeException {
-        Resident resident = TownyUniverse.getInstance().getResident(profile.getPlayerUUID());
+        /*Resident resident = TownyUniverse.getInstance().getResident(profile.getPlayerUUID());
         if (resident == null)
             return false;
         switch (entity) {
@@ -32,6 +30,8 @@ public class RankCondition implements PlayerCondition {
             default:
                 throw new QuestRuntimeException("Invalid argument: "
                     + entity + ", possible arguments: town & nation");
-        }
+        }*/
+
+        return false;
     }
 }

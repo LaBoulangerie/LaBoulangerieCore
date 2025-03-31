@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.palmergames.bukkit.towny.TownyUniverse;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +16,7 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.houses.House;
 import net.laboulangerie.laboulangeriecore.core.houses.HouseFlags;
 
-public class NationHousesCmd implements CommandExecutor, TabCompleter {
+/*public class NationHousesCmd implements CommandExecutor, TabCompleter {
     public NationHousesCmd() {}
 
     @Override
@@ -129,4 +127,4 @@ public class NationHousesCmd implements CommandExecutor, TabCompleter {
         return suggestions.stream().filter(str -> str.startsWith(args[args.length == 0 ? 0 : args.length - 1]))
                 .collect(Collectors.toList());
     }
-}
+}*/
