@@ -34,7 +34,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("§4This command is restricted to players!");
             return true;
         }
-        if ((args.length < 1 && !Arrays.asList("player").contains(args[0])) || (args.length < 2 && !Arrays.asList("town", "nation").contains(args[0]))) return false;
+        if ((args.length < 1 && !Arrays.asList("player","town", "nation").contains(args[0]))) return false;
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -62,38 +62,30 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0]) {
             case "town":
-                Land town = null;
-                for( Land land : resident.getLands()){
-                    if(land.getName().equals(args[1])){
-                        town = land;
-                    }
-                }
+                Land town = resident.getLands().stream().findFirst().orElse(null);
+
                 if(town == null){
-                    player.sendMessage("§4Vous n'êtes pas dans la ville spécifiée, ou celle-ci n'existe pas !");
+                    player.sendMessage("§4Vous n'êtes dans aucune ville !");
                     return true;
                 }
 
                 if (!town.getOwnerUID().equals(resident.getUID())) {
-                    player.sendMessage("§4Pour authentifier un objet en tant que ville, vous devez en être le maire !\n" + town.getOwnerUID() + "\n" + resident.getUID());
+                    player.sendMessage("§4Pour authentifier un objet au nom de votre ville, vous devez en avoir la permission !");
                     return true;
                 }
                 loreText = Authenticable.parseLore(town.getName().replace('_', ' '), AuthorityType.TOWN);
                 authorityId = AuthorityType.TOWN.getPrefix() + town.getULID().toString();
                 break;
             case "nation":
-                Nation nation = null;
-                for( Land land : resident.getLands()){
-                    if(land.getNation().getName().equals(args[1])){
-                        nation = land.getNation();
-                    }
-                }
+                Nation nation = resident.getLands().stream().findFirst().orElse(null).getNation();
+
                 if(nation == null){
-                    player.sendMessage("§4Vous n'êtes pas dans la nation spécifiée, ou celle-ci n'existe pas !");
+                    player.sendMessage("§4Vous n'êtes dans aucune nation !");
                     return true;
                 }
 
                 if (!nation.getOwnerUID().equals(resident.getUID())) {
-                    player.sendMessage("§4Pour authentifier un objet en tant que nation, vous devez en être le roi !");
+                    player.sendMessage("§4Pour authentifier un objet au nom de votre nation, vous devez en aboir la permission !");
                     return true;
                 }
                 loreText = Authenticable.parseLore(nation.getName().replace('_', ' '), AuthorityType.NATION);
