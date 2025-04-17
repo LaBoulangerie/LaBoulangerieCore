@@ -13,11 +13,15 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import me.angeschossen.lands.api.LandsIntegration;
+import me.angeschossen.lands.api.flags.enums.FlagTarget;
+import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
+import me.angeschossen.lands.api.flags.type.RoleFlag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
@@ -79,6 +83,8 @@ public class LaBoulangerieCore extends JavaPlugin {
     public static HousesManager housesManager;
     public static NationHouseHolder nationHouseHolder;
     public static LandsIntegration apiLands;
+    public static RoleFlag townAuthenticateFlag;
+    public static RoleFlag nationAuthenticateFlag;
 
     private ComponentRenderer componentRenderer;
     private SpeedPathManager speedPathManager;
@@ -247,6 +253,39 @@ public class LaBoulangerieCore extends JavaPlugin {
         }.runTaskTimer(this, 0, 20 * 60 * 60);
 
         apiLands = LandsIntegration.of(PLUGIN);
+
+        townAuthenticateFlag = RoleFlag
+            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "lbcore_town_authenticate")
+            .setDisplay(true)
+            .setDisplayName("Authentification au nom de la ville")
+            .setDescription("Autoriser ce rôle à authentifier un objet au nom de la ville.")
+            .setIcon(ItemStack.of(Material.NAME_TAG))
+            .setActiveInWar(true)
+            .setAlwaysAllowInWilderness(true)
+            .setApplyInSubareas(false)
+            .setToggleableByNation(false);
+
+        nationAuthenticateFlag = RoleFlag
+            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "lbcore_nation_authenticate")
+            .setDisplay(true)
+            .setDisplayName("Authentification au nom de la nation")
+            .setDescription("Autoriser ce rôle à authentifier un objet au nom de la nation (ne fonctionne que dans la capitale).")
+            .setIcon(ItemStack.of(Material.NAME_TAG))
+            .setActiveInWar(true)
+            .setAlwaysAllowInWilderness(true)
+            .setApplyInSubareas(true)
+            .setToggleableByNation(false);
+
+        apiLands.onLoad(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    apiLands.getFlagRegistry().register(townAuthenticateFlag);
+                } catch (Exception e) {
+                    getLogger().info("authentification flags already registered.");
+                }
+            }
+        });
 
         getLogger().info("Enabled Successfully");
     }

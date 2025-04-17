@@ -69,7 +69,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                if (!town.getOwnerUID().equals(resident.getUID())) {
+                if (!town.getDefaultArea().hasRoleFlag(resident.getUUID(), LaBoulangerieCore.townAuthenticateFlag)){
                     player.sendMessage("§4Pour authentifier un objet au nom de votre ville, vous devez en avoir la permission !");
                     return true;
                 }
@@ -84,14 +84,14 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                if (!nation.getOwnerUID().equals(resident.getUID())) {
-                    player.sendMessage("§4Pour authentifier un objet au nom de votre nation, vous devez en aboir la permission !");
+                if (!nation.getCapital().getDefaultArea().hasRoleFlag(resident.getUUID(), LaBoulangerieCore.nationAuthenticateFlag)) {
+                    player.sendMessage("§4Pour authentifier un objet au nom de votre nation, vous devez en avoir la permission !");
                     return true;
                 }
                 loreText = Authenticable.parseLore(nation.getName().replace('_', ' '), AuthorityType.NATION);
                 authorityId = AuthorityType.NATION.getPrefix() + nation.getULID().toString();
             case "player":
-                loreText = Authenticable.parseLore(player.getUniqueId().toString(), AuthorityType.PLAYER);
+                loreText = Authenticable.parseLore(player.displayName().toString(), AuthorityType.PLAYER);
                 authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString();
             default:
                 break;
