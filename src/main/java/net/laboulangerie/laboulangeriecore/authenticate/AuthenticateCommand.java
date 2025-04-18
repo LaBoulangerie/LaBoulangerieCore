@@ -77,7 +77,14 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
                 authorityId = AuthorityType.TOWN.getPrefix() + town.getULID().toString();
                 break;
             case "nation":
-                Nation nation = resident.getLands().stream().findFirst().orElse(null).getNation();
+                Land land = resident.getLands().stream().findFirst().orElse(null);
+
+                if(land == null){
+                    player.sendMessage("§4Vous n'êtes dans aucune ville !");
+                    return true;
+                }
+
+                Nation nation = land.getNation();
 
                 if(nation == null){
                     player.sendMessage("§4Vous n'êtes dans aucune nation !");

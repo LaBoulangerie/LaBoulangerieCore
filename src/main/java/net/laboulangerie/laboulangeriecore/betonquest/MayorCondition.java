@@ -11,7 +11,7 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 public class MayorCondition implements PlayerCondition {
     @Override
     public boolean check(Profile profile) throws QuestRuntimeException {
-        LandPlayer resident = LaBoulangerieCore.apiLands.getLandPlayer(profile.getPlayerUUID());
+        LandPlayer resident = (LandPlayer)LaBoulangerieCore.apiLands.getOfflineLandPlayer(profile.getPlayerUUID());
 
         for( Land land : resident.getLands()){
             if(land.getOwnerUID().equals(profile.getPlayerUUID())){
