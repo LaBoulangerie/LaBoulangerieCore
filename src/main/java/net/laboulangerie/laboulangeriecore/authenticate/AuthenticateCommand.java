@@ -84,15 +84,19 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
+                if(!nation.getCapital().equals(resident.getLands().stream().findFirst().orElse(null))){
+                    player.sendMessage("§4Pour authentifier un objet au nom de votre nation, vous devez en habiter la capitale !");
+                    return true;
+                }
+
                 if (!nation.getCapital().getDefaultArea().hasRoleFlag(resident.getUUID(), LaBoulangerieCore.nationAuthenticateFlag)) {
                     player.sendMessage("§4Pour authentifier un objet au nom de votre nation, vous devez en avoir la permission !");
                     return true;
                 }
                 loreText = Authenticable.parseLore(nation.getName().replace('_', ' '), AuthorityType.NATION);
                 authorityId = AuthorityType.NATION.getPrefix() + nation.getULID().toString();
+                break;
             case "player":
-                loreText = Authenticable.parseLore(player.displayName().toString(), AuthorityType.PLAYER);
-                authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString();
             default:
                 break;
         }

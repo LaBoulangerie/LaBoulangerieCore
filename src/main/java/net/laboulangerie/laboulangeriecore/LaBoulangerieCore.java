@@ -98,7 +98,6 @@ public class LaBoulangerieCore extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        LaBoulangerieCore.PLUGIN = this;
         ConfigurationSerialization.registerClass(House.class);
         UsersData.init();
         housesManager = new HousesManager(new File(getDataFolder(), "houses"));
@@ -252,10 +251,17 @@ public class LaBoulangerieCore extends JavaPlugin {
             }
         }.runTaskTimer(this, 0, 20 * 60 * 60);
 
+        getLogger().info("Enabled Successfully");
+    }
+
+    @Override
+    public void onLoad() {
+        LaBoulangerieCore.PLUGIN = this;
+
         apiLands = LandsIntegration.of(PLUGIN);
 
         townAuthenticateFlag = RoleFlag
-            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "lbcore_town_authenticate")
+            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "town_authent")
             .setDisplay(true)
             .setDisplayName("Authentification au nom de la ville")
             .setDescription("Autoriser ce rôle à authentifier un objet au nom de la ville.")
@@ -266,7 +272,7 @@ public class LaBoulangerieCore extends JavaPlugin {
             .setToggleableByNation(false);
 
         nationAuthenticateFlag = RoleFlag
-            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "lbcore_nation_authenticate")
+            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "nation_authent")
             .setDisplay(true)
             .setDisplayName("Authentification au nom de la nation")
             .setDescription("Autoriser ce rôle à authentifier un objet au nom de la nation (ne fonctionne que dans la capitale).")
@@ -281,13 +287,12 @@ public class LaBoulangerieCore extends JavaPlugin {
             public void run() {
                 try {
                     apiLands.getFlagRegistry().register(townAuthenticateFlag);
+                    apiLands.getFlagRegistry().register(nationAuthenticateFlag);
                 } catch (Exception e) {
                     getLogger().info("authentification flags already registered.");
                 }
             }
         });
-
-        getLogger().info("Enabled Successfully");
     }
 
     public ComponentRenderer getComponentRenderer() {
