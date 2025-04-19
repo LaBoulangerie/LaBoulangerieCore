@@ -1,186 +1,131 @@
-authenticate:
-    lore: "§6Authentifié par %authority% (%type%)"
+authenticate: {}
 
 tab:
-    # MiniMessage format and PAPI placeholders allowed
-    header: "<rainbow>La Boulangerie"
-    name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
-    footer: "<papi:lands_land_role>\n<papi:lands_land_name> <papi:lands_nation_name>\n<#E4D9FF><papi:lbcore_date_full>"
+  # MiniMessage format and PAPI placeholders allowed
+  header: <bold><gradient:#FF8C42:#F9C784>La Boulangerie</gradient></bold>
+  name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
+  footer: "<papi:lands_land_role>\n
+    <papi:lands_land_name> <papi:lands_nation_name>\n
+    <color:#4E598C>mc.laboulangerie.net</color>\n
+    <#E4D9FF><papi:lbcore_date_full><papi:img_hourglass>"
 
 nametag:
-    - <papi:luckperms_prefix>[<papi:lbmmo_palier_colored>] <gray><papi:player_name>
-    - <papi:lbcore_eastereggs_worldguard>
-    - <papi:player_health_rounded><red>❤</red>
+  - <papi:luckperms_meta_prefixtab>[<papi:lbmmo_palier_colored>] <gray><papi:player_name>
+  - <papi:lbcore_eastereggs_worldguard>
 
 links:
-    youtube: "https://www.youtube.com/channel/UCrIHI9-q9b8MGUgU6UGuclg"
-    wiki: "https://laboulangerie.fandom.com/fr/wiki/Wiki_La_Boulangerie"
-    twitter: "https://twitter.com/BoulangerieMc"
-    github: "https://github.com/LaBoulangerie"
-    librahost: "https://librahost.fr"
-
-misc:
-    declined-pack-kick-msg: "<red>Veuillez accepter le pack de ressources pour jouer s'il vous plaît !"
+  discord: https://laboulangerie.net/discord
+  youtube: https://www.youtube.com/channel/UCrIHI9-q9b8MGUgU6UGuclg
+  wiki: https://laboulangerie.fandom.com/fr/wiki/Wiki_La_Boulangerie
+  twitter: https://twitter.com/BoulangerieMc
+  github: https://github.com/LaBoulangerie
+  rules: https://laboulangerie.net/rules
+  map: https://laboulangerie.net/map
+  librahost: https://librahost.fr
 
 bundle:
-    item-name: "&a>> &e&lBourse &a<<"
-    item-lore:
-        - "&fArgent stocké:"
-        - "  • &e%money%&f฿"
+  item-name: "&a>> &e&lBourse &a<<"
+  item-lore:
+    - "&fArgent stocké:"
+    - "  • &e%money%&f฿"
 
 eastereggs:
-    #You can edit all the message of the plugin here.
-    messages:
-        console: "§4The command only can be used by a player."
-        added: "§aEasterEgg successfully added."
-        deleted: "§cEasterEgg successfully deleted."
-        permission: "§cYou don't have permission to execute this command."
-        utilization: "§cError: §e/easteregg help§a."
-        not-existing: "§cThis easteregg doesn't existing."
-        not-head: "§cYou need to have a head on your front."
-        eggs-found: "§aEastereggs:\n§bYou have found §e%amount%§a/§e%total% §beastereggs"
-        validated-title:
-            - "§2New Easter Egg!"
-            - "§7(§a%amount%§7/§e%max-amount%§7)"
-        already-validated: "§cYou already found this easteregg."
-        help:
-            - "§e-------------{ §3EasterEggs §e}-------------"
-            - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
-            - "§f/eegg remove|delete§7: §aCommmand to remove an easteregg."
-            - "§f/eegg help§7: §aCommmand to show this page."
+  # You can edit all the message of the plugin here.
+  messages:
+    console: §4The command only can be used by a player.
+    added: §aEasterEgg successfully added.
+    deleted: §cEasterEgg successfully deleted.
+    permission: §cYou don't have permission to execute this command.
+    utilization: "§cError: §e/easteregg help§a."
+    not-existing: §cThis easteregg doesn't existing.
+    not-head: §cYou need to have a head on your front.
+    eggs-found: |-
+      §aEastereggs:
+      §bVous avez trouvé §e%amount%§a/§e%total% §beastereggs
+    validated-title:
+      - §2Nouveau Easter Egg!
+      - §7(§a%amount%§7/§e%max-amount%§7)
+    already-validated: §cVous avez déjà trouvé cet easteregg.
+    help:
+      - §e-------------{ §3EasterEggs §e}-------------
+      - "§f/eegg set|add§7: §aCommmand to make a player head was an easteregg."
+      - "§f/eegg remove|delete§7: §aCommmand to remove an easteregg."
+      - "§f/eegg help§7: §aCommmand to show this page."
 
-    settings:
-        #List of all the gift the player can get.
-        #If "command" is set to true in gift you must write a command without the "/",
-        #else, write an item identifier in uppercase followed by the amount separated by :
-        #(exemple: IRON_INGOT:2).
-        gifts:
-            1:
-                command: false
-                gift: IRON_INGOT:2
-            2:
-                command: true
-                gift: "say something..."
+  settings: {}
+first-join-commands:
+  - rg addmember -w "world" montgolfiere_out %player%
+  - map hide %player%
+spawn:
+  ==: org.bukkit.Location
+  world: world
+  x: 4360.140402471246
+  y: 36.0
+  z: 4077.5160008662583
+  pitch: -1.1610103
+  yaw: 147.37386
 
-fist-join-commands:
-
-auto-messages-interval: 120 #Interval in seconds between message broadcast
-#List of messages to broadcast automatically
-auto-messages:
-    # - Subscribe to Technoblade
-    # - Not even close
-    # - frogs are the best
-
-emerald-value: 2 #Define what is the value of one emerald
-killing-dragon-reward: 500 # Number of divine favors to distribute between the killers of the ender dragon
 crystals:
-    - x: 10.0
-      y: 64.0
-      z: 10.0
-dragon-podium-y: 59.0
-clicks-to-break-egg: 200
-dragon-world: "world_the_end"
+  - x: 0.5
+    y: 117.0
+    z: -59.5
+  - x: 30.5
+    y: 117.0
+    z: -52.5
+  - x: 53.5
+    y: 117.0
+    z: -29.5
+  - x: 60.5
+    y: 117.0
+    z: 0.5
+  - x: 30.5
+    y: 117.0
+    z: 53.5
+  - x: 0.5
+    y: 117.0
+    z: 60.5
+  - x: -29.5
+    y: 117.0
+    z: 53.5
+  - x: -52.5
+    y: 117.0
+    z: 30.5
+  - x: -59.5
+    y: 117.0
+    z: 0.5
+  - x: -52.5
+    y: 117.0
+    z: -29.5
+dragon-podium-y: 67.0
+clicks-to-break-egg: 350
+dragon-world: world_the_end
+killing-dragon-reward: 500 # Number of divine favors to distribute between the killers of the ender dragon
 dragon-health: 2000
-
 crystal-nerf-percentage: 65.0 #Damage diminution percentage
 crystal-cooldown: 3000 #Cooldown in milliseconds : 1000ms = 1s
-#resource-pack-url: https://example.com/ResourcePack.zip
-#resource-pack-sha1: dummy
-
-calendar:
-    months:
-        - "Gaiarkhè"
-        - "Tempopidum"
-        - "Quinésil"
-        - "Éposendre"
-
-avancements:
-    miner:
-        brossage_minutieux:
-            enabled: true
-        pioche_aiguisee:
-            enabled: true
-        champ_magnetique:
-            enabled: true
-        cuisson_instantanee:
-            enabled: true
-        gain_25_exp_with_ore:
-            enabled: true
-        pioche_aiguisee_on_obsidian:
-            enabled: true
-        ores_300_with_champ_magnetique:
-            enabled: true
-
-    hunter:
-        camouflage:
-            enabled: true
-        esquive:
-            enabled: true
-        fleche_enflammee:
-            enabled: true
-        mise_en_bouteille:
-            enabled: true
-        fire_arrow_in_claim:
-            enabled: true
-        terrorism:
-            enabled: true
-        kill_with_camouflage:
-            enabled: true
-        kill_yourself_with_explosive_arrow:
-            enabled: true
-        dodge_life:
-            enabled: true
-
-    lumberjack:
-        timber:
-            enabled: true
-        chance_du_bucheron:
-            enabled: true
-        haricot_magique:
-            enabled: true
-        strip_tease:
-            enabled: true
-        strip_a_player:
-            enabled: true
-
-    farmer:
-        jeune_pousse:
-            enabled: true
-        engrais_naturel:
-            enabled: true
-        jumeaux:
-            enabled: true
-        pain_odorant:
-            enabled: true
-        engrais_a_player:
-            enabled: true
-        jumeaux_a_player:
-            enabled: true
-        kill_player_with_bread:
-            enabled: true
-        grow_100_potatoes:
-            enabled: true
 
 # Use BARRIER for any blocks
 # Top to bottom priority
 speed-paths:
-    grasspath:
-        speed: 0.4
-        blocks:
-            - DIRT_PATH
-
-    amethystpath:
-        speed: 0.6
-        blocks:
-            - BARRIER
-            - AMETHYST_BLOCK
+  grasspath:
+    speed: 0.4
+    blocks:
+      - DIRT_PATH
+  amethystpath:
+    speed: 0.6
+    blocks:
+      - BARRIER
+      - AMETHYST_BLOCK
+#resource-pack-url: https://laboulangerie.net/share/BreadDough/141bbd2.zip
+#resource-pack-sha1: fe89c4045cc7006baf95b135ffe661bf43c27aa8
 
 # Items which are results of crafting recipes
 # that should be disabled
 disabled-crafts:
-    - VEX_ARMOR_TRIM_SMITHING_TEMPLATE
+  - VEX_ARMOR_TRIM_SMITHING_TEMPLATE
+  - WILD_ARMOR_TRIM_SMITHING_TEMPLATE
 
 vault-reset-regions:
-    - world:spawn_trial
+  - world:vault_reset_area
 
 roll-radius: 10
