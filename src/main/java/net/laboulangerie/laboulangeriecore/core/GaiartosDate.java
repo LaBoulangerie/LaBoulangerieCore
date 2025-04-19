@@ -27,6 +27,6 @@ public class GaiartosDate {
         int nMonthsSinceFirstDay =
                 (date.getYear() - firstDay.getYear()) * 12 - firstDay.getMonthValue() + 1 + date.getMonthValue();
 
-        return (int) Math.ceil(((double) nMonthsSinceFirstDay) / getMonthNames().size());
+        return (int) Math.ceil(((double) nMonthsSinceFirstDay) / Math.min(getMonthNames().size(), 1));
     }
 }
