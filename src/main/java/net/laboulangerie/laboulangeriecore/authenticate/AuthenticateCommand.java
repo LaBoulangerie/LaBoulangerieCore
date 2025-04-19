@@ -18,11 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.object.Nation;
-import com.palmergames.bukkit.towny.object.Resident;
-import com.palmergames.bukkit.towny.object.Town;
-
+import me.angeschossen.lands.api.land.Land;
+import me.angeschossen.lands.api.nation.Nation;
+import me.angeschossen.lands.api.player.LandPlayer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
@@ -36,7 +34,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("§4This command is restricted to players!");
             return true;
         }
-        if (args.length < 1 || !Arrays.asList("player", "town", "nation").contains(args[0])) return false;
+        if ((args.length < 1 && !Arrays.asList("player","town", "nation").contains(args[0]))) return false;
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -50,44 +48,61 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("§4Votre objet est déjà authentifié !");
             return true;
         }
+        
+        LandPlayer resident = LaBoulangerieCore.apiLands.getLandPlayer(player.getUniqueId());
 
-        Resident resident = TownyUniverse.getInstance().getResident(player.getUniqueId());
         // Sign as a player, will be overwrote if nation or city parameter is provided
         String loreText = Authenticable.parseLore(
                 player.displayName() != null ? PlainTextComponentSerializer.plainText().serialize(player.displayName())
                         : player.getName(),
                 AuthorityType.PLAYER);
+
         // first letter correspond to the authority type, t = player, n = nation, t = town
         String authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString();
 
         switch (args[0]) {
             case "town":
-                Town town = resident.getTownOrNull();
+                Land town = resident.getLands().stream().findFirst().orElse(null);
 
-                if (town == null) {
-                    player.sendMessage("§4Vous n'êtes pas dans une ville !");
+                if(town == null){
+                    player.sendMessage("§4Vous n'êtes dans aucune ville !");
                     return true;
                 }
-                if (town.getMayor() != resident) {
-                    player.sendMessage("§4Pour authentifier un objet en tant que ville, vous devez en être le maire !");
+
+                if (!town.getDefaultArea().hasRoleFlag(resident.getUUID(), LaBoulangerieCore.townAuthenticateFlag)){
+                    player.sendMessage("§4Pour authentifier un objet au nom de votre ville, vous devez en avoir la permission !");
                     return true;
                 }
                 loreText = Authenticable.parseLore(town.getName().replace('_', ' '), AuthorityType.TOWN);
-                authorityId = AuthorityType.TOWN.getPrefix() + town.getUUID().toString();
+                authorityId = AuthorityType.TOWN.getPrefix() + town.getULID().toString();
                 break;
             case "nation":
-                Nation nation = resident.getNationOrNull();
+                Land land = resident.getLands().stream().findFirst().orElse(null);
 
-                if (nation == null) {
-                    player.sendMessage("§4Vous n'êtes pas dans une nation !");
+                if(land == null){
+                    player.sendMessage("§4Vous n'êtes dans aucune ville !");
                     return true;
                 }
-                if (nation.getKing() != resident) {
-                    player.sendMessage("§4Pour authentifier un objet en tant que nation, vous devez en être le roi !");
+
+                Nation nation = land.getNation();
+
+                if(nation == null){
+                    player.sendMessage("§4Vous n'êtes dans aucune nation !");
+                    return true;
+                }
+
+                if(!nation.getCapital().equals(resident.getLands().stream().findFirst().orElse(null))){
+                    player.sendMessage("§4Pour authentifier un objet au nom de votre nation, vous devez en habiter la capitale !");
+                    return true;
+                }
+
+                if (!nation.getCapital().getDefaultArea().hasRoleFlag(resident.getUUID(), LaBoulangerieCore.nationAuthenticateFlag)) {
+                    player.sendMessage("§4Pour authentifier un objet au nom de votre nation, vous devez en avoir la permission !");
                     return true;
                 }
                 loreText = Authenticable.parseLore(nation.getName().replace('_', ' '), AuthorityType.NATION);
-                authorityId = AuthorityType.NATION.getPrefix() + nation.getUUID().toString();
+                authorityId = AuthorityType.NATION.getPrefix() + nation.getULID().toString();
+                break;
             case "player":
             default:
                 break;

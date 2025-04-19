@@ -16,23 +16,13 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.palmergames.bukkit.towny.TownyUniverse;
-import com.palmergames.bukkit.towny.event.DeleteNationEvent;
-import com.palmergames.bukkit.towny.event.NationRemoveTownEvent;
-import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
-import com.palmergames.bukkit.towny.event.nation.NationRankAddEvent;
-import com.palmergames.bukkit.towny.event.nation.NationRankRemoveEvent;
-import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
-import com.palmergames.bukkit.towny.exceptions.TownyException;
-import com.palmergames.bukkit.towny.object.Nation;
-
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.houses.House;
 
 public class HouseShop implements Listener {
-    public static void displayShop(Player player, short page) {
+    /*public static void displayShop(Player player, short page) {
         int invSize = 27;
         Inventory inv = Bukkit.createInventory(null, invSize,
                 Component.text("§2Maisons de nation - page " + (page + 1)));
@@ -201,5 +191,5 @@ public class HouseShop implements Listener {
             LaBoulangerieCore.nationHouseHolder
                     .freeHouse(LaBoulangerieCore.nationHouseHolder.getHouseOfNation(event.getNationUUID()));
         }
-    }
+    } */
 }

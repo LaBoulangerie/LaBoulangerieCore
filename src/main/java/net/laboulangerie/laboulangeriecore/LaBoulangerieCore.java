@@ -13,9 +13,15 @@ import org.betonquest.betonquest.exceptions.InstructionParseException;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import me.angeschossen.lands.api.LandsIntegration;
+import me.angeschossen.lands.api.flags.enums.FlagTarget;
+import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
+import me.angeschossen.lands.api.flags.type.RoleFlag;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
@@ -50,9 +56,9 @@ import net.laboulangerie.laboulangeriecore.core.houses.ListHouseCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.housewand.HouseWandCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.housewand.HouseWandListener;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShop;
-import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShopCmd;
+//import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.HouseShopCmd;
 import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHouseHolder;
-import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHousesCmd;
+//import net.laboulangerie.laboulangeriecore.core.houses.nationhouse.NationHousesCmd;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
@@ -76,6 +82,9 @@ public class LaBoulangerieCore extends JavaPlugin {
     public static Economy econ = null;
     public static HousesManager housesManager;
     public static NationHouseHolder nationHouseHolder;
+    public static LandsIntegration apiLands;
+    public static RoleFlag townAuthenticateFlag;
+    public static RoleFlag nationAuthenticateFlag;
 
     private ComponentRenderer componentRenderer;
     private SpeedPathManager speedPathManager;
@@ -89,7 +98,6 @@ public class LaBoulangerieCore extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        LaBoulangerieCore.PLUGIN = this;
         ConfigurationSerialization.registerClass(House.class);
         UsersData.init();
         housesManager = new HousesManager(new File(getDataFolder(), "houses"));
@@ -138,10 +146,10 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("deletehouse").setExecutor(new DeleteHouseCmd());
         getCommand("houseflag").setExecutor(new HouseFlagCmd());
         getCommand("housemembers").setExecutor(new HouseMembersCmd());
-        getCommand("nationhouses").setExecutor(new NationHousesCmd());
+        //getCommand("nationhouses").setExecutor(new NationHousesCmd());
         getCommand("core").setExecutor(new CoreCommand());
         getCommand("easteregg").setExecutor(new eEggCommand());
-        getCommand("houseshop").setExecutor(new HouseShopCmd());
+        //getCommand("houseshop").setExecutor(new HouseShopCmd());
         getCommand("spawn").setExecutor(new SpawnCmd());
         getCommand("seen").setExecutor(new SeenCmd());
         getCommand("event").setExecutor(new EventCmd());
@@ -244,6 +252,47 @@ public class LaBoulangerieCore extends JavaPlugin {
         }.runTaskTimer(this, 0, 20 * 60 * 60);
 
         getLogger().info("Enabled Successfully");
+    }
+
+    @Override
+    public void onLoad() {
+        LaBoulangerieCore.PLUGIN = this;
+
+        apiLands = LandsIntegration.of(PLUGIN);
+
+        townAuthenticateFlag = RoleFlag
+            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "town_authent")
+            .setDisplay(true)
+            .setDisplayName("Authentification au nom de la ville")
+            .setDescription("Autoriser ce rôle à authentifier un objet au nom de la ville.")
+            .setIcon(ItemStack.of(Material.NAME_TAG))
+            .setActiveInWar(true)
+            .setAlwaysAllowInWilderness(true)
+            .setApplyInSubareas(false)
+            .setToggleableByNation(false);
+
+        nationAuthenticateFlag = RoleFlag
+            .of(apiLands, FlagTarget.PLAYER, RoleFlagCategory.ACTION, "nation_authent")
+            .setDisplay(true)
+            .setDisplayName("Authentification au nom de la nation")
+            .setDescription("Autoriser ce rôle à authentifier un objet au nom de la nation (ne fonctionne que dans la capitale).")
+            .setIcon(ItemStack.of(Material.NAME_TAG))
+            .setActiveInWar(true)
+            .setAlwaysAllowInWilderness(true)
+            .setApplyInSubareas(true)
+            .setToggleableByNation(false);
+
+        apiLands.onLoad(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    apiLands.getFlagRegistry().register(townAuthenticateFlag);
+                    apiLands.getFlagRegistry().register(nationAuthenticateFlag);
+                } catch (Exception e) {
+                    getLogger().info("authentification flags already registered.");
+                }
+            }
+        });
     }
 
     public ComponentRenderer getComponentRenderer() {

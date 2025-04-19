@@ -22,9 +22,6 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.palmergames.bukkit.towny.TownyAPI;
-import com.palmergames.bukkit.towny.object.Town;
-
 import net.laboulangerie.laboulangeriemmo.LaBoulangerieMmo;
 import net.laboulangerie.laboulangeriemmo.api.ability.AbilityArchetype;
 import net.laboulangerie.laboulangeriemmo.api.player.MmoPlayer;
@@ -39,7 +36,7 @@ public class AdvancementListeners implements Listener {
 
     @EventHandler
     public void onPlayerUseAbility(MmoPlayerUseAbilityEvent event) {
-        Player player = Bukkit.getPlayer(event.getMmoPlayer().getUniqueId());
+        /*Player player = Bukkit.getPlayer(event.getMmoPlayer().getUniqueId());
         AbilityArchetype abilityArchetype = event.getAbility();
         switch (abilityArchetype.identifier) {
             case "animal-twins":
@@ -97,17 +94,17 @@ public class AdvancementListeners implements Listener {
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
     public boolean doesPlayerHaveRequiredLevel(MmoPlayer mmoPlayer, AbilityArchetype ability, String talentId) {
-        if (mmoPlayer.getTalent(talentId).getLevel() >= ability.requiredLevel) return true;
+        /*if (mmoPlayer.getTalent(talentId).getLevel() >= ability.requiredLevel) return true;*/
         return false;
     }
 
     @EventHandler
     public void onPlayerKillPlayer(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player) {
+        /*if (event.getEntity() instanceof Player) {
             // Player killer = (Player) event.getDamager();
             Player victim = (Player) event.getEntity();
             if (event.getFinalDamage() > victim.getHealth()) {
@@ -180,12 +177,12 @@ public class AdvancementListeners implements Listener {
                     }
                 }
             }
-        }
+        }*/
     }
 
     @EventHandler
     public void onPlayerInteractWithEntity(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();
+        /*Player player = event.getPlayer();
         MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
         if (event.getRightClicked() instanceof Player
                 && player.getInventory().getItemInMainHand().getType() == Material.BONE_MEAL
@@ -214,12 +211,12 @@ public class AdvancementListeners implements Listener {
             mmoPlayer.useAbility(
                     LaBoulangerieMmo.talentsRegistry.getTalent("farmer").abilitiesArchetypes.get("better-bonemeal"),
                     LaBoulangerieMmo.talentsRegistry.getTalent("farmer"));
-        }
+        }*/
     }
 
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent event) {
-        Player player = event.getPlayer();
+        /*Player player = event.getPlayer();
         Block block = event.getBlock();
         MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
         if (player.getActivePotionEffects().contains(player.getPotionEffect(PotionEffectType.HASTE))) {
@@ -239,13 +236,13 @@ public class AdvancementListeners implements Listener {
             if (event.getExpToDrop() * 5 >= 25) {
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/gain_25_exp_with_ore");
             }
-        }
+        }*/
     }
 
 
     @EventHandler
     public void whenArrowIsShot(ProjectileHitEvent event) {
-        if (event.getEntity().getShooter() instanceof Player) {
+        /*if (event.getEntity().getShooter() instanceof Player) {
             Player player = (Player) event.getEntity().getShooter();
             MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
             Town town = TownyAPI.getInstance().getResident(player).getTownOrNull();
@@ -260,12 +257,12 @@ public class AdvancementListeners implements Listener {
                 AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/fire_arrow_in_claim");
             }
 
-        }
+        }*/
     }
 
     @EventHandler
     public void whenPlayerDies(PlayerDeathEvent event) {
-        Player player = event.getPlayer();
+        /*Player player = event.getPlayer();
         MmoPlayer mmoPlayer = LaBoulangerieMmo.PLUGIN.getMmoPlayerManager().getPlayer(player);
         if (event.getPlayer().getLastDamageCause().getCause() == DamageCause.FALL
                 && cooldowns_dodge.containsKey(player.getUniqueId())
@@ -274,6 +271,6 @@ public class AdvancementListeners implements Listener {
                         "hunter")
                 && cooldowns_dodge.get(player.getUniqueId()) > System.currentTimeMillis()) {
             AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/dodge_life");
-        }
+        }*/
     }
 }

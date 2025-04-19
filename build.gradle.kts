@@ -1,5 +1,5 @@
 group = "net.laboulangerie"
-version = "1.0.4"
+version = "1.1.0"
 description = "LaBoulangerieCore"
 
 plugins {
@@ -10,7 +10,6 @@ plugins {
 repositories {
     mavenLocal()
     maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://repo.glaremasters.me/repository/towny/")
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://jitpack.io")
@@ -29,7 +28,6 @@ configurations {
 
 dependencies {
     paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
-    compileOnly("com.palmergames.bukkit.towny:towny:0.100.4.12")
     compileOnly("me.clip:placeholderapi:2.11.6")
     compileOnly("net.luckperms:api:5.4")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
@@ -40,6 +38,7 @@ dependencies {
     compileOnly("com.github.LaBoulangerie:Gringotts:master-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
+    compileOnly("com.github.angeschossen:LandsAPI:7.10.13")
 }
 
 java {
