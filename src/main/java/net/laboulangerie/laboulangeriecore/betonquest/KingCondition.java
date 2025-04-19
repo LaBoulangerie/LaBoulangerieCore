@@ -16,7 +16,7 @@ public class KingCondition implements PlayerCondition {
         for( Land land : resident.getLands()){
             Nation nation = land.getNation();
 
-            if(nation == null) return false;
+            if(nation == null) continue;
 
             try{
                 if(nation.getOwnerUID().equals(profile.getPlayerUUID())) return true;
