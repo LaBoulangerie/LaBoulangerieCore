@@ -21,7 +21,7 @@ public class KingCondition implements PlayerCondition {
             try{
                 if(nation.getOwnerUID().equals(profile.getPlayerUUID())) return true;
             } catch (Exception e) {
-                return false;
+                continue;
             }
         }
 
