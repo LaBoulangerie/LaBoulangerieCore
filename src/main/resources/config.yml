@@ -1,9 +1,10 @@
-authenticate: {}
+authenticate:
+  lore: "§6Authentifié par %authority% (%type%)"
 
 tab:
   # MiniMessage format and PAPI placeholders allowed
   header: <bold><gradient:#FF8C42:#F9C784>La Boulangerie</gradient></bold>
-  name: "<papi:luckperms_prefix> <papi:player_name> <papi:player_colored_ping>"
+  name: "<papi:luckperms_meta_prefixtab> <papi:player_name> <papi:player_colored_ping>"
   footer: "<papi:lands_land_role>\n
     <papi:lands_land_name> <papi:lands_nation_name>\n
     <color:#4E598C>mc.laboulangerie.net</color>\n
@@ -22,6 +23,9 @@ links:
   rules: https://laboulangerie.net/rules
   map: https://laboulangerie.net/map
   librahost: https://librahost.fr
+
+misc:
+  declined-pack-kick-msg: "<red>Veuillez accepter le pack de ressources pour jouer s'il vous plaît !"
 
 bundle:
   item-name: "&a>> &e&lBourse &a<<"
@@ -53,9 +57,7 @@ eastereggs:
       - "§f/eegg help§7: §aCommmand to show this page."
 
   settings: {}
-first-join-commands:
-  - rg addmember -w "world" montgolfiere_out %player%
-  - map hide %player%
+first-join-commands: {}
 spawn:
   ==: org.bukkit.Location
   world: world
@@ -103,6 +105,13 @@ killing-dragon-reward: 500 # Number of divine favors to distribute between the k
 dragon-health: 2000
 crystal-nerf-percentage: 65.0 #Damage diminution percentage
 crystal-cooldown: 3000 #Cooldown in milliseconds : 1000ms = 1s
+
+calendar:
+    months:
+        - "Gaiarkhè"
+        - "Tempopidum"
+        - "Quinésil"
+        - "Éposendre"
 
 # Use BARRIER for any blocks
 # Top to bottom priority
