@@ -49,10 +49,11 @@ public class RollCommands implements CommandExecutor {
             }
         }
 
-        if (cmd.getName().equals("roll")){ // Envoie du résultat aux joueurs proches
+        if (cmd.getName().equals("roll")){ // Envoie du résultat ...
             for (Player targetInRadius : Bukkit.getOnlinePlayers()){
                 YamlConfiguration targetData = UsersData.getOrCreate(targetInRadius);
                 if (targetInRadius.equals(player)) {
+                    // ... au sender.
                     targetInRadius.sendMessage(
                         Component.text(
                             "Vous avez jeté les dés de votre destin, et vous avez obtenu " + result + "/" + max +
@@ -60,6 +61,7 @@ public class RollCommands implements CommandExecutor {
                         ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
                     );
                 } else if (targetInRadius.getWorld().equals(player.getWorld()) && targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-radius", 10)){  
+                    // ... aux joueurs dans le radius.
                     targetInRadius.sendMessage(
                         Component.text(
                             PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
@@ -67,6 +69,7 @@ public class RollCommands implements CommandExecutor {
                         ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
                     );
                 } else if (targetData.getBoolean("enable-spy-roll")) {
+                    // ... aux admins avec le spyroll actif.
                     targetInRadius.sendMessage(
                         Component.text(
                             PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
