@@ -1,5 +1,5 @@
 name: LaBoulangerieCore
-version: 1.1.0
+version: 1.1.1
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: "1.21"
 authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle]
@@ -87,7 +87,13 @@ commands:
         description: Return a random number between 1 and <max> to all the players
         usage: /wroll <max>
         aliases: [wr]
-        permission: laboulangeriecore.wroll
+        permission: laboulangeriecore.admin
+        permission-message: You do not have <permission>
+    spyroll:
+        description: Enable/disable all roll visiblity for the sender
+        usage: /spyroll
+        aliases: [sr]
+        permission: laboulangeriecore.admin
         permission-message: You do not have <permission>
 permissions:
     laboulangeriecore.*:
@@ -100,7 +106,6 @@ permissions:
             - laboulangeriecore.houseshop
             - laboulangeriecore.seen
             - laboulangeriecore.eventassistant
-            - laboulangeriecore.wroll
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
@@ -116,6 +121,4 @@ permissions:
     laboulangeriecore.seen:
         default: op
     laboulangeriecore.eventassistant:
-        default: op
-    laboulangeriecore.wroll:
         default: op
