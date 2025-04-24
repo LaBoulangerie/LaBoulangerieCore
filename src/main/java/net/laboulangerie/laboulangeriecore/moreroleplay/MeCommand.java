@@ -37,7 +37,7 @@ public class MeCommand implements CommandExecutor {
 
         for (Player targetInRadius : Bukkit.getOnlinePlayers()){ // Envoie de l'action ...
             YamlConfiguration targetData = UsersData.getOrCreate(targetInRadius);
-            if (targetInRadius.getWorld().equals(player.getWorld()) && targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-radius", 10)){  
+            if (targetInRadius.getWorld().equals(player.getWorld()) && targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("rp-radius", 10)){  
                 // ... aux joueurs dans le radius.
                 targetInRadius.sendMessage(
                     Component.text(

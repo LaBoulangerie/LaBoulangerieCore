@@ -28,7 +28,7 @@ public class RollCommand implements CommandExecutor {
         LaBoulangerieCore.PLUGIN.getServer().getScheduler().runTaskTimerAsynchronously(LaBoulangerieCore.PLUGIN, () -> {
             // Nettoyage de rollCooldown
             for (Map.Entry<UUID,Long> entry : commandCooldown.entrySet()) {
-                if ((System.currentTimeMillis() - entry.getValue()) > (LaBoulangerieCore.PLUGIN.getConfig().getDouble("roll-cooldown", 15) * 1000)) {
+                if ((System.currentTimeMillis() - entry.getValue()) > (LaBoulangerieCore.PLUGIN.getConfig().getDouble("rp-cooldown", 15) * 1000)) {
                     commandCooldown.remove(entry.getKey());
                 }
             } 
@@ -45,10 +45,10 @@ public class RollCommand implements CommandExecutor {
         Player player = (Player) sender;
         long cooldown = System.currentTimeMillis() - commandCooldown.getOrDefault(player.getUniqueId(), (long) 0);
 
-        if(cooldown < LaBoulangerieCore.PLUGIN.getConfig().getLong("roll-cooldown", 15) * 1000) { // Vérification du cooldown du sender
+        if(cooldown < LaBoulangerieCore.PLUGIN.getConfig().getLong("rp-cooldown", 15) * 1000) { // Vérification du cooldown du sender
             sender.sendMessage(
                 Component.text(
-                    "Vous devez attendre " + LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-cooldown", 15) + " seconde(s) entre chaque /roll."
+                    "Vous devez attendre " + LaBoulangerieCore.PLUGIN.getConfig().getInt("rp-cooldown", 15) + " seconde(s) entre chaque /roll."
                 ).color(NamedTextColor.DARK_RED)
             );
 
@@ -70,7 +70,7 @@ public class RollCommand implements CommandExecutor {
                         (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".")
                     ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
                 );
-            } else if (targetInRadius.getWorld().equals(player.getWorld()) && targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-radius", 10)){  
+            } else if (targetInRadius.getWorld().equals(player.getWorld()) && targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("rp-radius", 10)){  
                 // ... aux joueurs dans le radius.
                 targetInRadius.sendMessage(
                     Component.text(
