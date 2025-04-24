@@ -138,3 +138,5 @@ vault-reset-regions:
   - world:vault_reset_area
 
 roll-radius: 10
+
+roll-cooldown: 15 # in seconds

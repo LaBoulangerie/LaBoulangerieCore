@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
@@ -22,8 +24,10 @@ import me.angeschossen.lands.api.LandsIntegration;
 import me.angeschossen.lands.api.flags.enums.FlagTarget;
 import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateListener;
@@ -71,11 +75,13 @@ import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradeOverflowListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
-import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommands;
+import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.SpyRollCommands;
+import net.laboulangerie.laboulangeriecore.moreroleplay.WrollCommand;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
+
 import net.milkbowl.vault.economy.Economy;
 
 public class LaBoulangerieCore extends JavaPlugin {
@@ -157,8 +163,8 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("speed").setExecutor(new SpeedCommand());
         getCommand("realname").setExecutor(new RealNameCommand());
         getCommand("hat").setExecutor(new HatCommand());
-        getCommand("roll").setExecutor(new RollCommands());
-        getCommand("wroll").setExecutor(new RollCommands());
+        getCommand("roll").setExecutor(new RollCommand());
+        getCommand("wroll").setExecutor(new WrollCommand());
         getCommand("spyroll").setExecutor(new SpyRollCommands());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
