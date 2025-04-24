@@ -11,19 +11,28 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
-public class WrollCommand implements CommandExecutor {
+public class WNarrationCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-        int max = 20;
-        int result = MoreRoleplayUtil.getResult(sender, args, max);
+        if(args.length == 0) { // Vérification des arguments
+            sender.sendMessage(Component.text("Vous devez spécifier une narration. (/" + cmd.getName() + " [narration])", NamedTextColor.DARK_RED));
+            return true;
+        }
+
+        String narration = "[Narration] ";
+
+        for(String arg : args) { // Création du texte
+            narration += " " + arg;
+        }
+        
 
         for (Player targetInServer : Bukkit.getOnlinePlayers()){ // Envoie du résultat à tous les joueurs
             targetInServer.sendMessage(
                 Component.text(
-                    "[Roll] Les dieux ont jeté les dés de vos destins, et ont obtenu " + result + "/" + max +
-                    (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".")
-                ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
-                .decorate(TextDecoration.BOLD));
+                    narration
+                ).color(NamedTextColor.YELLOW)
+                .decorate(TextDecoration.BOLD)
+            );
 
             targetInServer.playSound(targetInServer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
         }

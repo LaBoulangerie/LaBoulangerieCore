@@ -67,6 +67,7 @@ import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
+import net.laboulangerie.laboulangeriecore.lands.LandsListener;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.DisableCraftListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
@@ -75,8 +76,11 @@ import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradeOverflowListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
+import net.laboulangerie.laboulangeriecore.moreroleplay.ConsequenceCommand;
+import net.laboulangerie.laboulangeriecore.moreroleplay.MeCommand;
+import net.laboulangerie.laboulangeriecore.moreroleplay.NarrationCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommand;
-import net.laboulangerie.laboulangeriecore.moreroleplay.SpyRollCommands;
+import net.laboulangerie.laboulangeriecore.moreroleplay.SpyRPCommands;
 import net.laboulangerie.laboulangeriecore.moreroleplay.WrollCommand;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
@@ -165,7 +169,10 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("hat").setExecutor(new HatCommand());
         getCommand("roll").setExecutor(new RollCommand());
         getCommand("wroll").setExecutor(new WrollCommand());
-        getCommand("spyroll").setExecutor(new SpyRollCommands());
+        getCommand("spyrp").setExecutor(new SpyRPCommands());
+        getCommand("me").setExecutor(new MeCommand());
+        getCommand("narration").setExecutor(new NarrationCommand());
+        getCommand("consequence").setExecutor(new ConsequenceCommand());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("youtube").setExecutor(new LinkCommands());
@@ -333,7 +340,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new TabListener(), new ElytraGenRemover(), new SpeedPathListener(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
-                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener());
+                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener(), new LandsListener());
 
         if (getServer().getPluginManager().getPlugin("QuickShop-Hikari") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);

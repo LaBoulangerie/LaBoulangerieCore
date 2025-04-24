@@ -66,7 +66,7 @@ public class RollCommand implements CommandExecutor {
                 // ... au sender.
                 targetInRadius.sendMessage(
                     Component.text(
-                        "Vous avez jeté les dés de votre destin, et vous avez obtenu " + result + "/" + max +
+                        "[Roll] Vous avez jeté les dés de votre destin, et vous avez obtenu " + result + "/" + max +
                         (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".")
                     ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
                 );
@@ -74,7 +74,7 @@ public class RollCommand implements CommandExecutor {
                 // ... aux joueurs dans le radius.
                 targetInRadius.sendMessage(
                     Component.text(
-                        PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
+                        "[Roll] " + PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
                         (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".") + " [" + (int)player.getLocation().distance(targetInRadius.getLocation()) + " bloc(s)]"
                     ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
                 );
@@ -82,7 +82,7 @@ public class RollCommand implements CommandExecutor {
                 // ... aux admins avec le spyroll actif.
                 targetInRadius.sendMessage(
                     Component.text(
-                        PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
+                        "[Roll] " + PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
                         (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".")
                     ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
                     .append(Component.text(
