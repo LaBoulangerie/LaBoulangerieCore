@@ -24,7 +24,7 @@ public class MeCommand implements CommandExecutor {
         }
 
         if(args.length == 0) { // Vérification des arguments
-            sender.sendMessage(Component.text("Vous devez spécifier une action. (/" + cmd.getName() + "[action])", NamedTextColor.DARK_RED));
+            sender.sendMessage(Component.text("Vous devez spécifier une action. (/" + cmd.getName() + " [action])", NamedTextColor.DARK_RED));
             return true;
         }
         
