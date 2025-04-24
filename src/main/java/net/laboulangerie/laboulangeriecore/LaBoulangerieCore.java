@@ -81,6 +81,7 @@ import net.laboulangerie.laboulangeriecore.moreroleplay.MeCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.NarrationCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.SpyRPCommands;
+import net.laboulangerie.laboulangeriecore.moreroleplay.WNarrationCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.WrollCommand;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
@@ -172,6 +173,7 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("spyrp").setExecutor(new SpyRPCommands());
         getCommand("me").setExecutor(new MeCommand());
         getCommand("narration").setExecutor(new NarrationCommand());
+        getCommand("wnarration").setExecutor(new WNarrationCommand());
         getCommand("consequence").setExecutor(new ConsequenceCommand());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());

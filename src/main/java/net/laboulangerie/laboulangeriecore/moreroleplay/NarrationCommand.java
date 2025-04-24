@@ -37,9 +37,9 @@ public class NarrationCommand implements CommandExecutor {
                     ).color(NamedTextColor.YELLOW)
                     .decorate(TextDecoration.BOLD)
                 );
+                
+                targetInRadius.playSound(targetInRadius.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
             }
-
-            targetInRadius.playSound(targetInRadius.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
         }
         
         return true;
