@@ -29,7 +29,7 @@ public class MeCommand implements CommandExecutor {
         }
         
         Player player = (Player) sender;
-        String action = "[Action] ";
+        String action = "";
 
         for(String arg : args) { // Création du texte
             action += " " + arg;
@@ -41,7 +41,7 @@ public class MeCommand implements CommandExecutor {
                 // ... aux joueurs dans le radius.
                 targetInRadius.sendMessage(
                     Component.text(
-                        PlainTextComponentSerializer.plainText().serialize(player.displayName()) + action + (targetInRadius.equals(player) ? (" [" + (int)player.getLocation().distance(targetInRadius.getLocation()) + " bloc(s)]") : "")
+                        "[Action] " + PlainTextComponentSerializer.plainText().serialize(player.displayName()) + action + (!targetInRadius.equals(player) ? (" [" + (int)player.getLocation().distance(targetInRadius.getLocation()) + " bloc(s)]") : "")
                     ).color(NamedTextColor.YELLOW)
                 );
             } else if (targetData.getBoolean("enable-spy-roll")) {
