@@ -21,7 +21,7 @@ public class NarrationCommand implements CommandExecutor {
         }
         
         Player player = (Player) sender;
-        String narration = "[Narration] ";
+        String narration = "[Narration]";
 
         for(String arg : args) { // Création du texte
             narration += " " + arg;

@@ -19,7 +19,7 @@ public class WNarrationCommand implements CommandExecutor {
             return true;
         }
 
-        String narration = "[Narration] ";
+        String narration = "[Narration]";
 
         for(String arg : args) { // Création du texte
             narration += " " + arg;
