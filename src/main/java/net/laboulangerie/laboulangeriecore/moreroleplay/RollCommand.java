@@ -45,7 +45,7 @@ public class RollCommand implements CommandExecutor {
         Player player = (Player) sender;
         long cooldown = System.currentTimeMillis() - commandCooldown.getOrDefault(player.getUniqueId(), (long) 0);
 
-        if(cooldown > LaBoulangerieCore.PLUGIN.getConfig().getLong("roll-cooldown", 15) * 1000) { // Vérification du cooldown du sender
+        if(cooldown < LaBoulangerieCore.PLUGIN.getConfig().getLong("roll-cooldown", 15) * 1000) { // Vérification du cooldown du sender
             sender.sendMessage(
                 Component.text(
                     "Vous devez attendre " + LaBoulangerieCore.PLUGIN.getConfig().getInt("roll-cooldown", 15) + " seconde(s) entre chaque /roll."
@@ -53,6 +53,8 @@ public class RollCommand implements CommandExecutor {
             );
 
             return true;
+        } else {
+            commandCooldown.put(player.getUniqueId(), System.currentTimeMillis());
         }
 
         int max = 20;
