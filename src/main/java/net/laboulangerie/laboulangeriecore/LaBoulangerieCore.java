@@ -342,7 +342,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new TabListener(), new ElytraGenRemover(), new SpeedPathListener(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
-                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener(), new LandsListener());
+                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener()/*, new LandsListener()*/);
 
         if (getServer().getPluginManager().getPlugin("QuickShop-Hikari") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
