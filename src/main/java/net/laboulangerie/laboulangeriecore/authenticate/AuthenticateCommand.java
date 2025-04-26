@@ -25,6 +25,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
+import net.laboulangerie.laboulangeriecore.lands.LandsUtils;
 
 public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
@@ -62,7 +63,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0]) {
             case "town":
-                Land town = resident.getLands().stream().findFirst().orElse(null);
+                Land town = LandsUtils.getPlayerMainLandOrNull(LaBoulangerieCore.apiLands, player);
 
                 if(town == null){
                     player.sendMessage("§4Vous n'êtes dans aucune ville !");

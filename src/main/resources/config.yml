@@ -137,4 +137,6 @@ disabled-crafts:
 vault-reset-regions:
   - world:vault_reset_area
 
-roll-radius: 10
+rp-radius: 10
+
+rp-cooldown: 15 # in seconds
