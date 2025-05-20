@@ -1,5 +1,5 @@
 name: LaBoulangerieCore
-version: 1.1.0
+version: 1.1.1
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: "1.21"
 authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle]
@@ -80,14 +80,41 @@ commands:
         description: Put something on your head
         usage: /hat
     roll:
-        description: Return a random number between 1 and <max>
+        description: Send a random number between 1 and <max> to nearby players
         usage: /roll <max>
         aliases: [r]
     wroll:
-        description: Return a random number between 1 and <max> to all the players
+        description: Send a random number between 1 and <max> to all players
         usage: /wroll <max>
         aliases: [wr]
-        permission: laboulangeriecore.wroll
+        permission: laboulangeriecore.admin
+        permission-message: You do not have <permission>
+    spyrp:
+        description: Enable/disable all roll visiblity for the sender
+        usage: /spyrp
+        aliases: [sr]
+        permission: laboulangeriecore.admin
+        permission-message: You do not have <permission>
+    me:
+        description: Make a message in the chat that send the player's action to nearby players
+        usage: /me [action]
+    narration:
+        description: Make a message in the chat that send a narration text to nearby players
+        usage: /narration [narration]
+        aliases: [nar, nr]
+        permission: laboulangeriecore.admin
+        permission-message: You do not have <permission>
+    wnarration:
+        description: Make a message in the chat that send a narration text to all players
+        usage: /wnarration [narration]
+        aliases: [wnar, wnr]
+        permission: laboulangeriecore.admin
+        permission-message: You do not have <permission>
+    consequence:
+        description: Send a consequence text to a player
+        usage: /consequence [player] [narration]
+        aliases: [cons, c]
+        permission: laboulangeriecore.admin
         permission-message: You do not have <permission>
 permissions:
     laboulangeriecore.*:
@@ -100,7 +127,6 @@ permissions:
             - laboulangeriecore.houseshop
             - laboulangeriecore.seen
             - laboulangeriecore.eventassistant
-            - laboulangeriecore.wroll
     laboulangeriecore.authenticate:
         default: op
     laboulangeriecore.divinefavors.admin:
@@ -116,6 +142,4 @@ permissions:
     laboulangeriecore.seen:
         default: op
     laboulangeriecore.eventassistant:
-        default: op
-    laboulangeriecore.wroll:
         default: op

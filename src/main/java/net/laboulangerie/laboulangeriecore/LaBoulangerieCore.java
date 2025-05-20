@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
 import org.betonquest.betonquest.BetonQuest;
 import org.betonquest.betonquest.Instruction;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.api.quest.condition.PlayerConditionFactory;
 import org.betonquest.betonquest.exceptions.InstructionParseException;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
@@ -22,8 +24,10 @@ import me.angeschossen.lands.api.LandsIntegration;
 import me.angeschossen.lands.api.flags.enums.FlagTarget;
 import me.angeschossen.lands.api.flags.enums.RoleFlagCategory;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateListener;
@@ -63,6 +67,7 @@ import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
+import net.laboulangerie.laboulangeriecore.lands.LandsListener;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.DisableCraftListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
@@ -71,10 +76,17 @@ import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.TradeOverflowListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
-import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommands;
+import net.laboulangerie.laboulangeriecore.moreroleplay.ConsequenceCommand;
+import net.laboulangerie.laboulangeriecore.moreroleplay.MeCommand;
+import net.laboulangerie.laboulangeriecore.moreroleplay.NarrationCommand;
+import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommand;
+import net.laboulangerie.laboulangeriecore.moreroleplay.SpyRPCommands;
+import net.laboulangerie.laboulangeriecore.moreroleplay.WNarrationCommand;
+import net.laboulangerie.laboulangeriecore.moreroleplay.WrollCommand;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
+
 import net.milkbowl.vault.economy.Economy;
 
 public class LaBoulangerieCore extends JavaPlugin {
@@ -156,8 +168,13 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("speed").setExecutor(new SpeedCommand());
         getCommand("realname").setExecutor(new RealNameCommand());
         getCommand("hat").setExecutor(new HatCommand());
-        getCommand("roll").setExecutor(new RollCommands());
-        getCommand("wroll").setExecutor(new RollCommands());
+        getCommand("roll").setExecutor(new RollCommand());
+        getCommand("wroll").setExecutor(new WrollCommand());
+        getCommand("spyrp").setExecutor(new SpyRPCommands());
+        getCommand("me").setExecutor(new MeCommand());
+        getCommand("narration").setExecutor(new NarrationCommand());
+        getCommand("wnarration").setExecutor(new WNarrationCommand());
+        getCommand("consequence").setExecutor(new ConsequenceCommand());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("youtube").setExecutor(new LinkCommands());
@@ -325,7 +342,7 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new TabListener(), new ElytraGenRemover(), new SpeedPathListener(),
                 new TradesHook(), new HouseShop(), new HouseWandListener(), new HouseListener(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(), new DragonsListener(),
-                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener());
+                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener(), new LandsListener());
 
         if (getServer().getPluginManager().getPlugin("QuickShop-Hikari") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);

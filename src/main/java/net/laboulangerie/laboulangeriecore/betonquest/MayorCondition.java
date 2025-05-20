@@ -4,19 +4,20 @@ import org.betonquest.betonquest.api.profiles.Profile;
 import org.betonquest.betonquest.api.quest.condition.PlayerCondition;
 import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
+import me.angeschossen.lands.api.land.Area;
 import me.angeschossen.lands.api.land.Land;
-import me.angeschossen.lands.api.player.LandPlayer;
+
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
+import net.laboulangerie.laboulangeriecore.lands.LandsUtils;
 
 public class MayorCondition implements PlayerCondition {
     @Override
     public boolean check(Profile profile) throws QuestRuntimeException {
-        LandPlayer resident = (LandPlayer)LaBoulangerieCore.apiLands.getOfflineLandPlayer(profile.getPlayerUUID());
+        Land mainLand = LandsUtils.getPlayerMainLandOrNull(LaBoulangerieCore.apiLands, profile.getPlayer());
 
-        for( Land land : resident.getLands()){
-            if(land.getOwnerUID().equals(profile.getPlayerUUID())){
-                return true;
-            }
+        if(mainLand != null){
+            Area area = mainLand.getDefaultArea();
+            return area.hasRoleFlag(profile.getPlayerUUID(), LaBoulangerieCore.townAuthenticateFlag);
         }
 
         return false;
