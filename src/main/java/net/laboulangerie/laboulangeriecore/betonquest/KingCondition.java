@@ -6,7 +6,7 @@ import org.betonquest.betonquest.exceptions.QuestRuntimeException;
 
 import me.angeschossen.lands.api.land.Area;
 import me.angeschossen.lands.api.land.Land;
-
+import me.angeschossen.lands.api.nation.Nation;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.lands.LandsUtils;
 
@@ -15,9 +15,13 @@ public class KingCondition implements PlayerCondition {
         Land mainLand = LandsUtils.getPlayerMainLandOrNull(LaBoulangerieCore.apiLands, profile.getPlayer());
 
         if(mainLand != null){
-            if(mainLand.getNation().getCapital().equals(mainLand)){
-                Area area = mainLand.getDefaultArea();
-                return area.hasRoleFlag(profile.getPlayerUUID(), LaBoulangerieCore.nationAuthenticateFlag);
+            Nation nation = mainLand.getNation();
+            
+            if(nation != null){
+                if(nation.getCapital().equals(mainLand)){
+                    Area area = mainLand.getDefaultArea();
+                    return area.hasRoleFlag(profile.getPlayerUUID(), LaBoulangerieCore.nationAuthenticateFlag);
+                }
             }
         }
 
