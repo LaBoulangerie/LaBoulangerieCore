@@ -21,11 +21,7 @@ public class NarrationCommand implements CommandExecutor {
         }
         
         Player player = (Player) sender;
-        String narration = "[Narration]";
-
-        for(String arg : args) { // Création du texte
-            narration += " " + arg;
-        }
+        String narration = "[Narration] " + String.join(" ", args);
 
         for (Player targetInRadius : Bukkit.getOnlinePlayers()){ // Envoie du résultat à tous les joueurs
             if (targetInRadius.getWorld().equals(player.getWorld()) && targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("rp-radius", 10)){  

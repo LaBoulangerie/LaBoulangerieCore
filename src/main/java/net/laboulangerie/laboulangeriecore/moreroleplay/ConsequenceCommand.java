@@ -1,5 +1,7 @@
 package net.laboulangerie.laboulangeriecore.moreroleplay;
 
+import java.util.Arrays;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -28,13 +30,7 @@ public class ConsequenceCommand implements CommandExecutor {
             return true;
         }
 
-        String narration = "[Narration]";
-        int i = 1;
-
-        while(i < args.length) { // Création du texte
-            narration += " " + args[i];
-            i++;
-        }
+        String narration = "[Narration] " + String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
         player.sendMessage( // Envoie du message
             Component.text(
