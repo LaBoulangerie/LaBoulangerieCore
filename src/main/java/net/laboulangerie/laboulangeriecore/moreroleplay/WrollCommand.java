@@ -14,7 +14,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 public class WrollCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-        int max = 20;
+        int max = args.length == 0 ? 20 : Integer.parseInt(args[0]);
         int result = MoreRoleplayUtil.getResult(sender, args, max);
 
         for (Player targetInServer : Bukkit.getOnlinePlayers()){ // Envoie du résultat à tous les joueurs

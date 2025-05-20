@@ -57,27 +57,23 @@ public class RollCommand implements CommandExecutor {
             commandCooldown.put(player.getUniqueId(), System.currentTimeMillis());
         }
 
-        int max = 20;
+        int max = args.length == 0 ? 20 : Integer.parseInt(args[0]);
         int result = MoreRoleplayUtil.getResult(sender, args, max);
+
+        if (result == -1){
+            return true;
+        }
 
         for (Player targetInRadius : Bukkit.getOnlinePlayers()){ // Envoie du résultat ...
             YamlConfiguration targetData = UsersData.getOrCreate(targetInRadius);
             if (targetInRadius.equals(player)) {
                 // ... au sender.
-                targetInRadius.sendMessage(
-                    Component.text(
-                        "[Roll] Vous avez jeté les dés de votre destin, et vous avez obtenu " + result + "/" + max +
-                        (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".")
-                    ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
-                );
+                Component message = Component.text( "[Roll] Vous avez jeté les dés de votre destin, et vous avez obtenu " + result + "/" + max + MoreRoleplayUtil.generateMessageByResult(result, max));
+                targetInRadius.sendMessage(MoreRoleplayUtil.generateMessageColor(message, result, max));
             } else if (targetInRadius.getWorld().equals(player.getWorld()) && targetInRadius.getLocation().distance(player.getLocation()) <= LaBoulangerieCore.PLUGIN.getConfig().getInt("rp-radius", 10)){  
                 // ... aux joueurs dans le radius.
-                targetInRadius.sendMessage(
-                    Component.text(
-                        "[Roll] " + PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max +
-                        (result == max ? ", c'est une réussite critique !" : result == 1  ? ", c'est un échec critique !" : ".") + " [" + (int)player.getLocation().distance(targetInRadius.getLocation()) + " bloc(s)]"
-                    ).color(result == max ? NamedTextColor.DARK_GREEN : result == 1 ? NamedTextColor.DARK_RED : NamedTextColor.YELLOW)
-                );
+                Component message = Component.text( "[Roll] " + PlainTextComponentSerializer.plainText().serialize(player.displayName()) + " a jeté les dés de son destin, et a obtenu " + result + "/" + max + MoreRoleplayUtil.generateMessageByResult(result, max) + " [" + (int)player.getLocation().distance(targetInRadius.getLocation()) + " bloc(s)]");
+                targetInRadius.sendMessage(MoreRoleplayUtil.generateMessageColor(message, result, max));
             } else if (targetData.getBoolean("enable-spy-roll")) {
                 // ... aux admins avec le spyroll actif.
                 targetInRadius.sendMessage(

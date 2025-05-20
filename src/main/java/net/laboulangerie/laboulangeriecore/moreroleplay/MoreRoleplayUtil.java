@@ -32,4 +32,22 @@ public class MoreRoleplayUtil {
 
         return result;
     }
+
+    public static String generateMessageByResult(int result, int max) {
+        if(result == 1){
+            return ", c'est un échec critique !";
+        } else if (result == max){
+            return ", c'est une réussite critique !";
+        }
+        return ".";
+    }
+
+    public static Component generateMessageColor(Component message, int result, int max) {
+        if(result == 1){
+            return message.color(NamedTextColor.DARK_RED);
+        } else if (result == max){
+            return message.color(NamedTextColor.DARK_GREEN);
+        }
+        return message.color(NamedTextColor.YELLOW);
+    }
 }
