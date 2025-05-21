@@ -1,5 +1,5 @@
 name: LaBoulangerieCore
-version: 1.1.1
+version: 1.1.2
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: "1.21"
 authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle]
