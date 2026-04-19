@@ -18,14 +18,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import me.angeschossen.lands.api.land.Land;
-import me.angeschossen.lands.api.nation.Nation;
-import me.angeschossen.lands.api.player.LandPlayer;
+// Lands API imports - commented for future reuse
+// import me.angeschossen.lands.api.land.Land;
+// import me.angeschossen.lands.api.nation.Nation;
+// import me.angeschossen.lands.api.player.LandPlayer;
+
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.laboulangerie.laboulangeriecore.core.UsersData;
-import net.laboulangerie.laboulangeriecore.lands.LandsUtils;
+// import net.laboulangerie.laboulangeriecore.lands.LandsUtils;
 
 public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
@@ -35,7 +37,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("§4This command is restricted to players!");
             return true;
         }
-        if ((args.length < 1 && !Arrays.asList("player","town", "nation").contains(args[0]))) return false;
+        if ((args.length < 1 && !Arrays.asList("player").contains(args[0]))) return false;
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -49,8 +51,8 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
             player.sendMessage("§4Votre objet est déjà authentifié !");
             return true;
         }
-        
-        LandPlayer resident = LaBoulangerieCore.apiLands.getLandPlayer(player.getUniqueId());
+
+        // LandPlayer resident = LaBoulangerieCore.apiLands.getLandPlayer(player.getUniqueId());
 
         // Sign as a player, will be overwrote if nation or city parameter is provided
         String loreText = Authenticable.parseLore(
@@ -62,6 +64,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
         String authorityId = AuthorityType.PLAYER.getPrefix() + player.getUniqueId().toString();
 
         switch (args[0]) {
+            /* Lands integration - commented for future reuse
             case "town":
                 Land town = LandsUtils.getPlayerMainLandOrNull(LaBoulangerieCore.apiLands, player);
 
@@ -104,6 +107,7 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
                 loreText = Authenticable.parseLore(nation.getName().replace('_', ' '), AuthorityType.NATION);
                 authorityId = AuthorityType.NATION.getPrefix() + nation.getULID().toString();
                 break;
+            */
             case "player":
             default:
                 break;
@@ -133,7 +137,8 @@ public class AuthenticateCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-        if (args.length == 1) return Arrays.asList("player", "town", "nation");
+        // Only "player" option available - town/nation require Lands integration
+        if (args.length == 1) return Arrays.asList("player");
         return Arrays.asList("");
     }
 }
