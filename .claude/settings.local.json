@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(done)",
+      "WebFetch(domain:maven.enginehub.org)",
+      "WebFetch(domain:repo.codemc.io)",
+      "WebFetch(domain:gist.github.com)",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

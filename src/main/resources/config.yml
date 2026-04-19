@@ -27,12 +27,6 @@ links:
 misc:
   declined-pack-kick-msg: "<red>Veuillez accepter le pack de ressources pour jouer s'il vous plaît !"
 
-bundle:
-  item-name: "&a>> &e&lBourse &a<<"
-  item-lore:
-    - "&fArgent stocké:"
-    - "  • &e%money%&f฿"
-
 eastereggs:
   # You can edit all the message of the plugin here.
   messages:
@@ -58,53 +52,6 @@ eastereggs:
 
   settings: {}
 first-join-commands: {}
-spawn:
-  ==: org.bukkit.Location
-  world: world
-  x: 4360.140402471246
-  y: 36.0
-  z: 4077.5160008662583
-  pitch: -1.1610103
-  yaw: 147.37386
-
-crystals:
-  - x: 0.5
-    y: 117.0
-    z: -59.5
-  - x: 30.5
-    y: 117.0
-    z: -52.5
-  - x: 53.5
-    y: 117.0
-    z: -29.5
-  - x: 60.5
-    y: 117.0
-    z: 0.5
-  - x: 30.5
-    y: 117.0
-    z: 53.5
-  - x: 0.5
-    y: 117.0
-    z: 60.5
-  - x: -29.5
-    y: 117.0
-    z: 53.5
-  - x: -52.5
-    y: 117.0
-    z: 30.5
-  - x: -59.5
-    y: 117.0
-    z: 0.5
-  - x: -52.5
-    y: 117.0
-    z: -29.5
-dragon-podium-y: 67.0
-clicks-to-break-egg: 350
-dragon-world: world_the_end
-killing-dragon-reward: 500 # Number of divine favors to distribute between the killers of the ender dragon
-dragon-health: 2000
-crystal-nerf-percentage: 65.0 #Damage diminution percentage
-crystal-cooldown: 3000 #Cooldown in milliseconds : 1000ms = 1s
 
 calendar:
     months:

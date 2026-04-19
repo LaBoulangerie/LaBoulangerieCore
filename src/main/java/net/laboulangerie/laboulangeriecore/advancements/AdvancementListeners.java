@@ -3,104 +3,20 @@ package net.laboulangerie.laboulangeriecore.advancements;
 import java.util.HashMap;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import net.laboulangerie.laboulangeriemmo.LaBoulangerieMmo;
-import net.laboulangerie.laboulangeriemmo.api.ability.AbilityArchetype;
-import net.laboulangerie.laboulangeriemmo.api.player.MmoPlayer;
-import net.laboulangerie.laboulangeriemmo.core.abilities.thehunter.firebow.FireArrow;
-import net.laboulangerie.laboulangeriemmo.events.MmoPlayerUseAbilityEvent;
 
 public class AdvancementListeners implements Listener {
 
     public HashMap<UUID, Long> cooldowns_firebow = new HashMap<UUID, Long>();
     public HashMap<UUID, Long> cooldowns_dodge = new HashMap<UUID, Long>();
 
-
-    @EventHandler
-    public void onPlayerUseAbility(MmoPlayerUseAbilityEvent event) {
-        /*Player player = Bukkit.getPlayer(event.getMmoPlayer().getUniqueId());
-        AbilityArchetype abilityArchetype = event.getAbility();
-        switch (abilityArchetype.identifier) {
-            case "animal-twins":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/jumeaux");
-                break;
-            case "better-apple-drop":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/chance_du_bucheron");
-                break;
-            case "better-bonemeal":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/engrais_naturel");
-                break;
-            case "dodging":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/esquive");
-                cooldowns_dodge.put(player.getUniqueId(), System.currentTimeMillis() + (8 * 1000));
-                break;
-            case "double-drop-log":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/chance_du_bucheron");
-                break;
-            case "exp-in-bottle":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/mise_en_bouteille");
-                break;
-            case "fast-mine":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/pioche_aiguisee");
-                break;
-            case "fast-smelt":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/cuisson_instantanee");
-                break;
-            case "fire-bow":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/fleche_enflammee");
-                cooldowns_firebow.put(player.getUniqueId(), System.currentTimeMillis() + (8 * 1000));
-                break;
-            case "hiding":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/hunter/camouflage");
-                break;
-            case "magnetic-field":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/champ_magnetique");
-                break;
-            case "minecraft-exp-multiplier":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/miner/brossage_minutieux");
-                break;
-            case "nature-touch":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/jeune_pousse");
-                break;
-            case "strip":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/strip");
-                break;
-            case "tasty-bread":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/farmer/pain_odorant");
-                break;
-            case "thick-tree":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/haricot_magique");
-                break;
-            case "timber":
-                AdvancementManager.tryToCompleteAdvancement(player, "mmo/lumberjack/timber");
-                break;
-            default:
-                break;
-        }*/
-    }
-
-    public boolean doesPlayerHaveRequiredLevel(MmoPlayer mmoPlayer, AbilityArchetype ability, String talentId) {
-        /*if (mmoPlayer.getTalent(talentId).getLevel() >= ability.requiredLevel) return true;*/
-        return false;
-    }
 
     @EventHandler
     public void onPlayerKillPlayer(EntityDamageByEntityEvent event) {

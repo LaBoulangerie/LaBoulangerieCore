@@ -16,10 +16,8 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 
 import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.vault.VaultBlockEntity;
 
 public class VaultsReset {
 
@@ -34,8 +32,22 @@ public class VaultsReset {
             String regionName = splitted[1];
 
             World world = LaBoulangerieCore.PLUGIN.getServer().getWorld(worldName);
+            if (world == null) {
+                LaBoulangerieCore.PLUGIN.getLogger().warning("World " + worldName + " not found, skipping vault reset region...");
+                continue;
+            }
+
             RegionManager regions = container.get(BukkitAdapter.adapt(world));
+            if (regions == null) {
+                LaBoulangerieCore.PLUGIN.getLogger().warning("No regions found in world " + worldName + ", skipping...");
+                continue;
+            }
+
             ProtectedRegion region = regions.getRegion(regionName);
+            if (region == null) {
+                LaBoulangerieCore.PLUGIN.getLogger().warning("Region " + regionName + " not found in world " + worldName + ", skipping...");
+                continue;
+            }
             // check if region is a cuboid
             if (region instanceof ProtectedCuboidRegion) {
                 resetVault(region, world);
@@ -50,7 +62,6 @@ public class VaultsReset {
         BlockVector3 min = region.getMinimumPoint();
         BlockVector3 max = region.getMaximumPoint();
 
-        HolderLookup.Provider minecraftProvider = MinecraftServer.getServer().registryAccess();
         CraftWorld craftWorld = (CraftWorld) world;
         for (int x = min.x(); x <= max.x(); x++) {
             for (int y = min.y(); y <= max.y(); y++) {
@@ -62,12 +73,10 @@ public class VaultsReset {
                         BlockPos blockPos = new BlockPos(x, y, z);
                         BlockEntity blockEntity = craftWorld.getHandle().getBlockEntity(blockPos);
 
-                        CompoundTag ct = blockEntity.saveWithFullMetadata(minecraftProvider);
-                        CompoundTag serverData = ct.getCompound("server_data");
-                        serverData.remove("rewarded_players");
-
-                        blockEntity.loadWithComponents(ct, minecraftProvider);
-                        blockEntity.setChanged();
+                        if (blockEntity instanceof VaultBlockEntity vault) {
+                            vault.getServerData().getRewardedPlayers().clear();
+                            vault.setChanged();
+                        }
                     }
                 }
             }
