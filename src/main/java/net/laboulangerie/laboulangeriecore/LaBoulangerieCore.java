@@ -31,23 +31,28 @@ import net.laboulangerie.laboulangeriecore.eastereggs.eEggCommand;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggHeadClick;
 import net.laboulangerie.laboulangeriecore.eastereggs.eEggUtil;
 import net.laboulangerie.laboulangeriecore.eco.ConversionInv;
+import net.laboulangerie.laboulangeriecore.elytra.ElytraManager;
+import net.laboulangerie.laboulangeriecore.elytra.ElytraRestrictionListener;
+import net.laboulangerie.laboulangeriecore.elytra.StrongWindScheduler;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
+import net.laboulangerie.laboulangeriecore.misc.CropGrowthListener;
 import net.laboulangerie.laboulangeriecore.misc.DisableCraftListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.MiscListener;
+import net.laboulangerie.laboulangeriecore.misc.NetheriteArmorListener;
 import net.laboulangerie.laboulangeriecore.misc.TradeOverflowListener;
 import net.laboulangerie.laboulangeriecore.misc.TradesHook;
 import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
-import net.laboulangerie.laboulangeriecore.moreroleplay.ConsequenceCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.MeCommand;
-import net.laboulangerie.laboulangeriecore.moreroleplay.NarrationCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.RollCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.SpyRPCommands;
-import net.laboulangerie.laboulangeriecore.moreroleplay.WNarrationCommand;
 import net.laboulangerie.laboulangeriecore.moreroleplay.WrollCommand;
+import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathFlagRegistry;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathListener;
 import net.laboulangerie.laboulangeriecore.speedpaths.SpeedPathManager;
+
+import org.bukkit.configuration.ConfigurationSection;
 import net.laboulangerie.laboulangeriecore.tab.TabListener;
 
 import net.milkbowl.vault.economy.Economy;
@@ -58,6 +63,8 @@ public class LaBoulangerieCore extends JavaPlugin {
 
     private ComponentRenderer componentRenderer;
     private SpeedPathManager speedPathManager;
+    private ElytraManager elytraManager;
+    private StrongWindScheduler strongWindScheduler;
     private MiscListener miscListener = new MiscListener();
 
     @Override
@@ -74,6 +81,11 @@ public class LaBoulangerieCore extends JavaPlugin {
 
         speedPathManager = new SpeedPathManager();
         speedPathManager.load();
+
+        elytraManager = new ElytraManager();
+
+        strongWindScheduler = new StrongWindScheduler(this, elytraManager);
+        strongWindScheduler.start();
 
         try {
             eEggUtil.ensureFilesExist();
@@ -96,9 +108,6 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("wroll").setExecutor(new WrollCommand());
         getCommand("spyrp").setExecutor(new SpyRPCommands());
         getCommand("me").setExecutor(new MeCommand());
-        getCommand("narration").setExecutor(new NarrationCommand());
-        getCommand("wnarration").setExecutor(new WNarrationCommand());
-        getCommand("consequence").setExecutor(new ConsequenceCommand());
         // Link or simple message commands
         getCommand("wiki").setExecutor(new LinkCommands());
         getCommand("youtube").setExecutor(new LinkCommands());
@@ -159,6 +168,24 @@ public class LaBoulangerieCore extends JavaPlugin {
     @Override
     public void onLoad() {
         LaBoulangerieCore.PLUGIN = this;
+        saveDefaultConfig();
+
+        // Enregistrer les flags WorldGuard si présent (vérification par classe car onLoad() est très tôt)
+        if (isWorldGuardAvailable()) {
+            ConfigurationSection pathsConfig = getConfig().getConfigurationSection("speed-paths");
+            if (pathsConfig != null) {
+                SpeedPathFlagRegistry.registerFlags(pathsConfig.getKeys(false), getLogger());
+            }
+        }
+    }
+
+    private boolean isWorldGuardAvailable() {
+        try {
+            Class.forName("com.sk89q.worldguard.WorldGuard");
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     public ComponentRenderer getComponentRenderer() {
@@ -169,8 +196,22 @@ public class LaBoulangerieCore extends JavaPlugin {
         return speedPathManager;
     }
 
+    public ElytraManager getElytraManager() {
+        return elytraManager;
+    }
+
+    public StrongWindScheduler getStrongWindScheduler() {
+        return strongWindScheduler;
+    }
+
     @Override
     public void onDisable() {
+        if (strongWindScheduler != null) {
+            strongWindScheduler.stop();
+        }
+        if (elytraManager != null) {
+            elytraManager.cancelAllTasks();
+        }
         getLogger().info("Disabled");
     }
 
@@ -179,7 +220,9 @@ public class LaBoulangerieCore extends JavaPlugin {
                 new TabListener(), new ElytraGenRemover(), new SpeedPathListener(),
                 new TradesHook(), new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(),
-                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener());
+                new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener(),
+                new CropGrowthListener(), new NetheriteArmorListener(),
+                new ElytraRestrictionListener(elytraManager));
 
         if (getServer().getPluginManager().getPlugin("QuickShop-Hikari") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);

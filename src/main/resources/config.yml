@@ -1,13 +1,16 @@
 authenticate:
   lore: "§6Authentifié par %authority% (%type%)"
 
+crop-growth:
+  enabled: true
+  min-skylight-level: 12    # niveau minimum de lumière du ciel (0-15)
+  no-skylight-rate: 0.1     # 10% vitesse si en dessous du seuil
+
 tab:
   # MiniMessage format and PAPI placeholders allowed
   header: <bold><gradient:#FF8C42:#F9C784>La Boulangerie</gradient></bold>
   name: "<papi:luckperms_meta_prefixtab> <papi:player_name> <papi:player_colored_ping>"
-  footer: "<papi:lands_land_role>\n
-    <papi:lands_land_name> <papi:lands_nation_name>\n
-    <color:#4E598C>mc.laboulangerie.net</color>\n
+  footer: "<color:#4E598C>mc.laboulangerie.net</color>\n
     <#E4D9FF><papi:lbcore_date_full><papi:img_hourglass>"
 
 nametag:
@@ -54,11 +57,16 @@ eastereggs:
 first-join-commands: {}
 
 calendar:
-    months:
-        - "Gaiarkhè"
-        - "Tempopidum"
-        - "Quinésil"
-        - "Éposendre"
+  start-year: 0
+  epoch-date: "2026-05-31"
+  day-names:
+    - "Primidi"
+    - "Duodi"
+    - "Tridi"
+    - "Quartidi"
+    - "Quintidi"
+    - "Sextidi"
+    - "Septidi"
 
 # Use BARRIER for any blocks
 # Top to bottom priority
@@ -78,8 +86,24 @@ speed-paths:
 # Items which are results of crafting recipes
 # that should be disabled
 disabled-crafts:
-  - VEX_ARMOR_TRIM_SMITHING_TEMPLATE
+  - SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE
+  - DUNE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - COAST_ARMOR_TRIM_SMITHING_TEMPLATE
   - WILD_ARMOR_TRIM_SMITHING_TEMPLATE
+  - TIDE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - VEX_ARMOR_TRIM_SMITHING_TEMPLATE
+  - RIB_ARMOR_TRIM_SMITHING_TEMPLATE
+  - SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE
+  - EYE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - WARD_ARMOR_TRIM_SMITHING_TEMPLATE
+  - SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - FLOW_ARMOR_TRIM_SMITHING_TEMPLATE
+  - BOLT_ARMOR_TRIM_SMITHING_TEMPLATE
+  - WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE
+  - RAISER_ARMOR_TRIM_SMITHING_TEMPLATE
+  - SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE
+  - HOST_ARMOR_TRIM_SMITHING_TEMPLATE
 
 vault-reset-regions:
   - world:vault_reset_area
@@ -87,3 +111,38 @@ vault-reset-regions:
 rp-radius: 10
 
 rp-cooldown: 15 # in seconds
+
+# Netherite armor slowdown
+netherite-slowdown:
+  enabled: true
+  speed-modifier: -0.1  # -10% de vitesse
+
+# Restrictions des Elytras
+elytra-restriction:
+  enabled: true                  # Active/désactive toute la feature
+  rain-restriction: true         # Empêcher le vol quand il pleut
+  command-restriction: true      # Permettre les restrictions par commande
+
+  # Vent fort - configuration par monde
+  wind-restriction:
+    enabled: true
+
+    # Paramètres par défaut (appliqués aux mondes sans config spécifique)
+    default-settings:
+      check-interval: 300           # Intervalle en secondes (5 min)
+      trigger-probability: 0.15     # 15% de chance à chaque check
+      duration-min: 300             # Durée min en secondes (5 min)
+      duration-max: 7200            # Durée max en secondes (2h)
+
+    # Configuration par monde (hérite de default-settings, peut surcharger)
+    worlds:
+      world: {}                     # Utilise default-settings
+      world_the_end:                # Surcharge certaines valeurs
+        trigger-probability: 0.25   # 25% de chance (plus venteux dans l'End)
+        duration-max: 3600          # Max 1h seulement
+
+  messages:
+    rain: "<red>Impossible de voler pendant la pluie !"
+    command: "<red>Les elytras sont temporairement désactivés dans ce monde."
+    rain-start: "<red>La pluie commence ! Vous ne pouvez plus voler."
+    wind: "<red>Les vents sont trop forts pour voler !"

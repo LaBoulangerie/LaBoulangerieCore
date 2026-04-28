@@ -47,6 +47,10 @@ public class SpeedPathListener implements Listener {
             SpeedPath path = paths.get(pathKey);
 
             if (!playerPaths.containsKey(player.getUniqueId()) && path.isOnIt(player.getLocation())) {
+                // Vérifier le flag WorldGuard
+                if (!SpeedPathFlagRegistry.testFlag(player, pathKey)) {
+                    continue; // Flag DENY dans cette région
+                }
                 goFast(player, path.getSpeed());
                 playerPaths.put(player.getUniqueId(), pathKey);
                 break;
