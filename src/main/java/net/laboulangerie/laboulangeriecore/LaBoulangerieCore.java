@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import org.betonquest.betonquest.BetonQuest;
 import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -17,8 +18,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import net.laboulangerie.laboulangeriecore.advancements.AdvancementListeners;
+import net.laboulangerie.laboulangeriecore.betonquest.BetonQuestIntegration;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateCommand;
 import net.laboulangerie.laboulangeriecore.authenticate.AuthenticateListener;
+import net.laboulangerie.laboulangeriecore.commands.ColorCommand;
 import net.laboulangerie.laboulangeriecore.commands.CoreCommand;
 import net.laboulangerie.laboulangeriecore.commands.HatCommand;
 import net.laboulangerie.laboulangeriecore.commands.LinkCommands;
@@ -114,9 +117,14 @@ public class LaBoulangerieCore extends JavaPlugin {
         getCommand("twitter").setExecutor(new LinkCommands());
         getCommand("github").setExecutor(new LinkCommands());
         getCommand("librahost").setExecutor(new LinkCommands());
+        getCommand("color").setExecutor(new ColorCommand());
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new LaBoulangerieExpansion().register();
+        }
+
+        if (getServer().getPluginManager().getPlugin("BetonQuest") != null) {
+BetonQuestIntegration.register(getLogger());
         }
 
         new BukkitRunnable() {

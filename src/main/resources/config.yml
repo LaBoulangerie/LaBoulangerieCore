@@ -146,3 +146,17 @@ elytra-restriction:
     command: "<red>Les elytras sont temporairement désactivés dans ce monde."
     rain-start: "<red>La pluie commence ! Vous ne pouvez plus voler."
     wind: "<red>Les vents sont trop forts pour voler !"
+
+# Maximum d'entrées dans l'historique IP par joueur
+ip-history-max: 150
+
+# BetonQuest - Configuration End Crystal
+betonquest:
+  end-crystal:
+    portal-y: 58
+    search-radius: 1.0
+    positions:
+      east: {x: 3, z: 0}
+      west: {x: -3, z: 0}
+      north: {x: 0, z: -3}
+      south: {x: 0, z: 3}

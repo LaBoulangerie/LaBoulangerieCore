@@ -1,10 +1,15 @@
 package net.laboulangerie.laboulangeriecore.commands;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -113,6 +118,11 @@ public class CoreCommand implements TabExecutor {
 
         if (args[0].equalsIgnoreCase("elytra")) {
             handleElytra(sender, Arrays.copyOfRange(args, 1, args.length));
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("ip-verify")) {
+            handleIpVerify(sender, Arrays.copyOfRange(args, 1, args.length));
             return true;
         }
 
@@ -377,16 +387,99 @@ public class CoreCommand implements TabExecutor {
         }
     }
 
+    private void handleIpVerify(CommandSender sender, String[] args) {
+        if (args.length < 1) {
+            sender.sendMessage(mm.deserialize("<red>Usage: /lcore ip-verify <pseudo>"));
+            return;
+        }
+
+        String targetName = args[0];
+        OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
+
+        File usersFolder = new File(LaBoulangerieCore.PLUGIN.getDataFolder(), "users/");
+        File targetFile = new File(usersFolder, target.getUniqueId() + ".yml");
+
+        if (!targetFile.exists()) {
+            sender.sendMessage(mm.deserialize("<red>Aucune donnée pour ce joueur."));
+            return;
+        }
+
+        YamlConfiguration targetData = YamlConfiguration.loadConfiguration(targetFile);
+        Set<String> targetIps = extractIps(targetData);
+
+        if (targetIps.isEmpty()) {
+            sender.sendMessage(mm.deserialize("<red>Aucun historique IP pour ce joueur."));
+            return;
+        }
+
+        sender.sendMessage(mm.deserialize("<gray>Recherche en cours..."));
+
+        // Comparer avec tous les autres joueurs
+        Map<String, Set<String>> matches = new HashMap<>();
+
+        File[] userFiles = usersFolder.listFiles((dir, name) -> name.endsWith(".yml"));
+        if (userFiles == null) return;
+
+        for (File userFile : userFiles) {
+            String uuid = userFile.getName().replace(".yml", "");
+            if (uuid.equals(target.getUniqueId().toString()))
+                continue;
+
+            YamlConfiguration userData = YamlConfiguration.loadConfiguration(userFile);
+            Set<String> userIps = extractIps(userData);
+
+            Set<String> commonIps = new HashSet<>(targetIps);
+            commonIps.retainAll(userIps);
+
+            if (!commonIps.isEmpty()) {
+                try {
+                    OfflinePlayer matchedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
+                    String name = matchedPlayer.getName() != null ? matchedPlayer.getName() : uuid;
+                    matches.put(name, commonIps);
+                } catch (IllegalArgumentException ignored) {}
+            }
+        }
+
+        // Afficher les résultats
+        if (matches.isEmpty()) {
+            sender.sendMessage(mm.deserialize("<green>Aucune correspondance IP trouvée pour <yellow>" + targetName));
+        } else {
+            sender.sendMessage(mm.deserialize("<gold>=== Correspondances IP pour <yellow>" + targetName + " <gold>==="));
+            for (Map.Entry<String, Set<String>> entry : matches.entrySet()) {
+                sender.sendMessage(mm.deserialize("<red>" + entry.getKey() + " <gray>: <white>" +
+                    String.join(", ", entry.getValue())));
+            }
+            sender.sendMessage(mm.deserialize("<gray>Total: <yellow>" + matches.size() + " <gray>compte(s) potentiel(s)"));
+        }
+    }
+
+    private Set<String> extractIps(YamlConfiguration data) {
+        Set<String> ips = new HashSet<>();
+
+        if (data.contains("last-ip-address")) {
+            ips.add(data.getString("last-ip-address"));
+        }
+
+        List<Map<?, ?>> history = data.getMapList("ip-history");
+        for (Map<?, ?> entry : history) {
+            Object ip = entry.get("ip");
+            if (ip != null) ips.add(ip.toString());
+        }
+
+        return ips;
+    }
+
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd,
             @NotNull String alias, @NotNull String[] args) {
         List<String> suggestions = Arrays.asList("");
         if (args.length == 1)
             suggestions = Arrays.asList("reload", "rl", "conversion", "nick", "unnick", "nametag",
-                    "resetvaults", "elytra");
+                    "resetvaults", "elytra", "ip-verify");
         if (args.length == 2 && (args[0].equalsIgnoreCase("nick") ||
                 args[0].equalsIgnoreCase("unnick") ||
-                args[0].equalsIgnoreCase("nametag")))
+                args[0].equalsIgnoreCase("nametag") ||
+                args[0].equalsIgnoreCase("ip-verify")))
             return null;
         if (args.length == 3 && args[0].equalsIgnoreCase("nametag"))
             suggestions = Arrays.asList("addViewer", "removeViewer", "sendNametag");

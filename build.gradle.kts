@@ -1,5 +1,5 @@
 group = "net.laboulangerie"
-version = "1.1.1"
+version = "1.2.0"
 description = "LaBoulangerieCore"
 
 plugins {
@@ -17,6 +17,8 @@ repositories {
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.viaversion.com")
+    maven("https://repo.betonquest.org/betonquest/")
+    maven("https://repo.minebench.de/")
 }
 
 configurations {
@@ -35,6 +37,7 @@ dependencies {
     compileOnly("com.github.LaBoulangerie:Gringotts:master-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.16")
+    compileOnly("org.betonquest:betonquest:3.0.0-SNAPSHOT")
 }
 
 java {

@@ -2,9 +2,9 @@ name: LaBoulangerieCore
 version: 1.1.1
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: "1.21"
-authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle]
+authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle, Red69_Leaf]
 depend: [LuckPerms, ProtocolLib]
-softdepend: [PlaceholderAPI, QuickShop, WorldGuard]
+softdepend: [PlaceholderAPI, QuickShop, WorldGuard, BetonQuest]
 commands:
     authenticate:
         permission: laboulangerie.authenticate
@@ -61,6 +61,9 @@ commands:
     me:
         description: Make a message in the chat that send the player's action to nearby players
         usage: /me [action]
+    color:
+        description: Affiche les 16 couleurs Minecraft
+        usage: /color
 permissions:
     laboulangeriecore.*:
         default: op
@@ -77,4 +80,6 @@ permissions:
     laboulangeriecore.seen:
         default: op
     laboulangeriecore.elytra.bypass:
+        default: op
+    laboulangeriecore.ipverify:
         default: op
