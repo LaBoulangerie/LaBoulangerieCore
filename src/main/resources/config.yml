@@ -160,3 +160,14 @@ betonquest:
       west: {x: -3, z: 0}
       north: {x: 0, z: -3}
       south: {x: 0, z: 3}
+
+# Bouteille d'XP personnalisee
+custom-xp-bottle:
+  enabled: true
+  lore-prefix: "xp: "  # Prefix a chercher dans le lore
+
+# Restriction des fusées pour elytra
+firework-boost:
+  enabled: true
+  required-lore: "Propulseur"  # Lore exact requis pour autoriser le boost
+  denied-message: "<red>Cette fusée ne peut pas vous propulser !"

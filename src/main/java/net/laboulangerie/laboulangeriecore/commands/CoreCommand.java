@@ -1,7 +1,11 @@
 package net.laboulangerie.laboulangeriecore.commands;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -35,6 +39,52 @@ import net.laboulangerie.laboulangeriecore.misc.VaultsReset;
 public class CoreCommand implements TabExecutor {
 
     private final MiniMessage mm = MiniMessage.miniMessage();
+
+    private record ResolvedName(String name, String source) {}
+
+    private ResolvedName resolvePlayerName(UUID uuid) {
+        // 1. Essayer le cache local (Bukkit)
+        OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+        if (player.getName() != null) {
+            return new ResolvedName(player.getName(), "cache");
+        }
+
+        // 2. Essayer l'API Mojang
+        String mojangName = fetchFromMojang(uuid);
+        if (mojangName != null) {
+            return new ResolvedName(mojangName, "mojang");
+        }
+
+        // 3. Fallback UUID
+        return new ResolvedName(uuid.toString(), "uuid");
+    }
+
+    private String fetchFromMojang(UUID uuid) {
+        try {
+            String uuidNoDashes = uuid.toString().replace("-", "");
+            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuidNoDashes);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(3000);
+
+            if (conn.getResponseCode() == 200) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    String response = reader.lines().collect(Collectors.joining());
+
+                    // Extraction simple du nom (sans librairie JSON)
+                    // Supprimer les espaces pour simplifier le parsing (Mojang utilise "name" : "value")
+                    String compact = response.replace(" ", "");
+                    int nameIndex = compact.indexOf("\"name\":\"");
+                    if (nameIndex != -1) {
+                        int start = nameIndex + 8;
+                        int end = compact.indexOf("\"", start);
+                        return compact.substring(start, end);
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        return null;
+    }
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
         if (args.length < 1)
@@ -414,43 +464,60 @@ public class CoreCommand implements TabExecutor {
 
         sender.sendMessage(mm.deserialize("<gray>Recherche en cours..."));
 
-        // Comparer avec tous les autres joueurs
-        Map<String, Set<String>> matches = new HashMap<>();
+        // Exécuter en async pour ne pas bloquer le thread principal (requêtes Mojang)
+        Bukkit.getScheduler().runTaskAsynchronously(LaBoulangerieCore.PLUGIN, () -> {
+            // Map<ResolvedName, Set<String>> pour garder les infos de résolution
+            Map<ResolvedName, Set<String>> matches = new HashMap<>();
 
-        File[] userFiles = usersFolder.listFiles((dir, name) -> name.endsWith(".yml"));
-        if (userFiles == null) return;
-
-        for (File userFile : userFiles) {
-            String uuid = userFile.getName().replace(".yml", "");
-            if (uuid.equals(target.getUniqueId().toString()))
-                continue;
-
-            YamlConfiguration userData = YamlConfiguration.loadConfiguration(userFile);
-            Set<String> userIps = extractIps(userData);
-
-            Set<String> commonIps = new HashSet<>(targetIps);
-            commonIps.retainAll(userIps);
-
-            if (!commonIps.isEmpty()) {
-                try {
-                    OfflinePlayer matchedPlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid));
-                    String name = matchedPlayer.getName() != null ? matchedPlayer.getName() : uuid;
-                    matches.put(name, commonIps);
-                } catch (IllegalArgumentException ignored) {}
+            File[] userFiles = usersFolder.listFiles((dir, name) -> name.endsWith(".yml"));
+            if (userFiles == null) {
+                Bukkit.getScheduler().runTask(LaBoulangerieCore.PLUGIN, () -> {
+                    sender.sendMessage(mm.deserialize("<red>Erreur lors de la lecture des fichiers."));
+                });
+                return;
             }
-        }
 
-        // Afficher les résultats
-        if (matches.isEmpty()) {
-            sender.sendMessage(mm.deserialize("<green>Aucune correspondance IP trouvée pour <yellow>" + targetName));
-        } else {
-            sender.sendMessage(mm.deserialize("<gold>=== Correspondances IP pour <yellow>" + targetName + " <gold>==="));
-            for (Map.Entry<String, Set<String>> entry : matches.entrySet()) {
-                sender.sendMessage(mm.deserialize("<red>" + entry.getKey() + " <gray>: <white>" +
-                    String.join(", ", entry.getValue())));
+            for (File userFile : userFiles) {
+                String uuidStr = userFile.getName().replace(".yml", "");
+                if (uuidStr.equals(target.getUniqueId().toString()))
+                    continue;
+
+                YamlConfiguration userData = YamlConfiguration.loadConfiguration(userFile);
+                Set<String> userIps = extractIps(userData);
+
+                Set<String> commonIps = new HashSet<>(targetIps);
+                commonIps.retainAll(userIps);
+
+                if (!commonIps.isEmpty()) {
+                    try {
+                        UUID uuid = UUID.fromString(uuidStr);
+                        ResolvedName resolved = resolvePlayerName(uuid);
+                        matches.put(resolved, commonIps);
+                    } catch (IllegalArgumentException ignored) {}
+                }
             }
-            sender.sendMessage(mm.deserialize("<gray>Total: <yellow>" + matches.size() + " <gray>compte(s) potentiel(s)"));
-        }
+
+            // Retour sur le thread principal pour envoyer les messages
+            Bukkit.getScheduler().runTask(LaBoulangerieCore.PLUGIN, () -> {
+                if (matches.isEmpty()) {
+                    sender.sendMessage(mm.deserialize("<green>Aucune correspondance IP trouvée pour <yellow>" + targetName));
+                } else {
+                    sender.sendMessage(mm.deserialize("<gold>=== Correspondances IP pour <yellow>" + targetName + " <gold>==="));
+                    for (Map.Entry<ResolvedName, Set<String>> entry : matches.entrySet()) {
+                        ResolvedName resolved = entry.getKey();
+                        String color = switch (resolved.source()) {
+                            case "cache" -> "<green>";
+                            case "mojang" -> "<yellow>";
+                            default -> "<red>";
+                        };
+                        sender.sendMessage(mm.deserialize(color + resolved.name() + " <gray>: <white>" +
+                            String.join(", ", entry.getValue())));
+                    }
+                    sender.sendMessage(mm.deserialize("<gray>Total: <yellow>" + matches.size() + " <gray>compte(s) potentiel(s)"));
+                    sender.sendMessage(mm.deserialize("<dark_gray>(<green>cache <dark_gray>/ <yellow>mojang <dark_gray>/ <red>inconnu<dark_gray>)"));
+                }
+            });
+        });
     }
 
     private Set<String> extractIps(YamlConfiguration data) {
