@@ -161,10 +161,15 @@ betonquest:
       north: {x: 0, z: -3}
       south: {x: 0, z: 3}
 
-# Bouteille d'XP personnalisee
-custom-xp-bottle:
+# Bouteilles d'XP (lecture et creation)
+xp-bottle:
   enabled: true
   lore-prefix: "xp: "  # Prefix a chercher dans le lore
+
+  creation:
+    xp-amount: 100           # Points XP requis/stockes
+    lapis-required: 1        # Lapis requis
+    max-reach: 5             # Distance max pour verifier l'air
 
 # Restriction des fusées pour elytra
 firework-boost:

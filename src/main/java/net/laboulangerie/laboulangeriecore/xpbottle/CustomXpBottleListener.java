@@ -1,4 +1,4 @@
-package net.laboulangerie.laboulangeriecore.misc;
+package net.laboulangerie.laboulangeriecore.xpbottle;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -38,11 +38,11 @@ public class CustomXpBottleListener implements Listener {
 
     private boolean isEnabled() {
         return LaBoulangerieCore.PLUGIN.getConfig()
-            .getBoolean("custom-xp-bottle.enabled", true);
+            .getBoolean("xp-bottle.enabled", true);
     }
 
     private String getLorePrefix() {
         return LaBoulangerieCore.PLUGIN.getConfig()
-            .getString("custom-xp-bottle.lore-prefix", "xp: ");
+            .getString("xp-bottle.lore-prefix", "xp: ");
     }
 }

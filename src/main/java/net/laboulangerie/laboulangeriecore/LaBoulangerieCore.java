@@ -40,7 +40,8 @@ import net.laboulangerie.laboulangeriecore.elytra.FireworkBoostListener;
 import net.laboulangerie.laboulangeriecore.elytra.StrongWindScheduler;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.CropGrowthListener;
-import net.laboulangerie.laboulangeriecore.misc.CustomXpBottleListener;
+import net.laboulangerie.laboulangeriecore.xpbottle.CustomXpBottleListener;
+import net.laboulangerie.laboulangeriecore.xpbottle.XpBottleCreationListener;
 import net.laboulangerie.laboulangeriecore.misc.DisableCraftListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
@@ -234,7 +235,8 @@ BetonQuestIntegration.register(getLogger());
                 new CropGrowthListener(), new NetheriteArmorListener(),
                 new ElytraRestrictionListener(elytraManager),
                 new FireworkBoostListener(),
-                new CustomXpBottleListener());
+                new CustomXpBottleListener(),
+                new XpBottleCreationListener());
 
         if (getServer().getPluginManager().getPlugin("QuickShop-Hikari") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
