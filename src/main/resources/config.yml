@@ -3,12 +3,12 @@ authenticate:
 
 crop-growth:
   enabled: true
-  min-skylight-level: 12    # niveau minimum de lumière du ciel (0-15)
+  min-skylight-level: 7    # niveau minimum de lumière du ciel (0-15)
   no-skylight-rate: 0.1     # 10% vitesse si en dessous du seuil
 
 grass-spread:
   enabled: true
-  min-skylight-level: 12    # niveau minimum de lumière du ciel (0-15)
+  min-skylight-level: 7    # niveau minimum de lumière du ciel (0-15)
   no-skylight-rate: 0.1     # 10% vitesse si en dessous du seuil
 
 tab:
@@ -65,8 +65,8 @@ first-join-commands: {}
 
 calendar:
   start-year: 0
-  epoch-date: "2026-05-31"
-  age-name: ""  # Nom d'âge affiché après l'année (ex: "de l'Âge du Pain")
+  epoch-date: "2026-06-20"
+  age-name: "Age des expéditions"
   day-names:
     - "Primidi"
     - "Duodi"
@@ -114,8 +114,11 @@ disabled-crafts:
   - HOST_ARMOR_TRIM_SMITHING_TEMPLATE
 
 vault-reset-regions:
-  - world:vault_reset_area
-
+  - millefeuilles:trial_nord
+  - millefeuilles:trial_sud
+  - millefeuilles:trial_centre
+  - millefeuilles:trial_est
+  - millefeuilles:trial_ouest
 rp-radius: 10
 
 rp-cooldown: 15 # in seconds
@@ -137,17 +140,49 @@ elytra-restriction:
 
     # Paramètres par défaut (appliqués aux mondes sans config spécifique)
     default-settings:
-      check-interval: 300           # Intervalle en secondes (5 min)
-      trigger-probability: 0.15     # 15% de chance à chaque check
-      duration-min: 300             # Durée min en secondes (5 min)
-      duration-max: 7200            # Durée max en secondes (2h)
+      check-interval: 60 # Intervalle en secondes (5 min)
+      trigger-probability: 0.15 # 15% de chance à chaque check
+      duration-min: 300 # Durée min en secondes (5 min)
+      duration-max: 7200 # Durée max en secondes (2h)
 
     # Configuration par monde (hérite de default-settings, peut surcharger)
     worlds:
-      world: {}                     # Utilise default-settings
-      world_the_end:                # Surcharge certaines valeurs
-        trigger-probability: 0.25   # 25% de chance (plus venteux dans l'End)
-        duration-max: 3600          # Max 1h seulement
+      # Millefeuilles - un peu plus souvent
+      millefeuilles:
+        trigger-probability: 0.18 # 18% de chance
+        duration-min: 300
+        duration-max: 5400 # Max 1h30
+
+      # Ragar & Asgueda - rare
+      Ragar:
+        trigger-probability: 0.08 # 8% de chance (rare)
+        duration-min: 180
+        duration-max: 3600 # Max 1h
+
+      Asgueda:
+        trigger-probability: 0.08 # 8% de chance (rare)
+        duration-min: 180
+        duration-max: 3600 # Max 1h
+
+      # Nethers - quasiment jamais
+      millefeuilles_nether:
+        trigger-probability: 0.03 # 3% de chance (très rare)
+        duration-min: 120
+        duration-max: 1800 # Max 30min
+
+      Ragar_nether:
+        trigger-probability: 0.03 # 3% de chance (très rare)
+        duration-min: 120
+        duration-max: 1800
+
+      Asgueda_nether:
+        trigger-probability: 0.03 # 3% de chance (très rare)
+        duration-min: 120
+        duration-max: 1800
+
+      # End - pas de vent (ne pas inclure ou probability à 0)
+      millefeuilles_the_end:
+        trigger-probability: 0.0 # Jamais de vent
 
   messages:
     rain: "<red>Impossible de voler pendant la pluie !"
@@ -172,7 +207,7 @@ betonquest:
 # Restriction des fusées pour elytra
 firework-boost:
   enabled: true
-  required-lore: "Propulseur"  # Lore exact requis pour autoriser le boost
+  required-lore: "Assez puissant pour une charge lourde" # Lore exact requis pour autoriser le boost
   denied-message: "<red>Cette fusée ne peut pas vous propulser !"
 
 # Entity cramming - bloquer les drops des mobs morts par entassement
