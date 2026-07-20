@@ -42,14 +42,27 @@ public class TabManager {
         Collections.sort(sortedGroups, (a, b) -> (b.getWeight().isPresent() ? b.getWeight().getAsInt() : 0)
                 - (a.getWeight().isPresent() ? a.getWeight().getAsInt() : 0));
 
+        String visibilityConfig = LaBoulangerieCore.PLUGIN.getConfig()
+            .getString("nametag.visibility", "always").toUpperCase();
+        Team.OptionStatus visibility = Team.OptionStatus.NEVER;
+        try {
+            visibility = Team.OptionStatus.valueOf(visibilityConfig);
+        } catch (IllegalArgumentException e) {
+            LaBoulangerieCore.PLUGIN.getLogger().warning(
+                "Invalid nametag visibility: " + visibilityConfig + ". Using ALWAYS.");
+            visibility = Team.OptionStatus.ALWAYS;
+        }
+
         for (short i = 0; i < sortedGroups.size(); i++) {
             groupsMap.put(sortedGroups.get(i), i);
             final String teamName = String.format("%04d", i) + sortedGroups.get(i).getName();
-            if (board.getTeam(teamName) != null)
-                continue;
 
-            Team team = board.registerNewTeam(teamName);
-            team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+            Team team = board.getTeam(teamName);
+            if (team == null) {
+                team = board.registerNewTeam(teamName);
+            }
+
+            team.setOption(Team.Option.NAME_TAG_VISIBILITY, visibility);
             team.setCanSeeFriendlyInvisibles(false);
         }
     }

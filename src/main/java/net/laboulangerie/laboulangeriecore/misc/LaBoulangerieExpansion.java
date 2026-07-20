@@ -88,12 +88,16 @@ public class LaBoulangerieExpansion extends PlaceholderExpansion {
             GaiartosDate gNow = new GaiartosDate(now);
 
             switch (option) {
-                case "month":
-                    return gNow.getMonth();
+                case "day":
+                    return gNow.getDayName();
                 case "year":
                     return ((Integer) gNow.getYear()).toString();
                 case "full":
-                    return String.format("%d %s An %d", now.getDayOfMonth(), gNow.getMonth(), gNow.getYear());
+                    String ageName = gNow.getAgeName();
+                    if (ageName.isEmpty()) {
+                        return String.format("%s, An %d", gNow.getDayName(), gNow.getYear());
+                    }
+                    return String.format("%s, An %d, %s", gNow.getDayName(), gNow.getYear(), ageName);
                 default:
                     return null;
             }

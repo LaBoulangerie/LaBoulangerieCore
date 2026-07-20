@@ -1,10 +1,10 @@
 name: LaBoulangerieCore
-version: 1.1.1
+version: 1.2.0
 main: net.laboulangerie.laboulangeriecore.LaBoulangerieCore
 api-version: "1.21"
-authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle]
-depend: [Lands, LuckPerms, ProtocolLib, LaBoulangerieMmo]
-softdepend: [PlaceholderAPI, BetonQuest, QuickShop]
+authors: [Grooble_, PainOchoco, Blackoutburst, Pikachuz3, Herllox, Grôle, Red69_Leaf]
+depend: [LuckPerms, ProtocolLib]
+softdepend: [PlaceholderAPI, QuickShop, WorldGuard, BetonQuest, Gringotts]
 commands:
     authenticate:
         permission: laboulangerie.authenticate
@@ -20,36 +20,6 @@ commands:
         description: Sends the github link
     librahost:
         description: Our beloved LibraHost
-    faveursdivines:
-        description: Voir ses faveurs divines
-    housewand:
-        description: Donne l'outils de creation de maison de nation
-        permission: laboulangeriecore.house.admin
-    createhouse:
-        description: Créer une maison de nation
-        permission: laboulangeriecore.house.admin
-    listhouse:
-        description: Liste les maisons de nation
-        permission: laboulangeriecore.house.admin
-    deletehouse:
-        description: Supprime une maisons de nation
-        permission: laboulangeriecore.house.admin
-    nationhouses:
-        description: Manage nation houses
-        permission: laboulangeriecore.house.admin
-        usage: /nationhouses [list|create|delete] ([free|occupied] | <id>)
-    houseshop:
-        description: Houses of nations shop
-        permission: laboulangeriecore.houseshop
-        usage: /houseshop (sell)
-    houseflag:
-        description: Modify house flags
-        permission: laboulangeriecore.house.admin
-        usage: /houseflag <house> [list|add|remove] (<flag>)
-    housemembers:
-        description: Modify house members
-        permission: laboulangeriecore.house.admin
-        usage: /housemembers <house> [list|add|remove] (<member>)
     easteregg:
         description: Main command for the easteregg part
         aliases: [eegg]
@@ -59,17 +29,10 @@ commands:
         usage: /core reload|conversion
         aliases: [lcore]
         permission: laboulangeriecore.admin
-    spawn:
-        description: Go to spawn
-        usage: /spawn
     seen:
         description: Details on players' connection
         usage: /seen [Player]
         permission: laboulangeriecore.seen
-    event:
-        description: Main command for the event assistant
-        permission: laboulangeriecore.eventassistant
-        usage: /event [name] <start|stop|nextStep|run|goTo|status> ([stepName])
     speed:
         description: Toggle speed paths
         usage: /speed
@@ -98,48 +61,25 @@ commands:
     me:
         description: Make a message in the chat that send the player's action to nearby players
         usage: /me [action]
-    narration:
-        description: Make a message in the chat that send a narration text to nearby players
-        usage: /narration [narration]
-        aliases: [nar, nr]
-        permission: laboulangeriecore.admin
-        permission-message: You do not have <permission>
-    wnarration:
-        description: Make a message in the chat that send a narration text to all players
-        usage: /wnarration [narration]
-        aliases: [wnar, wnr]
-        permission: laboulangeriecore.admin
-        permission-message: You do not have <permission>
-    consequence:
-        description: Send a consequence text to a player
-        usage: /consequence [player] [narration]
-        aliases: [cons, c]
-        permission: laboulangeriecore.admin
-        permission-message: You do not have <permission>
+    color:
+        description: Affiche les 16 couleurs Minecraft
+        usage: /color
 permissions:
     laboulangeriecore.*:
         default: op
         children:
             - laboulangeriecore.authenticate
-            - laboulangeriecore.divinefavors.admin
-            - laboulangeriecore.house.admin
             - laboulangeriecore.admin
-            - laboulangeriecore.houseshop
             - laboulangeriecore.seen
-            - laboulangeriecore.eventassistant
     laboulangeriecore.authenticate:
         default: op
-    laboulangeriecore.divinefavors.admin:
-        default: op
-    laboulangeriecore.house.admin:
-        default: op
     laboulangeriecore.admin:
-        default: op
-    laboulangeriecore.houseshop:
         default: op
     laboulangeriecore.eeggs.admin:
         default: op
     laboulangeriecore.seen:
         default: op
-    laboulangeriecore.eventassistant:
+    laboulangeriecore.elytra.bypass:
+        default: op
+    laboulangeriecore.ipverify:
         default: op

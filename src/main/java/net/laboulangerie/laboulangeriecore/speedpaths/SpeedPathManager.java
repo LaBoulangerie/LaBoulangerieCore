@@ -1,9 +1,10 @@
 package net.laboulangerie.laboulangeriecore.speedpaths;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,7 +13,7 @@ import net.laboulangerie.laboulangeriecore.LaBoulangerieCore;
 
 public class SpeedPathManager {
 
-    private Map<String, SpeedPath> paths = new HashMap<>();
+    private Map<String, SpeedPath> paths = new LinkedHashMap<>();
 
     public void load() {
         ConfigurationSection pathsConfig = LaBoulangerieCore.PLUGIN.getConfig().getConfigurationSection("speed-paths");
@@ -49,5 +50,9 @@ public class SpeedPathManager {
 
     public SpeedPath getPath(String pathKey) {
         return paths.get(pathKey);
+    }
+
+    public Set<String> getPathKeys() {
+        return paths.keySet();
     }
 }

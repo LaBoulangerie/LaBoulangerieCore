@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityMountEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -46,6 +47,10 @@ public class SpeedPathListener implements Listener {
             SpeedPath path = paths.get(pathKey);
 
             if (!playerPaths.containsKey(player.getUniqueId()) && path.isOnIt(player.getLocation())) {
+                // Vérifier le flag WorldGuard
+                if (!SpeedPathFlagRegistry.testFlag(player, pathKey)) {
+                    continue; // Flag DENY dans cette région
+                }
                 goFast(player, path.getSpeed());
                 playerPaths.put(player.getUniqueId(), pathKey);
                 break;
@@ -82,6 +87,11 @@ public class SpeedPathListener implements Listener {
     @EventHandler
     void onPlayerJoin(PlayerJoinEvent event) {
         goNormal(event.getPlayer());
+    }
+
+    @EventHandler
+    void onPlayerQuit(PlayerQuitEvent event) {
+        playerPaths.remove(event.getPlayer().getUniqueId());
     }
 
     private boolean hasLeftPath(Player player) {

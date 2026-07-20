@@ -2,6 +2,8 @@ package net.laboulangerie.laboulangeriecore.misc;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +96,38 @@ public class MiscListener implements Listener {
     public void onJoinResourcePack(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         YamlConfiguration data = UsersData.getOrCreate(player);
-        data.set("last-ip-address", player.getAddress().getHostString());
+
+        String currentIp = player.getAddress().getHostString();
+        List<Map<?, ?>> ipHistory = data.getMapList("ip-history");
+        List<Map<String, Object>> mutableHistory = new ArrayList<>();
+        for (Map<?, ?> entry : ipHistory) {
+            Map<String, Object> mutableEntry = new HashMap<>();
+            for (Map.Entry<?, ?> e : entry.entrySet()) {
+                mutableEntry.put(e.getKey().toString(), e.getValue());
+            }
+            mutableHistory.add(mutableEntry);
+        }
+
+        // Éviter doublon si même IP que la dernière entrée
+        boolean shouldAdd = mutableHistory.isEmpty() ||
+            !currentIp.equals(mutableHistory.get(mutableHistory.size() - 1).get("ip"));
+
+        if (shouldAdd) {
+            Map<String, Object> entry = new HashMap<>();
+            entry.put("ip", currentIp);
+            entry.put("date", Instant.now().toString());
+            mutableHistory.add(entry);
+
+            // Limite configurable (défaut: 150)
+            int maxHistory = LaBoulangerieCore.PLUGIN.getConfig().getInt("ip-history-max", 150);
+            while (mutableHistory.size() > maxHistory) {
+                mutableHistory.remove(0);
+            }
+
+            data.set("ip-history", mutableHistory);
+        }
+
+        data.set("last-ip-address", currentIp);
         try {
             UsersData.save(player, data);
         } catch (IOException e) {

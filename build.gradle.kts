@@ -1,10 +1,10 @@
 group = "net.laboulangerie"
-version = "1.1.1"
+version = "1.2.0"
 description = "LaBoulangerieCore"
 
 plugins {
     java
-    id("io.papermc.paperweight.userdev") version "1.7.3"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.21"
 }
 
 repositories {
@@ -13,11 +13,12 @@ repositories {
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://jitpack.io")
-    maven("https://nexus.betonquest.org/repository/betonquest/")
     maven("https://repo.codemc.io/repository/maven-public/")
     maven("https://repo.dmulloy2.net/repository/public/")
     maven("https://maven.enginehub.org/repo/")
     maven("https://repo.viaversion.com")
+    maven("https://repo.betonquest.org/betonquest/")
+    maven("https://repo.minebench.de/")
 }
 
 configurations {
@@ -27,18 +28,16 @@ configurations {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.1-R0.1-SNAPSHOT")
-    compileOnly("me.clip:placeholderapi:2.11.6")
+    paperweight.paperDevBundle("1.21.10-R0.1-SNAPSHOT")
+    compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("net.luckperms:api:5.4")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    compileOnly("com.github.LaBoulangerie:LaBoulangerieMMO:2.3.1")
-    compileOnly("org.betonquest:betonquest:2.1.3")
-    compileOnly("com.ghostchu:quickshop-bukkit:5.2.0.6:shaded")
-    compileOnly("com.ghostchu:quickshop-common:5.2.0.6:shaded")
+    compileOnly("com.ghostchu:quickshop-bukkit:6.2.0.11:shaded")
+    compileOnly("com.ghostchu:quickshop-common:6.2.0.11:shaded")
     compileOnly("com.github.LaBoulangerie:Gringotts:master-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
-    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
-    compileOnly("com.github.angeschossen:LandsAPI:7.10.13")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.16")
+    compileOnly("org.betonquest:betonquest:3.0.0-SNAPSHOT")
 }
 
 java {

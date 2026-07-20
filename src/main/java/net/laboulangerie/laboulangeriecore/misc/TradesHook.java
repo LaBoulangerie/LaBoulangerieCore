@@ -53,7 +53,12 @@ public class TradesHook implements Listener {
                         currency.setAmount(quantity > 64 ? 64 : quantity); // cap prices to 128 (corresponds to 24.5
                                                                            // emerald if EMERALD_VALUE = 5)
                         newIngredients.add(currency.clone());
-                    } else if (recipe.getIngredients().size() == 2) newIngredients.add(recipe.getIngredients().get(1));
+                    } else if (recipe.getIngredients().size() == 2) {
+                        ItemStack secondIngredient = recipe.getIngredients().get(1);
+                        if (secondIngredient != null && !secondIngredient.getType().isAir() && secondIngredient.getAmount() > 0) {
+                            newIngredients.add(secondIngredient);
+                        }
+                    }
 
                     newRecipe.setIngredients(newIngredients);
 
