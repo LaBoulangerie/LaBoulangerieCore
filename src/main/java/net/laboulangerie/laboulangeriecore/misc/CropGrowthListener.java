@@ -22,10 +22,13 @@ public class CropGrowthListener implements Listener {
             Material.BEETROOTS,
             Material.MELON_STEM,
             Material.PUMPKIN_STEM,
+            Material.MELON,
+            Material.PUMPKIN,
             Material.NETHER_WART,
             Material.SWEET_BERRY_BUSH,
             Material.TORCHFLOWER_CROP,
-            Material.PITCHER_CROP);
+            Material.PITCHER_CROP,
+            Material.SUGAR_CANE);
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     private void onCropGrow(BlockGrowEvent event) {

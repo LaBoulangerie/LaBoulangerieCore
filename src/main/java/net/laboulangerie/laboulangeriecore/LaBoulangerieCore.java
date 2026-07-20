@@ -40,10 +40,10 @@ import net.laboulangerie.laboulangeriecore.elytra.FireworkBoostListener;
 import net.laboulangerie.laboulangeriecore.elytra.StrongWindScheduler;
 import net.laboulangerie.laboulangeriecore.misc.ChestShopListener;
 import net.laboulangerie.laboulangeriecore.misc.CropGrowthListener;
-import net.laboulangerie.laboulangeriecore.xpbottle.CustomXpBottleListener;
-import net.laboulangerie.laboulangeriecore.xpbottle.XpBottleCreationListener;
 import net.laboulangerie.laboulangeriecore.misc.DisableCraftListener;
 import net.laboulangerie.laboulangeriecore.misc.ElytraGenRemover;
+import net.laboulangerie.laboulangeriecore.misc.EntityCrammingListener;
+import net.laboulangerie.laboulangeriecore.misc.GrassSpreadListener;
 import net.laboulangerie.laboulangeriecore.misc.LaBoulangerieExpansion;
 import net.laboulangerie.laboulangeriecore.misc.MiscListener;
 import net.laboulangerie.laboulangeriecore.misc.NetheriteArmorListener;
@@ -229,17 +229,19 @@ BetonQuestIntegration.register(getLogger());
     private void registerListeners() {
         List<Listener> listeners = Arrays.asList(
                 new TabListener(), new ElytraGenRemover(), new SpeedPathListener(),
-                new TradesHook(), new eEggHeadClick(),
+                new eEggHeadClick(),
                 new ConversionInv(), miscListener, new AdvancementListeners(),
                 new TradeOverflowListener(), new AuthenticateListener(), new DisableCraftListener(),
-                new CropGrowthListener(), new NetheriteArmorListener(),
+                new CropGrowthListener(), new GrassSpreadListener(), new NetheriteArmorListener(),
+                new EntityCrammingListener(),
                 new ElytraRestrictionListener(elytraManager),
-                new FireworkBoostListener(),
-                new CustomXpBottleListener(),
-                new XpBottleCreationListener());
+                new FireworkBoostListener());
 
         if (getServer().getPluginManager().getPlugin("QuickShop-Hikari") != null)
             getServer().getPluginManager().registerEvents(new ChestShopListener(), this);
+
+        if (getServer().getPluginManager().getPlugin("Gringotts") != null)
+            getServer().getPluginManager().registerEvents(new TradesHook(), this);
 
         listeners.forEach(l -> getServer().getPluginManager().registerEvents(l, this));
         miscListener.registerProtocolLibListeners();

@@ -43,4 +43,9 @@ public class GaiartosDate {
         long daysSinceEpoch = ChronoUnit.DAYS.between(epochDate, date);
         return (int) (daysSinceEpoch / 7) + startYear;
     }
+
+    public String getAgeName() {
+        FileConfiguration config = LaBoulangerieCore.PLUGIN.getConfig();
+        return config.getString("calendar.age-name", "");
+    }
 }

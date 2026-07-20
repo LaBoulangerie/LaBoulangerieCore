@@ -102,17 +102,27 @@ public class CoreCommand implements TabExecutor {
         }
 
         if (args[0].equalsIgnoreCase("conversion")) {
-            if (!(sender instanceof Player))
-                sender.sendMessage("§4Only players can use that");
-            else {
-                ConversionInv.displayConversionInv((Player) sender);
-                YamlConfiguration data = UsersData.getOrCreate((Player) sender);
-                data.set("conversions-count", data.getInt("conversions-count", 0) + 1);
-                try {
-                    UsersData.save((Player) sender, data);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            Player target;
+            if (args.length >= 2) {
+                target = Bukkit.getPlayer(args[1]);
+                if (target == null) {
+                    sender.sendMessage("§4Le joueur " + args[1] + " n'est pas connecté.");
+                    return true;
                 }
+            } else {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage("§4Usage: /lcore conversion <pseudo>");
+                    return true;
+                }
+                target = (Player) sender;
+            }
+            ConversionInv.displayConversionInv(target);
+            YamlConfiguration data = UsersData.getOrCreate(target);
+            data.set("conversions-count", data.getInt("conversions-count", 0) + 1);
+            try {
+                UsersData.save(target, data);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             return true;
         }
@@ -546,7 +556,8 @@ public class CoreCommand implements TabExecutor {
         if (args.length == 2 && (args[0].equalsIgnoreCase("nick") ||
                 args[0].equalsIgnoreCase("unnick") ||
                 args[0].equalsIgnoreCase("nametag") ||
-                args[0].equalsIgnoreCase("ip-verify")))
+                args[0].equalsIgnoreCase("ip-verify") ||
+                args[0].equalsIgnoreCase("conversion")))
             return null;
         if (args.length == 3 && args[0].equalsIgnoreCase("nametag"))
             suggestions = Arrays.asList("addViewer", "removeViewer", "sendNametag");

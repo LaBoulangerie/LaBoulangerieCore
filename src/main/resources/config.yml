@@ -6,6 +6,11 @@ crop-growth:
   min-skylight-level: 12    # niveau minimum de lumière du ciel (0-15)
   no-skylight-rate: 0.1     # 10% vitesse si en dessous du seuil
 
+grass-spread:
+  enabled: true
+  min-skylight-level: 12    # niveau minimum de lumière du ciel (0-15)
+  no-skylight-rate: 0.1     # 10% vitesse si en dessous du seuil
+
 tab:
   # MiniMessage format and PAPI placeholders allowed
   header: <bold><gradient:#FF8C42:#F9C784>La Boulangerie</gradient></bold>
@@ -14,8 +19,10 @@ tab:
     <#E4D9FF><papi:lbcore_date_full><papi:img_hourglass>"
 
 nametag:
-  - <papi:luckperms_meta_prefixtab>[<papi:lbmmo_palier_colored>] <gray><papi:player_name>
-  - <papi:lbcore_eastereggs_worldguard>
+  visibility: always  # Options: never, always
+  format:
+    - <papi:luckperms_meta_prefixtab>[<papi:lbmmo_palier_colored>] <gray><papi:player_name>
+    - <papi:lbcore_eastereggs_worldguard>
 
 links:
   discord: https://laboulangerie.net/discord
@@ -59,6 +66,7 @@ first-join-commands: {}
 calendar:
   start-year: 0
   epoch-date: "2026-05-31"
+  age-name: ""  # Nom d'âge affiché après l'année (ex: "de l'Âge du Pain")
   day-names:
     - "Primidi"
     - "Duodi"
@@ -161,18 +169,12 @@ betonquest:
       north: {x: 0, z: -3}
       south: {x: 0, z: 3}
 
-# Bouteilles d'XP (lecture et creation)
-xp-bottle:
-  enabled: true
-  lore-prefix: "xp: "  # Prefix a chercher dans le lore
-
-  creation:
-    xp-amount: 100           # Points XP requis/stockes
-    lapis-required: 1        # Lapis requis
-    max-reach: 5             # Distance max pour verifier l'air
-
 # Restriction des fusées pour elytra
 firework-boost:
   enabled: true
   required-lore: "Propulseur"  # Lore exact requis pour autoriser le boost
   denied-message: "<red>Cette fusée ne peut pas vous propulser !"
+
+# Entity cramming - bloquer les drops des mobs morts par entassement
+entity-cramming:
+  disable-drops: true  # Désactive les drops des mobs morts par cramming

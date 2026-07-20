@@ -93,7 +93,11 @@ public class LaBoulangerieExpansion extends PlaceholderExpansion {
                 case "year":
                     return ((Integer) gNow.getYear()).toString();
                 case "full":
-                    return String.format("%s, An %d", gNow.getDayName(), gNow.getYear());
+                    String ageName = gNow.getAgeName();
+                    if (ageName.isEmpty()) {
+                        return String.format("%s, An %d", gNow.getDayName(), gNow.getYear());
+                    }
+                    return String.format("%s, An %d, %s", gNow.getDayName(), gNow.getYear(), ageName);
                 default:
                     return null;
             }
